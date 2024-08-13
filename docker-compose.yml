@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  gateway_microservice:
+    container_name: gateway_service
+    build: ./app/gateway_service
+    ports:
+      - "80:80"
+    restart: always
+    networks: 
+      transcendence:
+        ipv4_address: 172.20.10.2
+    depends_on:
+      # - statistics_microservice
+      # - user_profile_microservice
+      # - matchmaking_microservice
+      - game_microservice
+      # - notifications_microservice
+      # - frontend
+
+  # statistics_microservice:
+  #   container_name: statistics_service
+  #   build: ./app/statistics_service
+  #   restart: always
+  #   networks: 
+  #     transcendence:
+  #       ipv4_address: 172.20.10.3
+
+  # user_profile_microservice:
+  #   container_name: user_profile_service
+  #   build: ./app/user_profile_service
+  #   restart: always
+  #   networks: 
+  #     transcendence:
+  #       ipv4_address: 172.20.10.4
+      
+  # matchmaking_microservice:
+  #   container_name: matchmaking_service
+  #   build: ./app/matchmaking_service
+  #   restart: always
+  #   networks: 
+  #     transcendence:
+  #       ipv4_address: 172.20.10.5
+
+  game_microservice:
+    container_name: game_service
+    build: ./app/game_service
+    restart: always
+    networks: 
+      transcendence:
+        ipv4_address: 172.20.10.6
+    ports:
+      - "8000:8000"
+
+  # notifications_microservice:
+  #   container_name: notifications_service
+  #   build: ./app/notifications_service
+  #   restart: always
+  #   networks: 
+  #     transcendence:
+  #       ipv4_address: 172.20.10.7
+
+  # frontend:
+  #   container_name: frontend
+  #   build: ./app/frontend
+  #   restart: always
+  #   networks: 
+  #     transcendence:
+  #       ipv4_address: 172.20.10.8
+
+
+networks:
+  transcendence:
+      driver: bridge
+      ipam:
+        config:
+          - subnet: 172.20.10.0/24
+            gateway: 172.20.10.1
+
+
