@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   gateway_microservice:
@@ -6,6 +6,7 @@ services:
     build: ./app/gateway_service
     ports:
       - "80:80"
+      - "443:443"
     restart: always
     networks: 
       transcendence:
@@ -49,6 +50,8 @@ services:
     networks: 
       transcendence:
         ipv4_address: 172.20.10.6
+    # volumes:
+    #   - ./game_service:/code
     ports:
       - "8000:8000"
 
@@ -67,6 +70,7 @@ services:
   #   networks: 
   #     transcendence:
   #       ipv4_address: 172.20.10.8
+
 
 
 networks:
