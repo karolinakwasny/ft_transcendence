@@ -29,5 +29,10 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Define the command to run the application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENV DJANGO_SUPERUSER_USERNAME=karolina
+ENV DJANGO_SUPERUSER_EMAIL=karolina@example.com
+ENV DJANGO_SUPERUSER_PASSWORD=123
+
+RUN chmod +x script.sh
+
+CMD ["./script.sh"]

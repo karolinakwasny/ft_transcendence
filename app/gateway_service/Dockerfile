@@ -17,4 +17,5 @@ RUN chmod +x /usr/local/bin/nginx_script.sh
 EXPOSE 80
 EXPOSE 443
 
+
 CMD ["/usr/local/bin/nginx_script.sh"]
