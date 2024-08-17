@@ -1,6 +1,10 @@
 # settings.py
 
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Base directory of the project
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,7 +26,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Your apps here
 ]
 
 # Middleware configuration
@@ -59,14 +62,17 @@ TEMPLATES = [
 # WSGI application
 WSGI_APPLICATION = 'my_django_project.wsgi.application'
 
-# Database configuration (SQLite for local development)
+#for PostgreSQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('POSTGRES_DB', default='database_name'),
+        'USER': env('POSTGRES_USER', default='admin'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default='admin'),
+        'HOST': env('POSTGRES_HOST', default='postgres'),
+        'PORT': env('POSTGRES_PORT', default='5432'),
     }
 }
-
 # Password validators
 AUTH_PASSWORD_VALIDATORS = [
     {
