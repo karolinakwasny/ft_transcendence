@@ -3,11 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <title>Vite App</title>
   </head>
   <body style="margin: 0;">
-    <div id="app"></div>
+    <div id="Register_container">
+      <!-- <div id="register_info_holder"> -->
+        <form id="Login_form">
+          <div id="sign_log_in"><p>Log in</p><p>Register</p></div>
+          <h1 id="Wellcome_heading">WELCOME TO PONG</h1>
+          <div class="form_separator">
+            <label for="email">Email</label>
+            <input type="email" placeholder="Enter email...." name="email" id="email" required>
+          </div>
+          <div class="form_separator">
+            <label for="password">Password</label>
+            <input type="password" placeholder="Enter password...." name="password" id="password" required>
+          </div>
+          <button type="submit" id="Go_in_button">START</button>
+        </form>
+      <!-- </div> -->
+    </div>
+    <canvas id="bg"></canvas>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

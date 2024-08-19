@@ -21,7 +21,7 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const orbit = new OrbitControls(camera, renderer.domElement);
 const axesHelper = new THREE.AxesHelper(3);
 scene.add(axesHelper);
-camera.position.set(-10, 1, 5);
+camera.position.set(10, 10, 10);
 orbit.update();
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
