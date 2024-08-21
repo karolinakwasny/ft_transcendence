@@ -20,6 +20,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Installed applications
 INSTALLED_APPS = [
+	'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,7 +70,7 @@ DATABASES = {
         'NAME': env('POSTGRES_DB', default='database_name'),
         'USER': env('POSTGRES_USER', default='admin'),
         'PASSWORD': env('POSTGRES_PASSWORD', default='admin'),
-        'HOST': env('POSTGRES_HOST', default='postgres'),
+        'HOST': env('POSTGRES_HOST', default='postgres_db'),
         'PORT': env('POSTGRES_PORT', default='5432'),
     }
 }

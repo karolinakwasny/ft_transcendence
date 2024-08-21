@@ -1,0 +1,12 @@
+services:
+  frontend:
+    build: .
+    container_name: frontend_service
+    ports:
+      - "8081:80"
+#     networks:
+#       - "front_network"
+
+# networks:
+#   front_network:
+#     external: true

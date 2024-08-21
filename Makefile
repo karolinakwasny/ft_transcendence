@@ -1,5 +1,9 @@
+front:
+	docker-compose -f app/frontend_service/docker-compose.front.yml up --build
+
 game:
 	docker-compose -f app/game_service/docker-compose.game.yml up --build
+
 up:
 	docker-compose up --build  
 

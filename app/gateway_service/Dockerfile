@@ -1,12 +1,14 @@
 FROM nginx:alpine
 
-RUN apk update; apk upgrade; apk add nginx; apk add openssl; apk add --no-cache gettext
+RUN apk update && apk upgrade && \
+    apk add --no-cache openssl gettext
 
 RUN 	mkdir -p /etc/nginx/certs
 RUN 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-		-keyout /etc/nginx/certs/kkwasny.key \
-		-out /etc/nginx/certs/kkwasny.crt \
-		-subj "/L=Wolfsburg/CN=kkwasny.42.fr"
+		-keyout /etc/nginx/certs/cert.key \
+		-out /etc/nginx/certs/cert.crt \
+		-subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
+	
 
 COPY nginx.conf /etc/nginx/nginx.conf
 

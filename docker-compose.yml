@@ -17,7 +17,7 @@ services:
       # - matchmaking_microservice
       - game_microservice
       # - notifications_microservice
-      # - frontend
+      - frontend_service
 
   # statistics_microservice:
   #   container_name: statistics_service
@@ -43,17 +43,21 @@ services:
   #     transcendence:
   #       ipv4_address: 172.20.10.5
 
-  game_microservice:
-    container_name: game_service
-    build: ./app/game_service
-    restart: always
-    networks: 
-      transcendence:
-        ipv4_address: 172.20.10.6
-    # volumes:
-    #   - ./game_service:/code
-    ports:
-      - "8000:8000"
+  game_django:
+      extends:
+        file: app/game_service/docker-compose.game.yml
+        service: game_network
+      depends_on:
+        - game_postgres
+      networks: 
+        transcendence:
+          ipv4_address: 172.20.10.6
+  game_postgres:
+      extends:
+        file: app/game_service/docker-compose.game.yml
+        service: game_network
+
+
 
   # notifications_microservice:
   #   container_name: notifications_service
@@ -71,10 +75,28 @@ services:
   #     transcendence:
   #       ipv4_address: 172.20.10.8
 
+  postgres_db:
+    container_name: postgreSQL
+    build: ./app/postgreSQL
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: database_name
+      POSTGRES_USER: karolina1
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - transcendence
 
+volumes:
+  postgres_data:
 
 networks:
   transcendence:
+      name: transcendence
       driver: bridge
       ipam:
         config:

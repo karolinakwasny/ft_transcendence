@@ -2,18 +2,18 @@ services:
   postgres:
     image: postgres:16
     container_name: postgres_db
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     env_file:
       - ../../.env
+    environment:
+      POSTGRES_USER: karolina1
+      POSTGRES_PASSWORD: 123
     ports:
       - "5432:5432"
     networks:
       - "game_network"
 
 #this is for going into the database
-  pgadmin:
+  game_pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
     environment:
@@ -26,12 +26,12 @@ services:
     networks:
       - "game_network"
 
-  django:
+  game_django:
     build: .
     container_name: game_service
     command: ./script.sh
     ports:
-      - "8000:8000"
+      - "5000:5000"
     depends_on:
       - postgres
     networks:
