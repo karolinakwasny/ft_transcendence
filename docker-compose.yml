@@ -4,20 +4,21 @@ services:
   gateway_microservice:
     container_name: gateway_service
     build: ./app/gateway_service
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: always
-    networks: 
-      transcendence:
-        ipv4_address: 172.20.10.2
-    depends_on:
-      # - statistics_microservice
-      # - user_profile_microservice
-      # - matchmaking_microservice
-      - game_microservice
-      # - notifications_microservice
-      - frontend_service
+    hostname: apigateway
+    networks:
+      - backend
+      - frontend
+    # depends_on:
+    #   - authservice
+    #   - mailservice
+    #   - usermanagement
+    # environment:
+    #   - SECRET_KEY=${ApiGateway_SECRET_KEY}
+    #   - DEBUG=${ApiGateway_DEBUG}
+    #   - FRONTEND_URL=${FRONTEND_URL}
+    #   - ALLOWED_HOSTS=apigateway,friendservice,gameplayservice,gameservice,statusservice,usermanagement,frontend,authservice,bucketservice
+    # volumes:
+    #   - ./apigateway:/app
 
   # statistics_microservice:
   #   container_name: statistics_service
@@ -44,19 +45,32 @@ services:
   #       ipv4_address: 172.20.10.5
 
   game_django:
-      extends:
-        file: app/game_service/docker-compose.game.yml
-        service: game_network
-      depends_on:
-        - game_postgres
-      networks: 
-        transcendence:
-          ipv4_address: 172.20.10.6
-  game_postgres:
-      extends:
-        file: app/game_service/docker-compose.game.yml
-        service: game_network
+    build: app/game_service/
+    container_name: game_service
+    command: ./script.sh
+    ports:
+      - "5000:5000"
+    depends_on:
+      - "game_postgres"
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - "backend"
 
+  game_postgres:
+    image: postgres:16
+    container_name: postgres_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-karolina1}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123}
+    ports:
+      - "5432:5432"
+    networks:
+      - "backend"
+    restart: unless-stopped
 
 
   # notifications_microservice:
@@ -67,40 +81,41 @@ services:
   #     transcendence:
   #       ipv4_address: 172.20.10.7
 
-  # frontend:
-  #   container_name: frontend
-  #   build: ./app/frontend
-  #   restart: always
-  #   networks: 
-  #     transcendence:
-  #       ipv4_address: 172.20.10.8
-
-  postgres_db:
-    container_name: postgreSQL
-    build: ./app/postgreSQL
+  frontend:
+    build: app/frontend_service/
+    container_name: frontend_service
+    ports:
+      - "8081:80"
+    networks:
+      - "frontend"
     env_file:
       - .env
-    environment:
-      POSTGRES_DB: database_name
-      POSTGRES_USER: karolina1
-      POSTGRES_PASSWORD: 123
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - transcendence
 
-volumes:
-  postgres_data:
+  # postgres_db:
+  #   container_name: postgreSQL
+  #   build: ./app/postgreSQL
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     POSTGRES_DB: database_name
+  #     POSTGRES_USER: karolina1
+  #     POSTGRES_PASSWORD: 123
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - transcendence
+
+# volumes:
+#   postgres_data:
 
 networks:
-  transcendence:
-      name: transcendence
-      driver: bridge
-      ipam:
-        config:
-          - subnet: 172.20.10.0/24
-            gateway: 172.20.10.1
+  frontend:
+    name: frontend
+    driver: bridge
+  backend:
+    name: backend
+    driver: bridge
 
 
