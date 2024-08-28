@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db_a:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: comments_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  microservice_a:
+    build:
+      context: ./pageA
+      dockerfile: Dockerfile
+    entrypoint: /app/entrypoint.sh
+    volumes:
+      - ./pageA:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db_a
+
+  db_b:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: comments_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+
+  microservice_b:
+    build: ./pageB
+    entrypoint: /app/entrypoint.sh
+    volumes:
+      - ./pageB:/app
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db_b
