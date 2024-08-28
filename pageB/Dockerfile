@@ -14,5 +14,7 @@ RUN . venv/bin/activate && pip install --upgrade pip && pip install -r requireme
 # Copy the rest of the application code
 COPY . .
 
+RUN chmod +x /app/entrypoint.sh
+
 # Command to run migrations and start the server
 CMD . venv/bin/activate && python manage.py migrate && python manage.py runserver 0.0.0.0:8000

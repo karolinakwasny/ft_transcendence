@@ -5,14 +5,13 @@ WORKDIR /app
 # Copy requirements.txt first to leverage Docker cache
 COPY requirements.txt .
 
-# Install virtualenv
-RUN python -m venv venv
+# Copy the entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
 
-# Activate the virtual environment and install requirements
-RUN . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
+RUN chmod +x /app/entrypoint.sh
 
 # Copy the rest of the application code
 COPY . .
 
-# Command to run migrations and start the server
-CMD . venv/bin/activate && python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+# Run the entrypoint script
+ENTRYPOINT ["/app/entrypoint.sh"]
