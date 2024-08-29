@@ -14,7 +14,6 @@ services:
     build:
       context: ./pageA
       dockerfile: Dockerfile
-    entrypoint: /app/entrypoint.sh
     volumes:
       - ./pageA:/app
     ports:
@@ -33,7 +32,6 @@ services:
 
   microservice_b:
     build: ./pageB
-    entrypoint: /app/entrypoint.sh
     volumes:
       - ./pageB:/app
     ports:
