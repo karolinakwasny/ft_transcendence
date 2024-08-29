@@ -10,7 +10,7 @@ fi
 pip install --upgrade pip
 pip install -r requirements.txt
 # Run migrations
-python manage.py migrate
-python manage.py collectstatic --noinput
+python3 manage.py migrate
+python3 manage.py collectstatic --noinput
 # Start the 
-exec python manage.py runserver 0.0.0.0:8001
+exec python3 manage.py runserver 0.0.0.0:8001

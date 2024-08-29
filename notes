@@ -1,7 +1,7 @@
 docker exec -it <container_id> /bin/sh
 #id can be found docker ps
 . venv/bin/activate
-python manage.py runserver 0.0.0.0:8000
+python3 manage.py runserver 0.0.0.0:8000
 
 
 
