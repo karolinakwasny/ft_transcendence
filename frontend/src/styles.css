@@ -1,0 +1,86 @@
+body {
+    font-family: Verdana, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #9C8BC6;
+    background: radial-gradient(circle at bottom right, #f2799d 0%, #8356A3 25%, #28125E 100%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #3f267800;
+    color: white;
+    padding: 0px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    font-family: Verdana, Arial, sans-serif;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+	width: 50px;
+	height: auto;
+}
+
+.logo .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin: 0px;
+    font-size: 16px;
+    padding: 10px;
+    width: 70px;
+    text-align: center;
+    display: inline-block;
+    background-color: #3E267800;
+    transition: background-color 0.3s;
+}
+
+.menu a:hover {
+    background-color: #3826785b;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    text-align: center;
+}
+
+.play-button {
+    padding: 15px 40px;
+    font-size: 24px;
+    background-color: #151A5F;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s, opacity 0.1s, box-shadow 0.2s;
+}
+
+.play-button:hover {
+    background-color: #2A3079;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+.play-button:active {
+    opacity: 0.7;
+    box-shadow: 0 0 0 black;
+}
