@@ -1,33 +1,41 @@
 # settings.py
 
+from pathlib import Path
 import os
 import environ
 
-env = environ.Env()
+env = environ.Env(
+	DEBUG=(bool, False)
+)
 environ.Env.read_env()
 
 # Base directory of the project
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Secret key (keep it secret in production)
-SECRET_KEY = 'django-insecure-3^j@3f...5$%3&z5^@l'
+SECRET_KEY = env('DJANGO_USERPROFILE_SECRET_KEY', default='hdtrqa')
 
 # Debug mode (set to True for development)
-DEBUG = True
+DEBUG = env('DEBUG')
 
 # Allow all hosts (use specific hosts for production)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 # Installed applications
 INSTALLED_APPS = [
-	'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'src'
 ]
+
+# SERVICE_ROUTES = {
+#     '/auth': 'http://authservice:8001',
+#     '/user': 'http://usermanagement:8004',
+# }
 
 # Middleware configuration
 MIDDLEWARE = [
@@ -41,7 +49,7 @@ MIDDLEWARE = [
 ]
 
 # URL configuration
-ROOT_URLCONF = 'my_django_project.urls'
+ROOT_URLCONF = 'user_conf_files.urls'
 
 # Template configuration
 TEMPLATES = [
@@ -61,19 +69,13 @@ TEMPLATES = [
 ]
 
 # WSGI application
-WSGI_APPLICATION = 'my_django_project.wsgi.application'
+WSGI_APPLICATION = 'user_conf_files.wsgi.application'
 
 #for PostgreSQL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('POSTGRES_DB', default='database_name'),
-        'USER': env('POSTGRES_USER', default='admin'),
-        'PASSWORD': env('POSTGRES_PASSWORD', default='admin'),
-        'HOST': env('POSTGRES_HOST', default='postgres_db'),
-        'PORT': env('POSTGRES_PORT', default='5432'),
-    }
+    'default': env.db('DB_URL')
 }
+
 # Password validators
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -102,7 +104,7 @@ STATIC_URL = 'static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Directory where static files will be collected
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

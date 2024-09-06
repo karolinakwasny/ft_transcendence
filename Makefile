@@ -4,6 +4,12 @@ front:
 game:
 	docker-compose -f app/game_service/docker-compose.game.yml up --build
 
+user:
+	docker-compose -f app/user_profile_service/docker-compose.user.yml up --build 
+
+gateway:
+	docker build -t gateway_service ./app/gateway_service
+
 up:
 	docker-compose up --build  
 

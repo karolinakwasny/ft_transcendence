@@ -7,8 +7,8 @@ Script for django
 "
 
 python manage.py makemigrations
+python manage.py migrate auth
 python manage.py migrate --noinput
-python manage.py startapp myapp
 
 
 if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ] && [ -n "$DJANGO_SUPERUSER_EMAIL" ]; then

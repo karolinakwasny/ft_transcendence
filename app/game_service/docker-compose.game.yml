@@ -5,12 +5,13 @@ services:
     env_file:
       - ../../.env
     environment:
-      POSTGRES_USER: karolina1
-      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: ${POSTGRES_USER:-karolina1}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123}
     ports:
       - "5432:5432"
     networks:
       - "game_network"
+    restart: unless-stopped
 
 #this is for going into the database
   game_pgadmin:
@@ -25,6 +26,7 @@ services:
       - postgres
     networks:
       - "game_network"
+    restart: unless-stopped
 
   game_django:
     build: .
@@ -38,6 +40,7 @@ services:
       - "game_network"
     env_file:
       - ../../.env
+    restart: unless-stopped
 
 networks:
   game_network:

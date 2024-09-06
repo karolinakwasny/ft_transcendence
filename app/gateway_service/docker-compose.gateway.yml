@@ -1,0 +1,22 @@
+services:
+  gateway_microservice:
+    container_name: gateway_service
+    build: .
+    ports:
+      - "80:80"
+      - "443:443"
+    # depends_on:
+    #   - authservice
+    #   - mailservice
+    #   - usermanagement
+    # environment:
+    #   - SECRET_KEY=${ApiGateway_SECRET_KEY}
+    #   - DEBUG=${ApiGateway_DEBUG}
+    #   - FRONTEND_URL=${FRONTEND_URL}
+    #   - ALLOWED_HOSTS=apigateway,friendservice,gameplayservice,gameservice,statusservice,usermanagement,frontend,authservice,bucketservice
+    # volumes:
+    #   - ./apigateway:/app
+    # networks:
+    #   - backend
+    #   - frontend
+    # hostname: apigateway

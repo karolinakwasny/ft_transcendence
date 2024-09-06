@@ -8,41 +8,10 @@ services:
     networks:
       - backend
       - frontend
-    # depends_on:
-    #   - authservice
-    #   - mailservice
+    depends_on:
+      - "game_django"
+      - "userprofile_django"
     #   - usermanagement
-    # environment:
-    #   - SECRET_KEY=${ApiGateway_SECRET_KEY}
-    #   - DEBUG=${ApiGateway_DEBUG}
-    #   - FRONTEND_URL=${FRONTEND_URL}
-    #   - ALLOWED_HOSTS=apigateway,friendservice,gameplayservice,gameservice,statusservice,usermanagement,frontend,authservice,bucketservice
-    # volumes:
-    #   - ./apigateway:/app
-
-  # statistics_microservice:
-  #   container_name: statistics_service
-  #   build: ./app/statistics_service
-  #   restart: always
-  #   networks: 
-  #     transcendence:
-  #       ipv4_address: 172.20.10.3
-
-  # user_profile_microservice:
-  #   container_name: user_profile_service
-  #   build: ./app/user_profile_service
-  #   restart: always
-  #   networks: 
-  #     transcendence:
-  #       ipv4_address: 172.20.10.4
-      
-  # matchmaking_microservice:
-  #   container_name: matchmaking_service
-  #   build: ./app/matchmaking_service
-  #   restart: always
-  #   networks: 
-  #     transcendence:
-  #       ipv4_address: 172.20.10.5
 
   game_django:
     build: app/game_service/
@@ -50,6 +19,8 @@ services:
     command: ./script.sh
     ports:
       - "5000:5000"
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-game_postgres}
     depends_on:
       - "game_postgres"
     env_file:
@@ -60,7 +31,7 @@ services:
 
   game_postgres:
     image: postgres:16
-    container_name: postgres_db
+    container_name: game_postgres
     env_file:
       - .env
     environment:
@@ -72,15 +43,39 @@ services:
       - "backend"
     restart: unless-stopped
 
+  userprofile_django:
+    build: app/user_profile_service/
+    container_name: userprofile_service
+    command: ./script_user.sh
+    ports:
+      - "7000:7000"
+    environment:
+      POSTGRES_USERPROFILE_DB: ${POSTGRES_USERPROFILE_DB:-database_user_name}
+      POSTGRES_USERPROFILE_PORT: ${POSTGRES_USERPROFILE_PORT:-5434}
+      POSTGRES_USERPROFILE_HOST: ${POSTGRES_USERPROFILE_HOST:-userprofile_postgres}
+    depends_on:
+      - "userprofile_postgres"
+    networks:
+      - "backend"
+    env_file:
+      - .env
+    restart: unless-stopped
 
-  # notifications_microservice:
-  #   container_name: notifications_service
-  #   build: ./app/notifications_service
-  #   restart: always
-  #   networks: 
-  #     transcendence:
-  #       ipv4_address: 172.20.10.7
-
+  userprofile_postgres:
+    image: postgres:16
+    container_name: userprofile_postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USERPROFILE_DB: ${POSTGRES_USERPROFILE_DB:-database_user_name}
+      POSTGRES_USERPROFILE_USER: ${POSTGRES_USERPROFILE_USER:-karolina3}
+      POSTGRES_USERPROFILE_PASSWORD: ${POSTGRES_USERPROFILE_PASSWORD:-123}
+    ports:
+      - "5434:5434"
+    networks:
+      - "backend"
+    restart: unless-stopped
+  
   frontend:
     build: app/frontend_service/
     container_name: frontend_service
@@ -90,25 +85,6 @@ services:
       - "frontend"
     env_file:
       - .env
-
-  # postgres_db:
-  #   container_name: postgreSQL
-  #   build: ./app/postgreSQL
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     POSTGRES_DB: database_name
-  #     POSTGRES_USER: karolina1
-  #     POSTGRES_PASSWORD: 123
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #   networks:
-  #     - transcendence
-
-# volumes:
-#   postgres_data:
 
 networks:
   frontend:
