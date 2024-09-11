@@ -9,8 +9,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         libpq-dev \
-		libmariadb-dev \
         pkg-config \
+        libmariadb-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -26,8 +26,8 @@ WORKDIR /code
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 7000
+EXPOSE 8000
 
-RUN chmod +x script_user.sh
+RUN chmod +x script.sh
 
-CMD ["./script_user.sh"]
+CMD ["./script.sh"]

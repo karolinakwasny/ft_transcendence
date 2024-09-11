@@ -1,16 +1,19 @@
 services:
   db:
+    container_name: postgres
     image: postgres:16
-    container_name: postgres_user_db
     env_file:
       - ../../.env
     environment:
-      USER: ${POSTGRES_USERPROFILE_USER:-karolina3}
-      PASSWORD: ${POSTGRES_USERPROFILE_PASSWORD:-1234}
+      POSTGRES_USER: karolina3
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: karolina3
+      POSTGRES_PORT: 5432
     ports:
-      - "5434:5434"
+      - "5433:5432"
     networks:
-      - "userprofile_network"
+      - "user_network"
     restart: unless-stopped
 
 #this is for going into the database
@@ -21,27 +24,26 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin1@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "8082:80"
+      - "8081:80"
     depends_on:
-      - db
+      - "db"
     networks:
-      - "userprofile_network"
+      - "user_network"
     restart: unless-stopped
 
-  userprofile_django:
+  user_django:
     build: .
-    container_name: userprofile_service
-    command: ./script_user.sh
+    container_name: user_service
+    command: ./script.sh
     ports:
-      - "7000:7000"
+      - "8000:8000"
     depends_on:
-      - db
+      - "db"
     networks:
-      - "userprofile_network"
+      - "user_network"
     env_file:
       - ../../.env
     restart: unless-stopped
 
 networks:
-  userprofile_network:
-    driver: bridge
+  user_network:

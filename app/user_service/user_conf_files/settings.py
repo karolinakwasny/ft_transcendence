@@ -4,38 +4,31 @@ from pathlib import Path
 import os
 import environ
 
-env = environ.Env(
-	DEBUG=(bool, False)
-)
+env = environ.Env()
 environ.Env.read_env()
 
 # Base directory of the project
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Secret key (keep it secret in production)
-SECRET_KEY = env('DJANGO_USERPROFILE_SECRET_KEY', default='hdtrqa')
+SECRET_KEY = 'django-insecure-3^j@3f...5$%3&z5^'
 
 # Debug mode (set to True for development)
-DEBUG = env('DEBUG')
+DEBUG = True
 
 # Allow all hosts (use specific hosts for production)
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Installed applications
 INSTALLED_APPS = [
+	'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'src'
 ]
-
-# SERVICE_ROUTES = {
-#     '/auth': 'http://authservice:8001',
-#     '/user': 'http://usermanagement:8004',
-# }
 
 # Middleware configuration
 MIDDLEWARE = [
@@ -48,6 +41,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+# SERVICE_ROUTES = {
+#     '/user': 'http://userservice:8000',
+# }
+
 # URL configuration
 ROOT_URLCONF = 'user_conf_files.urls'
 
@@ -55,7 +54,7 @@ ROOT_URLCONF = 'user_conf_files.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,10 +70,20 @@ TEMPLATES = [
 # WSGI application
 WSGI_APPLICATION = 'user_conf_files.wsgi.application'
 
-#for PostgreSQL
+
 DATABASES = {
-    'default': env.db('DB_URL')
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_UP_DB'),
+        'USER': os.environ.get('DB_UP_USER'),
+        'PASSWORD': os.environ.get('DB_UP_PASSWORD'),
+        'HOST': os.environ.get('DB_UP_HOST'),
+        'PORT': os.environ.get('DB_UP_PORT'),
+    }
 }
+
+
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # Password validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -92,6 +101,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -104,7 +116,7 @@ STATIC_URL = 'static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Directory where static files will be collected
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
