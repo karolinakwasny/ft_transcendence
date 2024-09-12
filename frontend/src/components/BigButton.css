@@ -1,0 +1,22 @@
+.play-button {
+	padding: 15px 40px;
+	font-size: 24px;
+	background-color: #151A5F;
+	color: white;
+	border: none;
+	cursor: pointer;
+	border-radius: 50px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+	transition: background-color 0.3s, opacity 0.1s, box-shadow 0.2s;
+  }
+  
+  .play-button:hover {
+	background-color: #2A3079;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  .play-button:active {
+	opacity: 0.7;
+	box-shadow: 0 0 0 black;
+  }
+  

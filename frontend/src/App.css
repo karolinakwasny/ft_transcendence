@@ -1,0 +1,17 @@
+body {
+	font-family: Verdana, Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #9C8BC6;
+	background: radial-gradient(circle at bottom right, #f2799d 0%, #8356A3 25%, #28125E 100%);
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+  }
+  
+  .App {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+  }
+  
