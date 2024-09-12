@@ -1,8 +1,8 @@
 services:
-  web:
-    build: ./frontend/
+  nginx:
+    build: ./nginx/
     ports:
       - "80:80"
     volumes:
-      - ./frontend/src:/usr/share/nginx/html
+      - ./nginx/src:/usr/share/nginx/html
 
