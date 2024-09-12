@@ -1,17 +1,10 @@
 services:
-  nginx:
-    build: ./nginx/
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/src:/usr/share/nginx/html
-
-  react:
+  frontend:
     build:
-      context: ./react
-      dockerfile: Dockerfile
+      context: ./frontend
+      dockerfile: ${DOCKERFILE:-Dockerfile.dev}
     volumes:
-      - ./react:/app
+      - ./frontend:/app
       - /app/node_modules
     ports:
       - "3000:3000"
