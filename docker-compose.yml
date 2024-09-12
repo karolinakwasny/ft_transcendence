@@ -95,6 +95,23 @@ services:
       - "backend"
     restart: unless-stopped
 
+  game_pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - game_postgres
+      - postgres_user
+    networks:
+      - "backend"
+      - "game"
+      - "user"
+    restart: unless-stopped
+    
 networks:
   frontend:
     name: frontend

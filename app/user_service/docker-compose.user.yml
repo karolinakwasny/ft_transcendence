@@ -45,5 +45,21 @@ services:
       - ../../.env
     restart: unless-stopped
 
+  nginx_gateway:
+    container_name: nginx_gateway
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    # volumes:
+    #   - ./nginx/nginx.conf:/etc/nginx/nginx.conf   # Map the NGINX config file
+    depends_on:
+      - user_django
+    networks:
+      - "user_network"
+    restart: unless-stopped
+  
 networks:
   user_network:
