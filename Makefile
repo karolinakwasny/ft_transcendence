@@ -17,7 +17,7 @@ logs:
 	docker-compose logs -f
 
 dev:
-	DOCKREFILE=Dockerfile.dev docker-compose up --build
+	DOCKERFILE=Dockerfile.dev docker-compose up --build
 
 prod:
-	DOCKREFILE=Dockerfile.prod docker-compose up --build
+	DOCKERFILE=Dockerfile.prod docker-compose up --build
