@@ -1,17 +1,17 @@
 # version: '3.8'
 
 services:
-  gateway_microservice:
-    container_name: gateway_service
-    build: ./app/gateway_service
-    hostname: apigateway
-    networks:
-      - backend
-      - frontend
-    depends_on:
-      - "game_django"
-      - "userprofile_django"
-    #   - usermanagement
+  # gateway_microservice:
+  #   container_name: gateway_service
+  #   build: ./app/gateway_service
+  #   hostname: apigateway
+  #   networks:
+  #     - backend
+  #     - frontend
+  #   depends_on:
+  #     - "game_django"
+  #     - "userprofile_django"
+  #   #   - usermanagement
 
   game_django:
     build: app/game_service/
@@ -20,62 +20,35 @@ services:
     ports:
       - "5000:5000"
     environment:
-      POSTGRES_HOST: ${POSTGRES_HOST:-game_postgres}
+      POSTGRES_DB_HOST: game_postgres
+      POSTGRES_PORT: 5432
     depends_on:
       - "game_postgres"
     env_file:
       - .env
     restart: unless-stopped
     networks:
+      - "game"
       - "backend"
 
-  game_postgres:
-    image: postgres:16
-    container_name: game_postgres
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-karolina1}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123}
+  user_django:
+    build: app/user_service/
+    container_name: user_service
+    command: ./script.sh
     ports:
-      - "5432:5432"
-    networks:
-      - "backend"
-    restart: unless-stopped
-
-  userprofile_django:
-    build: app/user_profile_service/
-    container_name: userprofile_service
-    command: ./script_user.sh
-    ports:
-      - "7000:7000"
+      - "8000:8000"
     environment:
-      POSTGRES_USERPROFILE_DB: ${POSTGRES_USERPROFILE_DB:-database_user_name}
-      POSTGRES_USERPROFILE_PORT: ${POSTGRES_USERPROFILE_PORT:-5434}
-      POSTGRES_USERPROFILE_HOST: ${POSTGRES_USERPROFILE_HOST:-userprofile_postgres}
+      POSTGRES_HOST: postgres_user
+      POSTGRES_PORT: 5433
     depends_on:
-      - "userprofile_postgres"
-    networks:
-      - "backend"
+      - "postgres_user"
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      - "backend"
+      - "user"
 
-  userprofile_postgres:
-    image: postgres:16
-    container_name: userprofile_postgres
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USERPROFILE_DB: ${POSTGRES_USERPROFILE_DB:-database_user_name}
-      POSTGRES_USERPROFILE_USER: ${POSTGRES_USERPROFILE_USER:-karolina3}
-      POSTGRES_USERPROFILE_PASSWORD: ${POSTGRES_USERPROFILE_PASSWORD:-123}
-    ports:
-      - "5434:5434"
-    networks:
-      - "backend"
-    restart: unless-stopped
-  
   frontend:
     build: app/frontend_service/
     container_name: frontend_service
@@ -86,6 +59,42 @@ services:
     env_file:
       - .env
 
+  game_postgres:
+    image: postgres:16
+    container_name: game_postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: karolina1
+      POSTGRES_PASSWORD: 123
+      POSTGRES_HOST: game_postgres
+      POSTGRES_DB: karolina1
+      POSTGRES_PORT: 5432
+    ports:
+      - "5432:5432"
+    networks:
+      - "backend"
+      - "game"
+    restart: unless-stopped
+
+  postgres_user:
+    container_name: postgres_user
+    image: postgres:16
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: karolina3
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_HOST: postgres_user
+      POSTGRES_DB: karolina3
+      POSTGRES_PORT: 5433
+    ports:
+      - "5433:5432"
+    networks:
+      - "user"
+      - "backend"
+    restart: unless-stopped
+
 networks:
   frontend:
     name: frontend
@@ -93,5 +102,7 @@ networks:
   backend:
     name: backend
     driver: bridge
+  game:
+  user:
 
 

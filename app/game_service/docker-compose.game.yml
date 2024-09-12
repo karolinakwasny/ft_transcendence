@@ -1,7 +1,7 @@
 services:
-  postgres:
+  game_postgres:
     image: postgres:16
-    container_name: postgres_db
+    container_name: game_postgres
     env_file:
       - ../../.env
     environment:
@@ -23,7 +23,7 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - postgres
+      - game_postgres
     networks:
       - "game_network"
     restart: unless-stopped
@@ -35,7 +35,7 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - postgres
+      - game_postgres
     networks:
       - "game_network"
     env_file:

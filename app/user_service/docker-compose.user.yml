@@ -1,13 +1,13 @@
 services:
-  db:
-    container_name: postgres
+  postgres_user:
+    container_name: postgres_user
     image: postgres:16
     env_file:
       - ../../.env
     environment:
       POSTGRES_USER: karolina3
       POSTGRES_PASSWORD: 12345
-      POSTGRES_HOST: postgres
+      POSTGRES_HOST: postgres_user
       POSTGRES_DB: karolina3
       POSTGRES_PORT: 5432
     ports:
@@ -26,7 +26,7 @@ services:
     ports:
       - "8081:80"
     depends_on:
-      - "db"
+      - "postgres_user"
     networks:
       - "user_network"
     restart: unless-stopped
@@ -38,7 +38,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - "db"
+      - "postgres_user"
     networks:
       - "user_network"
     env_file:
