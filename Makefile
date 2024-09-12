@@ -7,8 +7,8 @@ game:
 user:
 	docker-compose -f app/user_service/docker-compose.user.yml up --build 
 
-gateway:
-	docker build -t gateway_service ./app/gateway_service
+notify:
+	docker-compose -f app/notifications_service/docker-compose.notify.yml up --build 
 
 up:
 	docker-compose up --build  

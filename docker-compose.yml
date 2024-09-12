@@ -1,18 +1,4 @@
-# version: '3.8'
-
 services:
-  # gateway_microservice:
-  #   container_name: gateway_service
-  #   build: ./app/gateway_service
-  #   hostname: apigateway
-  #   networks:
-  #     - backend
-  #     - frontend
-  #   depends_on:
-  #     - "game_django"
-  #     - "userprofile_django"
-  #   #   - usermanagement
-
   game_django:
     build: app/game_service/
     container_name: game_service
@@ -28,7 +14,6 @@ services:
       - .env
     restart: unless-stopped
     networks:
-      - "game"
       - "backend"
 
   user_django:
@@ -47,7 +32,7 @@ services:
     restart: unless-stopped
     networks:
       - "backend"
-      - "user"
+
 
   frontend:
     build: app/frontend_service/
@@ -74,7 +59,6 @@ services:
       - "5432:5432"
     networks:
       - "backend"
-      - "game"
     restart: unless-stopped
 
   postgres_user:
@@ -91,7 +75,6 @@ services:
     ports:
       - "5433:5432"
     networks:
-      - "user"
       - "backend"
     restart: unless-stopped
 
@@ -108,8 +91,6 @@ services:
       - postgres_user
     networks:
       - "backend"
-      - "game"
-      - "user"
     restart: unless-stopped
     
 networks:
@@ -119,7 +100,5 @@ networks:
   backend:
     name: backend
     driver: bridge
-  game:
-  user:
 
 
