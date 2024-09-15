@@ -6,7 +6,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: #9C8BC6;
-	background: radial-gradient(circle at bottom right, #f2799d 0%, #8356A3 25%, #28125E 100%);
+	background: radial-gradient(circle at bottom right, #303033 0%, #343435 25%, #0d0d0e 100%);
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;

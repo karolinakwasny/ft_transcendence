@@ -1,21 +1,22 @@
 .play-button {
-	padding: 15px 40px;
+	padding: 20px 50px;
 	font-family: "Montserrat", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: 100;
 	font-style: normal;
-	font-size: 24px;
-	background-color: #151A5F;
+	font-size: 40px;
+	background-color: #594082;
 	color: white;
 	border: none;
 	cursor: pointer;
 	border-radius: 50px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 	transition: background-color 0.3s, opacity 0.1s, box-shadow 0.2s;
+	margin-top: 200px;
   }
   
   .play-button:hover {
-	background-color: #2A3079;
+	background-color: #8369ad;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
   }
   
