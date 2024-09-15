@@ -5,17 +5,24 @@
 body {
 	margin: 0;
 	padding: 0;
-	font-family: Verdana, Arial, sans-serif;
+	font-family: "Montserrat", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 100;
+	font-style: normal;
 }
 
 .page-content {
 	color: rgb(199, 197, 204);
-	font-family: Verdana, Arial, sans-serif;
+	font-family: "Montserrat", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 100;
+	font-style: normal;
 	padding: 10px;
 	margin: 10px;
 }
 
 .page-content h1 {
 	font-size: 2em;
+	font-weight: 250;
 	margin-bottom: 10px;
 }
