@@ -1,10 +1,21 @@
 * {
 	box-sizing: border-box;
-  }
-  
-  body {
+}
+
+body {
 	margin: 0;
 	padding: 0;
 	font-family: Verdana, Arial, sans-serif;
-  }
-  
+}
+
+.page-content {
+	color: rgb(199, 197, 204);
+	font-family: Verdana, Arial, sans-serif;
+	padding: 10px;
+	margin: 10px;
+}
+
+.page-content h1 {
+	font-size: 2em;
+	margin-bottom: 10px;
+}
