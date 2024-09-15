@@ -1,6 +1,6 @@
 import React from 'react';
 import Main from '../components/Main';
-import BigButton from '../components/BigButton';
+import PlayButton from '../components/PlayButton';
 
 const Home = () => {
 	return (
@@ -8,7 +8,7 @@ const Home = () => {
 			<h1>Home Page</h1>
 			<p>Welcome to the Pong Game!</p>
 			<Main>
-				<BigButton />
+				<PlayButton />
 			</Main>
 		</div>
 	);

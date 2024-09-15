@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import './BigButton.css';
+import './PlayButton.css';
 
-const BigButton = () => {
+const PlayButton = () => {
 	const history = useHistory();
 
 	const handleClick = () => {
@@ -11,9 +11,9 @@ const BigButton = () => {
 
 	return (
 		<button className="play-button" onClick={handleClick}>
-			QUICK PLAY
+			PLAY
 		</button>
 	);
 };
 
-export default BigButton;
+export default PlayButton;
