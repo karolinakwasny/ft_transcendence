@@ -1,12 +1,11 @@
 import React from 'react';
-import BigButton from './BigButton';
 import './Main.css';
 
-const Main = () => {
+const Main = ({children}) => {
 	return (
 		<main>
 			<div className="content">
-				<BigButton />
+				{children}
 			</div>
 		</main>
 	);
