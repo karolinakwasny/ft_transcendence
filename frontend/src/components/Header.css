@@ -21,6 +21,11 @@ header {
 	stroke: rgb(255, 250, 156);
 }
 
+.siteName a {
+	color: white;
+	text-decoration: none;
+}
+
 .menu a {
 	color: white;
 	text-decoration: none;
