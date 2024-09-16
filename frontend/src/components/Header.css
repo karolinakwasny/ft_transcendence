@@ -5,20 +5,21 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-  }
-  
-  .logo {
+}
+
+.logo {
 	display: flex;
 	align-items: center;
-  }
-  
-  .logo .icon {
+}
+
+.logo .icon {
 	width: 24px;
 	height: 24px;
 	margin-right: 10px;
-  }
-  
-  .menu a {
+	stroke: rgb(255, 248, 106);
+}
+
+.menu a {
 	color: white;
 	text-decoration: none;
 	margin: 0px;
@@ -29,9 +30,8 @@ header {
 	display: inline-block;
 	background-color: #3E267800;
 	transition: background-color 0.3s;
-  }
-  
-  .menu a:hover {
+}
+
+.menu a:hover {
 	background-color: #3826785b;
-  }
-  
+}
