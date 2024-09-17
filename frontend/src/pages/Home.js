@@ -1,7 +1,7 @@
 import React from 'react';
 import Main from '../components/Main';
 import PlayButton from '../components/PlayButton';
-import './Home.css';
+import './TextBox.css';
 
 const Home = () => {
 	return (

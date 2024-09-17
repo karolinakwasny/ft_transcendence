@@ -1,10 +1,19 @@
 import React from 'react';
+import './TextBox.css';
 
 const About = () => {
 	return (
 		<div className="page-content">
 			<h1>ABOUT</h1>
-			<p>Learn more about this Pong game.</p>
+			<div className="text-box left">
+				<p>This website was built for the final project in our 42 core, ft_transcendence.</p>
+			</div>
+			<div className="text-box middle">
+				<p>Our team consists of: Barry, Garry, Harry, Larry, and Shaniqua.</p>
+			</div>
+			<div className="text-box left">
+				<p>The source code for this website is available on <a href="https://github.com/LukasKava/ft_transcendence" className="footer-link">Github</a>.</p>
+			</div>
 		</div>
 	);
 };

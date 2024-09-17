@@ -21,7 +21,7 @@ const Header = () => {
 				<Link to="/play">Play</Link>
 				<Link to="/profile">Profile</Link>
 				<Link to="/about">About</Link>
-				<a href="#logout" className="logout-button">Logout</a>
+				<a href="#" className="authenticate-button">Log in</a>
 			</nav>
 		</header>
 	);
