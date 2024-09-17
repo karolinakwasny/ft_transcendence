@@ -1,11 +1,5 @@
 body {
-	font-family: "Montserrat", sans-serif;
-	font-optical-sizing: auto;
-	font-weight: 250;
-	font-style: normal;
-	margin: 0;
-	padding: 0;
-	background-color: #9C8BC6;
+	background-color: #343435;
 	background: radial-gradient(circle at bottom right, #303033 0%, #343435 25%, #0d0d0e 100%);
 	display: flex;
 	flex-direction: column;

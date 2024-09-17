@@ -1,12 +1,7 @@
 .play-button {
 	padding: 20px 50px;
-	font-family: "Montserrat", sans-serif;
-	font-optical-sizing: auto;
-	font-weight: 250;
-	font-style: normal;
 	font-size: 40px;
 	background-color: #594082;
-	color: white;
 	border: none;
 	cursor: pointer;
 	border-radius: 50px;

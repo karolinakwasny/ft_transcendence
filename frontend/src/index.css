@@ -1,5 +1,12 @@
 * {
 	box-sizing: border-box;
+	color: white;
+	font-family: "Montserrat", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 250;
+	font-style: normal;
+	margin: 0;
+	padding: 0;
 }
 
 html {
@@ -9,26 +16,16 @@ html {
 body {
 	margin: 0;
 	padding: 0;
-	font-family: "Montserrat", sans-serif;
-	font-optical-sizing: auto;
-	font-weight: 250;
-	font-style: normal;
 }
 
 .page-content {
-	color: rgb(199, 197, 204);
 	font-size: 36px;
-	font-family: "Montserrat", sans-serif;
-	font-optical-sizing: auto;
-	font-weight: 250;
-	font-style: normal;
 	margin: 16px;
 	padding: 16px;
 }
 
 .page-content h1 {
 	font-size: 2em;
-	font-weight: 250;
 	margin-top: 30px;
 	margin-bottom: 10px;
 }
