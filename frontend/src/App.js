@@ -10,17 +10,17 @@ import './App.css';
 
 function App() {
 	return (
-	  <div className="App">
-		<Header />
-		<Switch>
-		  <Route path="/" exact component={Home} />
-		  <Route path="/play" exact component={Play} />
-		  <Route path="/profile" exact component={Profile} />
-		  <Route path="/about" exact component={About} />
-		</Switch>
-		<Footer />
-	  </div>
+		<div className="App">
+			<Header />
+			<Switch>
+				<Route path="/" exact component={Home} />
+				<Route path="/play" exact component={Play} />
+				<Route path="/profile" exact component={Profile} />
+				<Route path="/about" exact component={About} />
+			</Switch>
+			<Footer />
+		</div>
 	);
-  }
+}
 
 export default App;
