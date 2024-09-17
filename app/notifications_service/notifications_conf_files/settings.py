@@ -8,7 +8,7 @@ env = environ.Env()
 environ.Env.read_env()
 
 # Base directory of the project
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Secret key (keep it secret in production)
 SECRET_KEY = 'django-insecure-3^j@f...5$%3z5^@l'
@@ -58,8 +58,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'notifications_conf_files.wsgi.application'
 ASGI_APPLICATION = 'notifications_conf_files.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],  # Redis hostname is 'redis' as per Docker Compose
+        },
+    },
+}
 
 DATABASES = {
     'default': {

@@ -21,4 +21,4 @@ COPY . /app/
 EXPOSE 3000
 
 # Command to run the Django server
-CMD ["gunicorn", "your_project_name.asgi:application", "--bind", "0.0.0.0:3000"]
+CMD ["daphne", "notifications_conf_files.asgi:application", "-b", "0.0.0.0", "-p", "3000"]

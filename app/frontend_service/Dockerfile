@@ -1,7 +1,5 @@
 # Use an official nginx image as the base image
 FROM nginx:alpine
-# Use an official nginx image as the base image
-FROM nginx:alpine
 
 # Remove the default Nginx static content
 RUN rm -rf /usr/share/nginx/html/*

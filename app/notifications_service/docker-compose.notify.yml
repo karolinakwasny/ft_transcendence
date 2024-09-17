@@ -1,33 +1,22 @@
 services:
-  user_django:
+  notify_django:
     build: .
-    container_name: user_service
-    command: ./script.sh
+    container_name: notify_service
     ports:
-      - "8000:8000"
+      - "3000:3000"
     depends_on:
-      - "postgres_user"
+      - "redis"
     networks:
-      - "user_network"
+      - "notify_network"
     env_file:
       - ../../.env
     restart: unless-stopped
 
-  nginx_gateway:
-    container_name: nginx_gateway
-    build:
-      context: .
-      dockerfile: nginx.Dockerfile
-    ports:
-      - "80:80"
-      - "443:443"
-    # volumes:
-    #   - ./nginx/nginx.conf:/etc/nginx/nginx.conf   # Map the NGINX config file
-    depends_on:
-      - user_django
+  redis:
+    image: redis:latest
+    container_name: notify_redis
     networks:
-      - "user_network"
-    restart: unless-stopped
+      - "notify_network"
   
 networks:
-  user_network:
+  notify_network:

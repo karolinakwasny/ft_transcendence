@@ -1,25 +1,21 @@
 # consumers.py
 
-from channels.generic.websocket import WebsocketConsumer
 import json
+from channels.generic.websocket import AsyncWebsocketConsumer
 
-class NotificationConsumer(WebsocketConsumer):
-    notifications = []  # In-memory storage for notifications
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()  # Accepts the WebSocket connection
 
-    def connect(self):
-        self.accept()
-
-    def disconnect(self, close_code):
+    async def disconnect(self, close_code):
         pass
 
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-
-        # Notification.objects.create(user=self.scope['user'], message=message)
-        # Store notification in-memory
-        self.notifications.append(message)
-
-        self.send(text_data=json.dumps({
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        message = data['message']
+        
+        # Broadcast the message back to the WebSocket clients
+        await self.send(text_data=json.dumps({
             'message': message
         }))
+
