@@ -11,7 +11,7 @@ const PlayButton = () => {
 
 	return (
 		<button className="play-button" onClick={handleClick}>
-			PLAY
+			PLAY NOW
 		</button>
 	);
 };
