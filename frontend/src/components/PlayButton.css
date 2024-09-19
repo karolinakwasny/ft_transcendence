@@ -9,15 +9,14 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 	transition: background-color 0.3s, opacity 0.1s, box-shadow 0.2s;
 	margin-top: 120px;
-  }
-  
-  .play-button:hover {
+}
+
+.play-button:hover {
 	background-color: #8369ad;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
-  }
-  
-  .play-button:active {
+}
+
+.play-button:active {
 	opacity: 0.7;
 	box-shadow: 0 0 0 black;
-  }
-  
+}
