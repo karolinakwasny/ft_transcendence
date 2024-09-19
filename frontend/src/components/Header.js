@@ -7,9 +7,9 @@ const Header = () => {
 		<header>
 			<div className="logo">
 				<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none"
-				stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+				strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
 				viewBox= "0 0 24 24"
-				clip-rule="evenodd" class="icon" stroke="currentColor" >
+				clipRule="evenodd" className="icon" stroke="currentColor" >
 					<path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/>
 				</svg>
 				<span className="siteName">
