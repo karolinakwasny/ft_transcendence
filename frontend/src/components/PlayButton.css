@@ -1,6 +1,5 @@
 .play-button {
 	color: white;
-	padding: 20px 50px;
 	font-size: 40px;
 	font-weight: 400;
 	background-color: #594082;
@@ -8,16 +7,18 @@
 	cursor: pointer;
 	border-radius: 50px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-	transition: background-color 0.3s, opacity 0.1s, box-shadow 0.2s;
-	margin-top: 120px;
+	transition: background-color 0.3s, opacity 0.1s, box-shadow 0.2s, transform 0.2s ease;
 }
 
 .play-button:hover {
-	background-color: #8369ad;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+	transform: translateY(-2px) scale(1.01);
+	color: white;
+	background-color: #6b5096;
+	box-shadow: 2px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
 .play-button:active {
-	opacity: 0.7;
-	box-shadow: 0 0 0 black;
+	transform: translateY(0px);
+	background-color: #594082;
+	box-shadow: 2px 2px 8px black inset;
 }
