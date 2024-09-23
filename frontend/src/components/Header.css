@@ -16,7 +16,7 @@
 }
 
 .header .logo:hover {
-	color: white !important;
+	color: inherit !important;
 	text-decoration: none !important;
 }
 
