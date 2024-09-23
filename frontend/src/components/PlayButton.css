@@ -12,7 +12,6 @@
 
 .play-button:hover {
 	transform: translateY(-2px) scale(1.01);
-	color: white;
 	background-color: #6b5096;
 	box-shadow: 2px 8px 8px rgba(0, 0, 0, 0.4);
 }

@@ -7,8 +7,8 @@ const Footer = () => {
 		<footer className="footer">
 			<div className="container">
 				<div className="row">
-					<div className="col d-flex justify-content-start">
-						<a href="https://github.com/LukasKava/ft_transcendence" className="footer-link">GitHub</a>
+					<div className="col m-1 d-flex justify-content-start">
+						<a href="https://github.com/LukasKava/ft_transcendence" className="footer-link  mr-4">GitHub</a>
 						<a href="https://42wolfsburg.de/" className="footer-link">About 42</a>
 					</div>
 					<div className="col d-flex justify-content-end">

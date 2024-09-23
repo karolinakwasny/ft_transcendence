@@ -21,12 +21,12 @@ header {
 }
 
 .siteName a {
-	color: white;
+	color: var(--text-color);
 	text-decoration: none;
 }
 
 .menu a {
-	color: white;
+	color: var(--text-color);
 	text-decoration: none;
 	margin: 0px;
 	font-size: 18px;

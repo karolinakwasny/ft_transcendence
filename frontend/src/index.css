@@ -9,19 +9,41 @@ html, body {
 }
 
 body {
-	color: white;
+	color: var(--text-color);
 	font-family: "Montserrat", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: 250;
 	font-style: normal;
 	background-color: #343435;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+:root {
+	--text-color: black;
+}
+
+[data-bs-theme="dark"] {
+	--text-color: white;
+}
+
+[data-bs-theme="light"] {
+	--text-color: black;
+}
+
+[data-bs-theme="dark"] body {
 	background: radial-gradient(circle at bottom right, #303033 0%, #343435 25%, #0d0d0e 100%);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
+}
+
+[data-bs-theme="light"] body {
+	background: radial-gradient(circle at bottom right, #cacaca 0%, #a8a8a7 25%, #767676 100%);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 .page-content {
