@@ -11,13 +11,14 @@
 }
 
 .play-button:hover {
-	color: inherit;
+	color: white;
 	transform: translateY(-2px) scale(1.01);
 	background-color: #6b5096;
 	box-shadow: 2px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
 .play-button:active {
+	color: white;
 	transform: translateY(0px);
 	background-color: #594082;
 	box-shadow: 2px 2px 8px black inset;
