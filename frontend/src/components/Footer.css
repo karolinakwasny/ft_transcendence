@@ -61,7 +61,7 @@
 }
 
 .checkbox:checked + .checkbox-label {
-	background-color: skyblue;
+	background-color: rgb(55, 170, 215);
 }
 
 #checkbox { display: none; }
