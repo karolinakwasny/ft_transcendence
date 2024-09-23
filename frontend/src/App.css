@@ -1,14 +1,3 @@
-body {
-	background-color: #343435;
-	background: radial-gradient(circle at bottom right, #303033 0%, #343435 25%, #0d0d0e 100%);
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
-
 .App {
 	flex: 1;
 	display: flex;
