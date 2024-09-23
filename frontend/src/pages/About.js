@@ -12,7 +12,10 @@ const About = () => {
 				<p>Our team consists of: Barry, Garry, Harry, Larry, and Shaniqua.</p>
 			</div>
 			<div className="text-box left">
-				<p>The source code for this website is available on <a href="https://github.com/LukasKava/ft_transcendence" className="footer-link">Github</a>.</p>
+				<p>The source code for this website is available on&nbsp;
+					<a href="https://github.com/LukasKava/ft_transcendence" className="footer-link"
+					target="_blank" rel="noopener noreferrer">Github</a>.
+				</p>
 			</div>
 		</div>
 	);
