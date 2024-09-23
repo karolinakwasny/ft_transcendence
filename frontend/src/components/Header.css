@@ -1,4 +1,4 @@
-header {
+.header {
 	background-color: #3f267800;
 	padding: 0px 20px;
 	display: flex;
@@ -11,6 +11,13 @@ header {
 	align-items: center;
 	font-size: 20px;
 	font-weight: 200;
+	text-decoration: none;
+	color: var(--text-color);
+}
+
+.header .logo:hover {
+	color: white !important;
+	text-decoration: none !important;
 }
 
 .logo .icon {
@@ -18,11 +25,6 @@ header {
 	height: 24px;
 	margin-right: 10px;
 	stroke: rgb(255, 250, 156);
-}
-
-.siteName a {
-	color: var(--text-color);
-	text-decoration: none;
 }
 
 .menu a {
