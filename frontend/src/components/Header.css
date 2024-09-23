@@ -1,6 +1,5 @@
 .header {
 	background-color: #3f267800;
-	padding: 0px 20px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -23,7 +22,6 @@
 .logo .icon {
 	width: 24px;
 	height: 24px;
-	margin-right: 10px;
 	stroke: rgb(255, 250, 156);
 }
 
