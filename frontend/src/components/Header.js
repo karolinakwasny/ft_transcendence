@@ -4,7 +4,7 @@ import './Header.css';
 
 const Header = () => {
 	return (
-		<nav className="navbar navbar-expand-lg header mx-2">
+		<nav className="navbar navbar-expand-lg header m-0 p-0 pl-3">
 			<div className="container-fluid p-0">
 				<Link to="/" className="navar-bran logo"><svg width="24" height="24	" xmlns="http://www.w3.org/2000/svg" fill="none"
 					strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
