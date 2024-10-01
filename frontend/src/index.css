@@ -27,10 +27,12 @@ body {
 
 [data-bs-theme="dark"] {
 	--text-color: white;
+	--card-color: rgb(91, 84, 135);
 }
 
 [data-bs-theme="light"] {
 	--text-color: black;
+	--card-color: rgb(131, 124, 174);
 }
 
 [data-bs-theme="dark"] body {
