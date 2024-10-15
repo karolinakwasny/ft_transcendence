@@ -13,6 +13,20 @@ body {
   position: relative;
 }
 
+#Winner {
+  margin-top: 5rem;
+  margin-left: 2rem;
+  position: absolute;
+  color: white;
+}
+
+#winner1 {
+  display: none;
+}
+#winner2 {
+  display: none;
+}
+
 #score_count {
   position: absolute;
   color: #FFFFFF;

@@ -2,10 +2,16 @@ import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
+//TASKS
+//DISABLE 3rd dimension and 3rd dimension controls
 
+//Takeout isometric view to normal camera
+//Connect both player scores
 
 //GUI
 const gui = new dat.GUI();
@@ -40,178 +46,370 @@ document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const cube1Geometry = new THREE.BoxGeometry(1, 1, 1);
-const cube1Material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-const cube1 = new THREE.Mesh(cube1Geometry, cube1Material);
-scene.add(cube1);
 
-const cube2Geometry = new THREE.BoxGeometry(11, 11, 11);
-const cube2Material = new THREE.MeshBasicMaterial({color: 0x0000FF, wireframe: true});
-const cube2 = new THREE.Mesh(cube2Geometry, cube2Material);
-scene.add(cube2);
+////////////////////////////NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-cube2.position.y = 8;
+let score1 = 0;
+let score2 = 0;
+
+let textMesh1, textMesh2;
+let loadedFont = null; // Variable to store the loaded font
+const loader = new FontLoader();
+
+// Load the font once and store it in the variable
+loader.load("./fonts/Poppins_Bold.json", function (font) {
+    loadedFont = font;  // Store the loaded font
+
+    // Initial display of score
+    createText(score1, 1);
+	createText(score2, 2);
+});
+
+// Function to create the text and update the scene
+function createText(score, player) {
+	let currentTextMesh = player === 1 ? textMesh1 : textMesh2;
+
+	if (currentTextMesh) {
+		scene.remove(currentTextMesh);
+	}
+
+    // Check if the font is loaded before creating the text geometry
+    if (loadedFont) {
+        const tGeometry = new TextGeometry(score.toString(), {
+            font: loadedFont,  // Use the stored font
+            size: 6,
+            depth: 0.2,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0,
+            bevelSize: 0,
+            bevelOffset: 0,
+            bevelSegments: 0
+        });
+
+        // Create a material for the text
+        const material = new THREE.MeshBasicMaterial({ color: 0x2E0E0E});
+
+        // Create a mesh with the geometry and material
+        currentTextMesh = new THREE.Mesh(tGeometry, material);
+		currentTextMesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(90));
+        // Position the textMesh in the scene (adjust if needed)
+		if (player === 1) {
+			currentTextMesh.position.set(-FIELD_WIDTH/2 - 3, 1, (FIELD_LENGTH/2)/2); // Adjust the position
+			textMesh1 = currentTextMesh;
+		} else if (player === 2) {
+			currentTextMesh.position.set(-FIELD_WIDTH/2 - 3, 1, -(FIELD_LENGTH/2)/2); // Adjust the position
+			textMesh2 = currentTextMesh;
+		}
+
+        scene.add(currentTextMesh);
+    }
+}
+
+// Function to update the score
+function updateScore(newScore, player) {
+    // Check if font is loaded before updating the score
+    if (loadedFont) {
+        createText(newScore, player); // Update the text with the new score
+    }
+}
+
+//Game start
+var	gameStart = false;
+
+//z direction x direction and speed
+var ballDirZ = 1, ballDirX = 1, ballSpeed = 0.0008;
+// paddle variables
+var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
+var paddle1DirX = 0, paddle2DirX = 0, paddleSpeed = 3;
+var paddle1DirY = 0, paddle2DirY = 0;
+
+let player2Score = 0;
+let player1Score = 0;
+let canScorePlayer1 = true;
+let canScorePlayer2 = true;
+
+var WIDTH = 700,
+// HEIGHT = 500,
+// VIEW_ANGLE = 45,
+// ASPECT = WIDTH / HEIGHT,
+// NEAR = 0.1,
+// FAR = 10000,
+FIELD_WIDTH = 30,
+FIELD_LENGTH = 42,
+FIELD_HEIGHT = 10,
+BALL_RADIUS = 0.8,
+PLAYER_WIDTH = 4,
+PLAYER_HEIGHT = 1,
+OUTER_WALL_HEIGHT = 0.8,
+BALL_SPEED = 2,
+BALL_MOVE = true
+
 
 //Player 1
-const player1Geometry = new THREE.BoxGeometry(3, 1, 1);
-const player1Material = new THREE.MeshBasicMaterial({color: 0xff0000});
-const player1 = new THREE.Mesh(player1Geometry, player1Material);
+const	player1Geometry = new THREE.BoxGeometry(PLAYER_WIDTH, PLAYER_HEIGHT, 1);
+const	player1Material = new THREE.MeshBasicMaterial({color: 0xff0000});
+const	player1 = new THREE.Mesh(player1Geometry, player1Material);
 scene.add(player1);
 
+player1.position.z = FIELD_LENGTH/2 -1.5;
+player1.position.y = 1.6;
 
-player1.position.y = 3;
-player1.position.z = 4.9;
 
-const player1BoundingBox = new THREE.Box3().setFromObject(player1);
-const player1Helper = new THREE.Box3Helper(player1BoundingBox, 0xffff00);
-scene.add(player1Helper);
+//Bounding Box Player1
+const	player1BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
 
-//Player 2
-const player2Geometry = new THREE.BoxGeometry(3, 1, 1);
+const player1BBoxHelper = new THREE.BoxHelper(player1, 0xffff00); // Yellow wireframe color
+scene.add(player1BBoxHelper);
+
+player1BBox.setFromObject(player1);
+console.log(player1BBox);
+
+//player2
+const player2Geometry = new THREE.BoxGeometry(PLAYER_WIDTH, PLAYER_HEIGHT, 1);
 const player2Material = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
 const player2 = new THREE.Mesh(player2Geometry, player2Material);
 scene.add(player2);
 
-player2.position.y = 3;
-player2.position.z = -4.9;
-const cube1Dimmensions = 11;
-
-const player2BoundingBox = new THREE.Box3().setFromObject(player2);
-const player2Helper = new THREE.Box3Helper(player2BoundingBox, 0xff0000);
-scene.add(player2Helper);
-
-//Ball
-const ballGeometry = new THREE.SphereGeometry(0.6);
-const ballMaterial = new THREE.MeshBasicMaterial({color: 0x00FF00});
-const ball = new  THREE.Mesh(ballGeometry, ballMaterial);
-scene.add(ball);
-
-ball.position.y = 8;
-
-const ballBoundingBox = new THREE.Box3().setFromObject(ball);
-const ballBoundingBoxHelper = new THREE.Box3Helper(ballBoundingBox, 0xA10FF0);
-scene.add(ballBoundingBoxHelper);
-//BOX Bounding
-// const box = new THREE.Box3();
-// box.setFromCenterAndSize( new THREE.Vector3( 0, 8, 0 ), new THREE.Vector3( 11, 11, 11 ) );
-
-// const helper = new THREE.Box3Helper( box, 0xffff00 );
-// scene.add( helper );
-
-// const corner1 = new THREE.Vector2(-(cube1Dimmensions / 2) + 0.5, 3);
-// const corner2 = new THREE.Vector2((cube1Dimmensions / 2) - 0.5, 13);
+player2.position.z = -FIELD_LENGTH/2 + 1.5;
+player2.position.y = 1.6;
 
 
-//=============Surrounding the playing field with the bounding boxes to notice the collisions=============
-//========================================================================================================
+//Bounding Box Player2
+const	player2BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
 
-const cubeBoundingBoxes = {
-  left: new THREE.Box3(new THREE.Vector3(-5.7, 2.5, -5.5), new THREE.Vector3(-5.5, 13.5, 5.5)),
-  right: new THREE.Box3(new THREE.Vector3(5.5, 2.5, -5.5), new THREE.Vector3(5.7, 13.5, 5.5)),
-  top: new THREE.Box3(new THREE.Vector3(-5.5, 13.5, -5.5), new THREE.Vector3(5.5, 13.7, 5.5)),
-  bottom: new THREE.Box3(new THREE.Vector3(-5.5, 2.3, -5.5), new THREE.Vector3(5.5, 2.5, 5.5)),
-  front: new THREE.Box3(new THREE.Vector3(-5.5, 2.5, 5.5), new THREE.Vector3(5.5, 13.5, 5.7)),
-  back: new THREE.Box3(new THREE.Vector3(-5.5, 2.5, -5.7), new THREE.Vector3(5.5, 13.5, -5.5))
+const player2BBoxHelper = new THREE.BoxHelper(player2, 0xffff00); // Yellow wireframe color
+scene.add(player2BBoxHelper);
+
+player2BBox.setFromObject(player2);
+console.log(player2BBox);
+
+
+//START THE BALL
+function startBallMovement() {
+	const	randomXNumber = Math.random();
+
+	if (randomXNumber > 0.5) {
+		ballDirX = -1;
+	} else {
+		ballDirX = 1
+	}
+
+	//Zdirection
+	const	randomYNumber = Math.random();
+	if (randomYNumber > 0.5) {
+		ballDirZ = -1;
+	} else {
+		ballDirZ = 1
+	}
+
+	gameStart = true;
 }
-
-// Create a Box3Helper to visualize the bounding box
-// Usefull for debugging!
-const cubeBoundingBoxHelpers = {
-  left: new THREE.Box3Helper(cubeBoundingBoxes.left, 0xffff00),
-  right: new THREE.Box3Helper(cubeBoundingBoxes.right, 0xffffff),
-  top: new THREE.Box3Helper(cubeBoundingBoxes.top, 0xff0000),
-  bottom: new THREE.Box3Helper(cubeBoundingBoxes.bottom, 0x00FF00),
-  front: new THREE.Box3Helper(cubeBoundingBoxes.front, 0x00FFFF),
-  back: new THREE.Box3Helper(cubeBoundingBoxes.back, 0xAA00F0)
-}
-
-Object.values(cubeBoundingBoxHelpers).forEach(helper => { scene.add(helper);})
-
-//Determine IF HAS COLLIDED WITH THE WALL
-// function isColliding(playerCordinate, boundaryCordinate, playerOffset, angleBracket) {
-//   // console.log("Corner1: ", corner1);
-//   // console.log("Corner2: ",corner2);
-//   // console.log("position of player one x:", playerCordinate + playerOffset);
-//   if (angleBracket === '>') {
-//     if (Math.abs(playerCordinate + playerOffset) > Math.abs(boundaryCordinate)) {
-//       console.log("You tried to go out of bounds");
-//       return  (true);
-//     }
-//   } else {
-//     if (Math.abs(playerCordinate + playerOffset) < Math.abs(boundaryCordinate)) {
-//       console.log("You tried to go out of bounds");
-//       return  (true);
-//     }
-//   }
-//   return (false);
-
-// }
 
 //=============PLAYER MOVEMENT SECTION===================
 //=======================================================
 
-function updateBoundingBoxPlayer1() {
-  player1BoundingBox.setFromObject(player1);
+//LINE in THE MIDDLE OF THE FIELD
+const cube3Geometry = new THREE.BoxGeometry(FIELD_WIDTH - 0.2, 0.2, 0.3);
+const cube3Material = new THREE.MeshBasicMaterial({color: 0x000000});
+const cube3 = new THREE.Mesh(cube3Geometry, cube3Material);
+scene.add(cube3);
+
+cube3.position.y = 0.1;
+
+//LINE in player1
+const line1Geometry = new THREE.BoxGeometry(FIELD_WIDTH - 0.1, 0.2, 0.12);
+const line1Material = new THREE.MeshBasicMaterial({color: 0x00000});
+const line1 = new THREE.Mesh(line1Geometry, line1Material);
+scene.add(line1);
+line1.position.z = FIELD_LENGTH/2 - 2;
+line1.position.y = 0.1;
+
+//LINE in player2
+const line2Geometry = new THREE.BoxGeometry(FIELD_WIDTH - 0.1, 0.2, 0.12);
+const line2Material = new THREE.MeshBasicMaterial({color: 0x00000});
+const line2 = new THREE.Mesh(line2Geometry, line2Material);
+scene.add(line2);
+line2.position.z = -FIELD_LENGTH/2 + 2;
+line2.position.y = 0.1;
+
+//Cilinder 1 THE MIDDLE OF THE FIELD
+const cylinder2Geometry = new THREE.CylinderGeometry( 4.5, 4.5, 0.7, 32 ); 
+const cylinder2Material = new THREE.MeshBasicMaterial( {color: 0x2C2F4B} ); 
+const cylinder2 = new THREE.Mesh( cylinder2Geometry, cylinder2Material );
+scene.add(cylinder2);
+
+//Cilinder 1 THE MIDDLE OF THE FIELD
+const cylinder1Geometry = new THREE.CylinderGeometry( 4.9, 4.9, 0.6, 32 ); 
+const cylinder1Material = new THREE.MeshBasicMaterial( {color: 0x000000} ); 
+const cylinder1 = new THREE.Mesh( cylinder1Geometry, cylinder1Material );
+scene.add(cylinder1);
+
+//Inside of playing field
+const innerPLayingFieldGeometry = new THREE.BoxGeometry(FIELD_WIDTH - 1, 0.3, FIELD_LENGTH - 1);
+const innerPLayingFieldMaterial = new THREE.MeshBasicMaterial({color: 0x2C2F4B});
+const innerPLayingField = new THREE.Mesh(innerPLayingFieldGeometry, innerPLayingFieldMaterial);
+scene.add(innerPLayingField);
+
+//Outer playing field wall z1
+let	outerWallZ1Geometry = new THREE.BoxGeometry(FIELD_WIDTH, OUTER_WALL_HEIGHT, 0.5);
+let	outerWallZ1Material = new THREE.MeshBasicMaterial({color: 0x90384A});
+let	outerWallZ1 = new THREE.Mesh(outerWallZ1Geometry, outerWallZ1Material);
+scene.add(outerWallZ1);
+
+outerWallZ1.position.z = (-FIELD_LENGTH/2) + (0.5/2);
+
+//Outer playing field wall z2
+let	outerWallZ2Geometry = new THREE.BoxGeometry(FIELD_WIDTH, OUTER_WALL_HEIGHT, 0.5);
+let	outerWallZ2Material = new THREE.MeshBasicMaterial({color: 0x90384A});
+let	outerWallZ2 = new THREE.Mesh(outerWallZ2Geometry, outerWallZ2Material);
+scene.add(outerWallZ2);
+
+outerWallZ2.position.z = (FIELD_LENGTH/2) - (0.5/2);
+
+//Outer playing field wall x1
+let	outerWallX1Geometry = new THREE.BoxGeometry(0.5, OUTER_WALL_HEIGHT, FIELD_LENGTH-1);
+let	outerWallX1Material = new THREE.MeshBasicMaterial({color: 0x1F2135});
+let	outerWallX1 = new THREE.Mesh(outerWallX1Geometry, outerWallX1Material);
+scene.add(outerWallX1);
+
+outerWallX1.position.x = (-FIELD_WIDTH/2) + (0.5/2);
+
+//Outer playing field wall x2
+let	outerWallX2Geometry = new THREE.BoxGeometry(0.5, OUTER_WALL_HEIGHT, FIELD_LENGTH-1);
+let	outerWallX2Material = new THREE.MeshBasicMaterial({color: 0x1F2135});
+let	outerWallX2 = new THREE.Mesh(outerWallX2Geometry, outerWallX2Material);
+scene.add(outerWallX2);
+
+outerWallX2.position.x = (FIELD_WIDTH/2) - (0.5/2);
+
+
+const cube1Geometry = new THREE.BoxGeometry(FIELD_WIDTH - 0.2, 0.2, FIELD_LENGTH - 0.2);
+const cube1Material = new THREE.MeshBasicMaterial({color: 0xFFFFF});
+const cube1 = new THREE.Mesh(cube1Geometry, cube1Material);
+scene.add(cube1);
+
+const cube2Geometry = new THREE.BoxGeometry(FIELD_WIDTH, 10, FIELD_LENGTH);
+const cube2Material = new THREE.MeshBasicMaterial({color: 0x00ff0, wireframe: true});
+const cube2 = new THREE.Mesh(cube2Geometry, cube2Material);
+scene.add(cube2);
+cube2.position.y +=  5;
+
+const ballGeometry = new THREE.SphereGeometry(0.8, 20, 20);
+const ballMaterial = new THREE.MeshBasicMaterial({ color: 0xCC0000 });
+const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+scene.add(ball);
+
+const ballBoundingSphere = new THREE.Sphere(ball.position, BALL_RADIUS);
+
+ball.position.x = 0;
+ball.position.z = 0;
+ball.position.y = 1.6;
+
+//BALL MOVEMENT NEW
+function	resetBall(lossIndentifier) {
+	ball.position.x = 0;
+	ball.position.z = 0;
+	BALL_MOVE = false;
+	let count = 3;
+	const timer = setInterval(function() {
+		count--;
+		if (count === 0) {
+			clearInterval(timer);
+			outerWallZ1.material.color.set(0x90384A);
+			outerWallZ2.material.color.set(0x90384A);
+		
+			ballSpeed = 2;
+			if (lossIndentifier == 1) {
+				ballDirX = -1;
+			} else {
+				ballDirX = +1;
+			}
+		
+			if (lossIndentifier == 1) {
+				ballDirZ = -1;
+			} else {
+				ballDirZ = +1;
+			}
+			BALL_MOVE = true;
+		}
+	}, 800);
 }
 
-function updateBoundingBoxPlayer2() {
-  player2BoundingBox.setFromObject(player2);
+function	annouceWinner(player) {
+	if (player == 1) {
+		//player 1 wins
+		console.log("Player 1 wins a set!");
+		document.getElementById("winner1").style.display = "initial";
+		//stopGame();
+	} else if (player == 2) {
+		//player 2 wins
+		console.log("Player 2 wins a set!");
+		document.getElementById("winner2").style.display = "initial";
+		//stopGame();
+	}
 }
 
+function	ballMovement() {
+	//Player 2 scores
+	if (ball.position.z >= FIELD_LENGTH / 2) {
+		outerWallZ2.material.color.set(0xE84646);
+		player2Score++;
+		updateScore(player2Score, 2);
+		if (player2Score == 10) {
+			annouceWinner(2);
+		}
+		canScorePlayer2 = false;
+		console.log("Player 2 Scores!! Score: ", player2Score);
+		document.getElementById('player2_score').innerText = player2Score;
 
-function moveLeft(playerBoundingBox, player, speed) {
-  const predictedBoundingBox = playerBoundingBox.clone();
-  
-  // Move the predicted bounding box downward
-  predictedBoundingBox.translate(new THREE.Vector3(-0.5 * speed, 0, 0)); 
-  if (predictedBoundingBox.intersectsBox(cubeBoundingBoxes.left) === true) {
-    console.log("COLLISION ON LEFT TRUE");
-    player.position.x += 0.5 * speed;
-  }
-  else { player.position.x -= 0.5 * speed;}
-}
+		resetBall(1);
+	}
 
-function moveRight(playerBoundingBox, player, speed) {
-  const predictedBoundingBox = playerBoundingBox.clone();
-  
-  // Move the predicted bounding box downward
-  predictedBoundingBox.translate(new THREE.Vector3(0.5 * speed, 0, 0));
-  console.log("COLLISION BEFORE IF ON RIGHT: ",   predictedBoundingBox.translate(new THREE.Vector3(0, 0, 0.5 * speed)));
-  if (predictedBoundingBox.intersectsBox(cubeBoundingBoxes.right) === true) {
-    console.log("COLLISION ON RIGHT TRUE");
-    player.position.x -= 0.5 * speed;
-  }
-  else { player.position.x += 0.5 * speed;}
-}
+	//Player 1 scores
+	if (ball.position.z <= -FIELD_LENGTH / 2) {
+		outerWallZ1.material.color.set(0xE84646);
+		player1Score++;
+		updateScore(player1Score, 1);
+		if (player1Score == 10) {
+			annouceWinner(1);
+		}
+		canScorePlayer1 = false;
+		console.log("Player 1 Scores!! Score: ", player1Score);
+		document.getElementById('player1_score').innerText = player1Score;
+		// Add a delay before resetting the ball
+		resetBall(2);  // Reset ball after 1 second
+	}
 
-function moveUp(playerBoundingBox, player, speed) {
-  const predictedBoundingBox = playerBoundingBox.clone();
-  
-  // Move the predicted bounding box downward
-  predictedBoundingBox.translate(new THREE.Vector3(0, 0.5 * speed, 0)); 
-  if (predictedBoundingBox.intersectsBox(cubeBoundingBoxes.top) === true) {
-    console.log("COLLISION TOP TRUE");
-    player.position.y -= 0.5 * speed;
-  }
-  else { player.position.y += 0.5 * speed;}
-}
+	if (ball.position.x >= (FIELD_WIDTH / 2) - BALL_RADIUS) {
+		outerWallX2.material.color.set(0x2C2F4B);
+		let count = 3;
+		const timer = setInterval(function() {
+			count--;
+			if (count === 0) {
+				clearInterval(timer);
+				outerWallX2.material.color.set(0x1F2135);
+			}
+		}, 300);
+		ballDirX = -1;
+	}
 
-function moveDown(playerBoundingBox, player, speed) {
-  const predictedBoundingBox = playerBoundingBox.clone();
-  
-  // Move the predicted bounding box downward
-  predictedBoundingBox.translate(new THREE.Vector3(0, -0.5 * speed, 0)); 
-  if (predictedBoundingBox.intersectsBox(cubeBoundingBoxes.bottom) === true) {
-    console.log("COLLISION Bottom TRUE");
-    player.position.y += 0.5 * speed;
-  }
-  else { player.position.y -= 0.5 * speed;}
+	if (ball.position.x <= -(FIELD_WIDTH / 2) + BALL_RADIUS) {
+		outerWallX1.material.color.set(0x2C2F4B);
+		ballDirX = +1;
+		let count = 3;
+		const timer = setInterval(function() {
+			count--;
+			if (count === 0) {
+				clearInterval(timer);
+				outerWallX1.material.color.set(0x1F2135);
+			}
+		}, 300);
+	}
+
 }
 
 const keysPressed = {};
-
-const speedNormal = 1;
-const speedDiagnal = speedNormal * 0.3;
 
 document.body.addEventListener("keydown", (e) => {
   keysPressed[e.key] = true;
@@ -220,139 +418,113 @@ document.body.addEventListener("keydown", (e) => {
 });
 
 document.body.addEventListener("keyup", (ev) => {
-  keysPressed[ev.key] = false;
+	//Player1
+	if (keysPressed['a']) {
+		paddle1DirX = 0;
+	}
+	if (keysPressed['d']) {
+		paddle1DirX = 0;
+	}
+
+	//Player2
+	if (keysPressed['l']) {
+		paddle2DirX = 0;
+	}
+	if (keysPressed['j']) {
+		paddle2DirX = 0;
+	}
+	keysPressed[ev.key] = false;
 });
 
+function playerOne() {
+	if (keysPressed['a']) {
+		if (player1.position.x - PLAYER_WIDTH / 2 >= (-FIELD_WIDTH / 2) + 0.5 ) {
+			paddle1DirX = -1;
+		} else {
+			paddle1DirX = 0;
+		}
+	}
 
-function player1Movement() {
-  if (keysPressed['a'] && keysPressed['w']) {
-    moveLeft(player1BoundingBox, player1, speedDiagnal);
-    moveUp(player1BoundingBox, player1, speedDiagnal);
-  }  else if (keysPressed['s'] && keysPressed['d']) {
-    moveRight(player1BoundingBox, player1, speedDiagnal);
-    moveDown(player1BoundingBox, player1, speedDiagnal);
-  }  else if (keysPressed['w'] && keysPressed['d']) {
-    moveRight(player1BoundingBox, player1, speedDiagnal);
-    moveUp(player1BoundingBox, player1, speedDiagnal);
-  }  else if (keysPressed['a'] && keysPressed['s']) {
-    moveLeft(player1BoundingBox, player1, speedDiagnal);
-    moveDown(player1BoundingBox, player1, speedDiagnal);
-  } else {
-    if (keysPressed['a']) {
-      moveLeft(player1BoundingBox, player1, speedNormal);
-    }
-    if (keysPressed['d']) {
-      moveRight(player1BoundingBox, player1, speedNormal);
-    }
-    else if (keysPressed['w']) {
-      moveUp(player1BoundingBox, player1, speedNormal);
-    }
-    if (keysPressed['s']) {
-      moveDown(player1BoundingBox, player1, speedNormal);
-    }
-  }
-  updateBoundingBoxPlayer1();
+	if ( keysPressed['d']) {
+		if (player1.position.x + PLAYER_WIDTH / 2 <= (FIELD_WIDTH / 2)  - 0.5 ) {
+			paddle1DirX = 1;
+		} else {
+			paddle1DirX = 0;
+		}
+ 	}
+
+	player1.position.x += paddle1DirX * 0.5;
+	player1BBoxHelper.update();         // Update the wireframe position
 }
 
-function player2Movement() {
-  if (keysPressed['j'] && keysPressed['i']) {
-    moveLeft(player2BoundingBox, player2, speedDiagnal);
-    moveUp(player2BoundingBox, player2, speedDiagnal);
-  } else if (keysPressed['k'] && keysPressed['l']) {
-    moveRight(player2BoundingBox, player2, speedDiagnal);
-    moveDown(player2BoundingBox, player2, speedDiagnal);
-  }  else if (keysPressed['i'] && keysPressed['l']) {
-    moveRight(player2BoundingBox, player2, speedDiagnal);
-    moveUp(player2BoundingBox, player2, speedDiagnal);
-  }  else if (keysPressed['j'] && keysPressed['k']) {
-    moveLeft(player2BoundingBox, player2, speedDiagnal);
-    moveDown(player2BoundingBox, player2, speedDiagnal);
-  } else {
-    if (keysPressed['j']) {
-      moveLeft(player2BoundingBox, player2, speedNormal);
-    }
-    if (keysPressed['l']) {
-      moveRight(player2BoundingBox, player2, speedNormal);
-    }
-    if (keysPressed['i']) {
-      moveUp(player2BoundingBox, player2, speedNormal);
-    }
-    if (keysPressed['k']) {
-      moveDown(player2BoundingBox, player2, speedNormal);
-    }
-  }
-  updateBoundingBoxPlayer2();
+function playerTwo() {
+	if (keysPressed['j']) {
+		if (player2.position.x - PLAYER_WIDTH / 2 >= (-FIELD_WIDTH / 2) + 0.5 ) {
+			paddle2DirX = -1;
+		} else {
+			paddle2DirX = 0;
+		}
+	}
+
+	if ( keysPressed['l']) {
+		if (player2.position.x + PLAYER_WIDTH / 2 <= (FIELD_WIDTH / 2)  - 0.5 ) {
+			paddle2DirX = 1;
+		} else {
+			paddle2DirX = 0;
+		}
+	}
+
+
+	player2.position.x += paddle2DirX;
+	player2BBoxHelper.update();         // Update the wireframe position
 }
 
 function movePlayer() {
-  player1Movement();
-  player2Movement();
+	playerOne();
+	playerTwo();
 };
 
-//=======================================================
 
-//Control panel
-const options = {
-  cube2Color: '#0000FF', wireframe: true
-};
+//paddle logic
+function paddleLogic() {
+	//Updating the ball bounding box position
+    ballBoundingSphere.center.copy(ball.position);
 
-gui.addColor(options, 'cube2Color').onChange(function(e){ cube2.material.color.set(e)});
-gui.add(options, 'wireframe').onChange(function(e) { cube2.material.wireframe =e; });
+	//Updating the position of the bounding boxes according to their players
+	player2BBox.copy(player2.geometry.boundingBox).applyMatrix4(player2.matrixWorld);
+	player1BBox.copy(player1.geometry.boundingBox).applyMatrix4(player1.matrixWorld);
+	if(player1BBox.intersectsSphere(ballBoundingSphere) == true) {
+		console.log("HITT PADDLE 1");
+		// player1.scale.x = 1.5;
+		ballDirZ = -ballDirZ;
+		ballDirX -= paddle1DirX * 0.2;
+	}
+	if(player2BBox.intersectsSphere(ballBoundingSphere) == true) {
+		console.log("HITT PADDLE 2");
+		// player1.scale.x = 1.5;
+		ballDirZ = -ballDirZ;
+		ballDirX -= paddle2DirX * 0.2;
+	}
+}
 
-const gridHelper = new THREE.GridHelper(30);
-scene.add(gridHelper);
-const axisHelper = new THREE.AxesHelper(5);
-scene.add(axisHelper);
-
-let direction = new THREE.Vector3(
-  Math.random() * 2 - 1, 1, Math.random() * 2 - 1
-);
-// direction.normalize();
-
-const speedBall = 0.1;
-let velocity = direction.multiplyScalar(speedBall);
-
-
-const predictedBoundingBox = ballBoundingBox.clone();
-let player2Score = 0;
-let player1Score = 0;
-function bouncingBall() {
-    // Update ball position
-    ball.position.add(velocity);
-    // predictedBoundingBox = ballBoundingBox.clone();
-    if (cubeBoundingBoxes.back.intersectsBox(ballBoundingBox) === true) {
-      player2Score++;
-      console.log("BALL HIT THE BACK WALL! Score: ", player2Score);
-      document.getElementById('player2_score').innerText = player2Score;
-    }
-
-    if (cubeBoundingBoxes.front.intersectsBox(ballBoundingBox) === true) {
-      player1Score++;
-      console.log("BALL HIT THE FRONT! Score: ", player1Score);
-      document.getElementById('player1_score').innerText = player1Score;
-    }
-    
-    // Check for collisions with cube walls and bounce
-    if (ball.position.x + 1 > 12 / 2 || ball.position.x - 1 < -12 / 2) {
-        velocity.x = -velocity.x;
-    }
-    if (ball.position.y + 1 > 12 / 2 || ball.position.y - 1 < -12 / 2) {
-        velocity.y = -velocity.y;
-    }
-    if (ball.position.z + 1 > 12 / 2 || ball.position.z - 1 < -12 / 2) {
-        velocity.z = -velocity.z;
-    }
-    ballBoundingBox.setFromObject(ball);
+function ballMove() {
+	if (BALL_MOVE) {
+		ball.position.x += ballDirX * 0.1;
+		ball.position.z += ballDirZ * 0.1;
+	}
 }
 
 function animate() {
-  cube1.rotation.x += 0.01;
-  cube1.rotation.y += 0.01;
-  bouncingBall();
-  renderer.render(scene, camera);
+	renderer.render(scene, camera);
+	renderer.setAnimationLoop(animate);
+	if (gameStart == false) {
+		startBallMovement();
+	}
+	paddleLogic();
+	ballMovement();
+	ballMove();
 }
 
-renderer.setAnimationLoop(animate);
 
 
 window.addEventListener('resize', function() {
