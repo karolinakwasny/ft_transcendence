@@ -607,7 +607,7 @@ function playerTwo() {
 	}
 
 
-	player2.position.x += paddle2DirX;
+	player2.position.x += Player2.paddleDirX;
 	player2BBoxHelper.update();         // Update the wireframe position
 }
 
