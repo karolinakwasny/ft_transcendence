@@ -10,39 +10,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 //Game start
 var	gameStart = false;
 
-//z direction x direction and speed
-var ballDirZ = 1, ballDirX = 1, ballSpeed = 0.0008;
-// paddle variables
-var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
-var paddle1DirX = 0, paddle2DirX = 0, paddleSpeed = 3;
-var paddle1DirY = 0, paddle2DirY = 0;
-
-let player2Score = 0;
-let player1Score = 0;
-let canScorePlayer1 = true;
-let canScorePlayer2 = true;
-
-var WIDTH = 700,
-// HEIGHT = 500,
-// VIEW_ANGLE = 45,
-// ASPECT = WIDTH / HEIGHT,
-// NEAR = 0.1,
-// FAR = 10000,
-FIELD_WIDTH = 30,
-FIELD_LENGTH = 42,
-FIELD_HEIGHT = 10,
-BALL_RADIUS = 0.8,
-PLAYER_WIDTH = 4,
-PLAYER_HEIGHT = 1,
-OUTER_WALL_HEIGHT = 0.8,
-BALL_SPEED = 2,
-BALL_MOVE = true
-
-//TASKS
-//DISABLE 3rd dimension and 3rd dimension controls
-
-//Takeout isometric view to normal camera
-//Connect both player scores
+//Setting up rendering ==============================================================================================================================================
 
 //GUI
 const gui = new dat.GUI();
@@ -50,30 +18,14 @@ const gui = new dat.GUI();
 //STARTING THREEJS
 const scene = new THREE.Scene();
 
-//I want the isometric view
-// Create an orthographic camera
 const aspect = window.innerWidth / window.innerHeight;
-// const d = 20;
 
-// const camera = new THREE.OrthographicCamera(
-//   -d * aspect,  // left
-//   d * aspect,   // right
-//   d,            // top
-//   -d,           // bottom
-//   1,            // near
-//   1000          // far
-// );
-
-//Normal camera
 const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
 camera.position.set(20, 20, 20);
 camera.lookAt(0, 1, 0); // Look at the center of the field
 
 //Adding directional lighting
 const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.5);
-
-
-
 directionalLight.shadow.mapSize.width = 512; // Size of the shadow map
 directionalLight.shadow.mapSize.height = 512;
 
@@ -147,11 +99,153 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: soft shadows
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+//GAME START	==========================================================================================================================================
 
-////////////////////////////NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+//Variables for configuring the game
+var FIELD_WIDTH = 30;
+var	FIELD_LENGTH = 42;
+var	FIELD_HEIGHT = 10; //Not used as there is no y direction
+
+var	PLAYER_WIDTH = 4;
+var	PLAYER_HEIGHT = 1;
+var OUTER_WALL_HEIGHT = 0.8;
+
+//Ball
+var BALL_RADIUS = 0.8;
+var BALL_SPEED = 2;
+var BALL_MOVE = true;
+
+//z direction x direction
+var ballDirZ = 1, ballDirX = 1;
+
+
+//Player object
+
+function createPlayer() {
+    this.paddleDirX = 0;
+    this.paddleDirY = 0;
+    this.playerScore = 0;
+    this.playerSetScore = 0;
+    this.canPlayerScore = true;
+}
+
+function createPlayerConstructionObject(color = 0xff0000, positionZ = 0, positionY = 0, width = 4, height = 1) {
+	const playerGeometry = new THREE.BoxGeometry(width, height, 1);
+	const playerMaterial = new THREE.MeshStandardMaterial({ color: color });
+	const playerMesh = new THREE.Mesh(playerGeometry, playerMaterial);
+
+	playerMesh.castShadow = true;
+	playerMesh.position.z = positionZ;
+	playerMesh.position.y = positionY;
+
+	return playerMesh; // Directly return the mesh if no other properties are needed
+}
+
+//Player1
+const Player1 = new createPlayer();
+const player1 =  createPlayerConstructionObject(0xff0000, FIELD_LENGTH/2 -1.5, 1.6);
+scene.add(player1);
+
+
+//Player 1 sets
+const	player1Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
+const	player1Set1Material = new THREE.MeshStandardMaterial({color: 0xff0000});
+const	player1Set1 = new THREE.Mesh(player1Set1Geometry, player1Set1Material);
+player1Set1.castShadow = true;
+scene.add(player1Set1);
+
+player1Set1.position.z = 2;
+player1Set1.position.y = 5;
+player1Set1.position.x = -FIELD_WIDTH / 2 -4;
+
+const	player1Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
+const	player1Set2Material = new THREE.MeshStandardMaterial({color: 0xff0000});
+const	player1Set2 = new THREE.Mesh(player1Set2Geometry, player1Set2Material);
+player1Set2.castShadow = true;
+scene.add(player1Set2);
+
+player1Set2.position.z = 2;
+player1Set2.position.y = 7;
+player1Set2.position.x = -FIELD_WIDTH / 2 -4;
+
+
+const	player1Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
+const	player1Set3Material = new THREE.MeshStandardMaterial({color: 0xff0000});
+const	player1Set3 = new THREE.Mesh(player1Set3Geometry, player1Set3Material);
+player1Set3.castShadow = true;
+scene.add(player1Set3);
+
+player1Set3.position.z = 2;
+player1Set3.position.y = 3;
+player1Set3.position.x = -FIELD_WIDTH / 2 -4;
+
+
+//Bounding Box Player1
+const	player1BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+
+const player1BBoxHelper = new THREE.BoxHelper(player1, 0xffff00); // Yellow wireframe color
+scene.add(player1BBoxHelper);
+
+player1BBox.setFromObject(player1);
+console.log(player1BBox);
+
+
+
+
+//Player2
+const Player2 = new createPlayer();
+const player2 =  createPlayerConstructionObject(0xFFFFFF, -FIELD_LENGTH/2 + 1.5, 1.6);
+scene.add(player2);
+
+
+//Player2 sets
+const	player2Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
+const	player2Set1Material = new THREE.MeshStandardMaterial({color: 0xffffff});
+const	player2Set1 = new THREE.Mesh(player2Set1Geometry, player2Set1Material);
+player2Set1.castShadow = true;
+scene.add(player2Set1);
+
+player2Set1.position.z = -2;
+player2Set1.position.y = 5;
+player2Set1.position.x = -FIELD_WIDTH / 2 -4;
+
+const	player2Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
+const	player2Set2Material = new THREE.MeshStandardMaterial({color: 0xffffff});
+const	player2Set2 = new THREE.Mesh(player2Set2Geometry, player2Set2Material);
+player1Set2.castShadow = true;
+scene.add(player2Set2);
+
+player2Set2.position.z = -2;
+player2Set2.position.y = 7;
+player2Set2.position.x = -FIELD_WIDTH / 2 -4;
+
+
+const	player2Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
+const	player2Set3Material = new THREE.MeshStandardMaterial({color: 0xffffff});
+const	player2Set3 = new THREE.Mesh(player2Set3Geometry, player2Set3Material);
+player2Set3.castShadow = true;
+scene.add(player2Set3);
+
+player2Set3.position.z = -2;
+player2Set3.position.y = 3;
+player2Set3.position.x = -FIELD_WIDTH / 2 -4;
+
+
+//Bounding Box Player2
+const	player2BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+
+const player2BBoxHelper = new THREE.BoxHelper(player2, 0xffff00); // Yellow wireframe color
+scene.add(player2BBoxHelper);
+
+player2BBox.setFromObject(player2);
+console.log(player2BBox);
+
+
 
 let score1 = 0;
 let score2 = 0;
+
+//SCORE TEXTS	===================================================================================================================================
 
 let textMesh1, textMesh2;
 let loadedFont = null; // Variable to store the loaded font
@@ -216,117 +310,6 @@ function updateScore(newScore, player) {
 }
 
 
-//Player 1
-const	player1Geometry = new THREE.BoxGeometry(PLAYER_WIDTH, PLAYER_HEIGHT, 1);
-const	player1Material = new THREE.MeshStandardMaterial({color: 0xff0000});
-const	player1 = new THREE.Mesh(player1Geometry, player1Material);
-player1.castShadow = true;
-scene.add(player1);
-
-player1.position.z = FIELD_LENGTH/2 -1.5;
-player1.position.y = 1.6;
-
-//Player 1 sets
-
-const	player1Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set1Material = new THREE.MeshStandardMaterial({color: 0xff0000});
-const	player1Set1 = new THREE.Mesh(player1Set1Geometry, player1Set1Material);
-player1Set1.castShadow = true;
-scene.add(player1Set1);
-
-player1Set1.position.z = 2;
-player1Set1.position.y = 5;
-player1Set1.position.x = -FIELD_WIDTH / 2 -4;
-
-const	player1Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set2Material = new THREE.MeshStandardMaterial({color: 0xff0000});
-const	player1Set2 = new THREE.Mesh(player1Set2Geometry, player1Set2Material);
-player1Set2.castShadow = true;
-scene.add(player1Set2);
-
-player1Set2.position.z = 2;
-player1Set2.position.y = 7;
-player1Set2.position.x = -FIELD_WIDTH / 2 -4;
-
-
-const	player1Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set3Material = new THREE.MeshStandardMaterial({color: 0xff0000});
-const	player1Set3 = new THREE.Mesh(player1Set3Geometry, player1Set3Material);
-player1Set3.castShadow = true;
-scene.add(player1Set3);
-
-player1Set3.position.z = 2;
-player1Set3.position.y = 3;
-player1Set3.position.x = -FIELD_WIDTH / 2 -4;
-
-
-
-//Bounding Box Player1
-const	player1BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-
-const player1BBoxHelper = new THREE.BoxHelper(player1, 0xffff00); // Yellow wireframe color
-scene.add(player1BBoxHelper);
-
-player1BBox.setFromObject(player1);
-console.log(player1BBox);
-
-//player2
-const player2Geometry = new THREE.BoxGeometry(PLAYER_WIDTH, PLAYER_HEIGHT, 1);
-const player2Material = new THREE.MeshStandardMaterial({color: 0xFFFFFF});
-const player2 = new THREE.Mesh(player2Geometry, player2Material);
-player2.castShadow = true;
-scene.add(player2);
-
-player2.position.z = -FIELD_LENGTH/2 + 1.5;
-player2.position.y = 1.6;
-
-//Player2 sets
-
-
-const	player2Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set1Material = new THREE.MeshStandardMaterial({color: 0xffffff});
-const	player2Set1 = new THREE.Mesh(player2Set1Geometry, player2Set1Material);
-player2Set1.castShadow = true;
-scene.add(player2Set1);
-
-player2Set1.position.z = -2;
-player2Set1.position.y = 5;
-player2Set1.position.x = -FIELD_WIDTH / 2 -4;
-
-const	player2Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set2Material = new THREE.MeshStandardMaterial({color: 0xffffff});
-const	player2Set2 = new THREE.Mesh(player2Set2Geometry, player2Set2Material);
-player1Set2.castShadow = true;
-scene.add(player2Set2);
-
-player2Set2.position.z = -2;
-player2Set2.position.y = 7;
-player2Set2.position.x = -FIELD_WIDTH / 2 -4;
-
-
-const	player2Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set3Material = new THREE.MeshStandardMaterial({color: 0xffffff});
-const	player2Set3 = new THREE.Mesh(player2Set3Geometry, player2Set3Material);
-player2Set3.castShadow = true;
-scene.add(player2Set3);
-
-player2Set3.position.z = -2;
-player2Set3.position.y = 3;
-player2Set3.position.x = -FIELD_WIDTH / 2 -4;
-
-
-
-
-
-
-//Bounding Box Player2
-const	player2BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-
-const player2BBoxHelper = new THREE.BoxHelper(player2, 0xffff00); // Yellow wireframe color
-scene.add(player2BBoxHelper);
-
-player2BBox.setFromObject(player2);
-console.log(player2BBox);
 
 
 //START THE BALL
@@ -436,11 +419,12 @@ const cube1Material = new THREE.MeshBasicMaterial({color: 0xFFFFF});
 const cube1 = new THREE.Mesh(cube1Geometry, cube1Material);
 scene.add(cube1);
 
-// const cube2Geometry = new THREE.BoxGeometry(FIELD_WIDTH, 10, FIELD_LENGTH);
-// const cube2Material = new THREE.MeshBasicMaterial({color: 0x00ff0}); //, wireframe: true
-// const cube2 = new THREE.Mesh(cube2Geometry, cube2Material);
-// scene.add(cube2);
-// cube2.position.y +=  5;
+
+
+
+
+
+
 
 const ballGeometry = new THREE.SphereGeometry(0.8, 20, 20);
 const ballMaterial = new THREE.MeshStandardMaterial({ color: 0xCC0000 });
@@ -467,7 +451,7 @@ function	resetBall(lossIndentifier) {
 			outerWallZ1.material.color.set(0x90384A);
 			outerWallZ2.material.color.set(0x90384A);
 		
-			ballSpeed = 2;
+			// ballSpeed = 2;
 			if (lossIndentifier == 1) {
 				ballDirX = -1;
 			} else {
@@ -502,14 +486,14 @@ function	ballMovement() {
 	//Player 2 scores
 	if (ball.position.z >= FIELD_LENGTH / 2) {
 		outerWallZ2.material.color.set(0xFFFFFF);
-		player2Score++;
-		updateScore(player2Score, 2);
-		if (player2Score == 10) {
+		Player2.playerScore++;
+		updateScore(Player2.playerScore, 2);
+		if (Player2.playerScore == 10) {
 			annouceWinner(2);
 		}
-		canScorePlayer2 = false;
-		console.log("Player 2 Scores!! Score: ", player2Score);
-		document.getElementById('player2_score').innerText = player2Score;
+		Player2.canPlayerScore = false;
+		console.log("Player 2 Scores!! Score: ", Player2.playerScore);
+		document.getElementById('player2_score').innerText = Player2.playerScore;
 
 		resetBall(1);
 	}
@@ -517,14 +501,14 @@ function	ballMovement() {
 	//Player 1 scores
 	if (ball.position.z <= -FIELD_LENGTH / 2) {
 		outerWallZ1.material.color.set(0xFF0000);
-		player1Score++;
-		updateScore(player1Score, 1);
-		if (player1Score == 10) {
+		Player1.playerScore++;
+		updateScore(Player1.playerScore, 1);
+		if (Player1.playerScore == 10) {
 			annouceWinner(1);
 		}
-		canScorePlayer1 = false;
-		console.log("Player 1 Scores!! Score: ", player1Score);
-		document.getElementById('player1_score').innerText = player1Score;
+		Player1.canScorePlayer = false;
+		console.log("Player 1 Scores!! Score: ", Player1.playerScore);
+		document.getElementById('player1_score').innerText = Player1.playerScore;
 		// Add a delay before resetting the ball
 		resetBall(2);  // Reset ball after 1 second
 	}
@@ -568,18 +552,18 @@ document.body.addEventListener("keydown", (e) => {
 document.body.addEventListener("keyup", (ev) => {
 	//Player1
 	if (keysPressed['a']) {
-		paddle1DirX = 0;
+		Player1.paddleDirX = 0;
 	}
 	if (keysPressed['d']) {
-		paddle1DirX = 0;
+		Player1.paddleDirX = 0;
 	}
 
 	//Player2
 	if (keysPressed['l']) {
-		paddle2DirX = 0;
+		Player2.paddleDirX = 0;
 	}
 	if (keysPressed['j']) {
-		paddle2DirX = 0;
+		Player2.paddleDirX = 0;
 	}
 	keysPressed[ev.key] = false;
 });
@@ -587,38 +571,38 @@ document.body.addEventListener("keyup", (ev) => {
 function playerOne() {
 	if (keysPressed['a']) {
 		if (player1.position.x - PLAYER_WIDTH / 2 >= (-FIELD_WIDTH / 2) + 0.5 ) {
-			paddle1DirX = -1;
+			Player1.paddleDirX = -1;
 		} else {
-			paddle1DirX = 0;
+			Player1.paddleDirX = 0;
 		}
 	}
 
 	if ( keysPressed['d']) {
 		if (player1.position.x + PLAYER_WIDTH / 2 <= (FIELD_WIDTH / 2)  - 0.5 ) {
-			paddle1DirX = 1;
+			Player1.paddleDirX = 1;
 		} else {
-			paddle1DirX = 0;
+			Player1.paddleDirX = 0;
 		}
  	}
 
-	player1.position.x += paddle1DirX * 0.5;
+	player1.position.x += Player1.paddleDirX * 0.5;
 	player1BBoxHelper.update();         // Update the wireframe position
 }
 
 function playerTwo() {
 	if (keysPressed['j']) {
 		if (player2.position.x - PLAYER_WIDTH / 2 >= (-FIELD_WIDTH / 2) + 0.5 ) {
-			paddle2DirX = -1;
+			Player2.paddleDirX = -1;
 		} else {
-			paddle2DirX = 0;
+			Player2.paddleDirX = 0;
 		}
 	}
 
 	if ( keysPressed['l']) {
 		if (player2.position.x + PLAYER_WIDTH / 2 <= (FIELD_WIDTH / 2)  - 0.5 ) {
-			paddle2DirX = 1;
+			Player2.paddleDirX = 1;
 		} else {
-			paddle2DirX = 0;
+			Player2.paddleDirX = 0;
 		}
 	}
 
@@ -645,13 +629,13 @@ function paddleLogic() {
 		console.log("HITT PADDLE 1");
 		// player1.scale.x = 1.5;
 		ballDirZ = -ballDirZ;
-		ballDirX -= paddle1DirX * 0.2;
+		ballDirX -= Player1.paddleDirX * 0.2;
 	}
 	if(player2BBox.intersectsSphere(ballBoundingSphere) == true) {
 		console.log("HITT PADDLE 2");
 		// player1.scale.x = 1.5;
 		ballDirZ = -ballDirZ;
-		ballDirX -= paddle2DirX * 0.2;
+		ballDirX -= Player2.paddleDirX * 0.2;
 	}
 }
 
