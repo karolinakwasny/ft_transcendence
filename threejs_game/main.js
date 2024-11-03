@@ -148,21 +148,27 @@ scene.add(player1);
 
 
 //Player 1 sets
+let		player1Sets  = [3];
+let 	player1SetCount = 0;
 const	player1Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set1Material = new THREE.MeshStandardMaterial({color: 0xff0000});
+const	player1Set1Material = new THREE.MeshStandardMaterial({color: 0xff0000, opacity: 0.2, transparent: true});
 const	player1Set1 = new THREE.Mesh(player1Set1Geometry, player1Set1Material);
 player1Set1.castShadow = true;
 scene.add(player1Set1);
+
+player1Sets[0] = player1Set1;
 
 player1Set1.position.z = 2;
 player1Set1.position.y = 5;
 player1Set1.position.x = -FIELD_WIDTH / 2 -4;
 
 const	player1Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set2Material = new THREE.MeshStandardMaterial({color: 0xff0000});
+const	player1Set2Material = new THREE.MeshStandardMaterial({color: 0xff0000, opacity: 0.2, transparent: true});
 const	player1Set2 = new THREE.Mesh(player1Set2Geometry, player1Set2Material);
 player1Set2.castShadow = true;
 scene.add(player1Set2);
+
+player1Sets[1] = player1Set2;
 
 player1Set2.position.z = 2;
 player1Set2.position.y = 7;
@@ -170,10 +176,12 @@ player1Set2.position.x = -FIELD_WIDTH / 2 -4;
 
 
 const	player1Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set3Material = new THREE.MeshStandardMaterial({color: 0xff0000});
+const	player1Set3Material = new THREE.MeshStandardMaterial({color: 0xff0000, opacity: 0.2, transparent: true});
 const	player1Set3 = new THREE.Mesh(player1Set3Geometry, player1Set3Material);
 player1Set3.castShadow = true;
 scene.add(player1Set3);
+
+player1Sets[2] = player1Set3;
 
 player1Set3.position.z = 2;
 player1Set3.position.y = 3;
@@ -199,21 +207,27 @@ scene.add(player2);
 
 
 //Player2 sets
+let		player2Sets  = [3];
+let		player2SetCount = 0;
 const	player2Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set1Material = new THREE.MeshStandardMaterial({color: 0xffffff});
+const	player2Set1Material = new THREE.MeshStandardMaterial({color: 0xffffff, opacity: 0.2, transparent: true});
 const	player2Set1 = new THREE.Mesh(player2Set1Geometry, player2Set1Material);
 player2Set1.castShadow = true;
 scene.add(player2Set1);
+
+player2Sets[0] = player2Set1;
 
 player2Set1.position.z = -2;
 player2Set1.position.y = 5;
 player2Set1.position.x = -FIELD_WIDTH / 2 -4;
 
 const	player2Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set2Material = new THREE.MeshStandardMaterial({color: 0xffffff});
+const	player2Set2Material = new THREE.MeshStandardMaterial({color: 0xffffff, opacity: 0.2, transparent: true});
 const	player2Set2 = new THREE.Mesh(player2Set2Geometry, player2Set2Material);
 player1Set2.castShadow = true;
 scene.add(player2Set2);
+
+player2Sets[1] = player2Set2;
 
 player2Set2.position.z = -2;
 player2Set2.position.y = 7;
@@ -221,10 +235,12 @@ player2Set2.position.x = -FIELD_WIDTH / 2 -4;
 
 
 const	player2Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set3Material = new THREE.MeshStandardMaterial({color: 0xffffff});
+const	player2Set3Material = new THREE.MeshStandardMaterial({color: 0xffffff, opacity: 0.2, transparent: true});
 const	player2Set3 = new THREE.Mesh(player2Set3Geometry, player2Set3Material);
 player2Set3.castShadow = true;
 scene.add(player2Set3);
+
+player2Sets[2] = player2Set3;
 
 player2Set3.position.z = -2;
 player2Set3.position.y = 3;
@@ -385,6 +401,7 @@ scene.add(innerPLayingField);
 let	outerWallZ1Geometry = new THREE.BoxGeometry(FIELD_WIDTH, OUTER_WALL_HEIGHT, 0.5);
 let	outerWallZ1Material = new THREE.MeshStandardMaterial({color: 0x90384A});
 let	outerWallZ1 = new THREE.Mesh(outerWallZ1Geometry, outerWallZ1Material);
+outerWallZ1.receiveShadow = true;
 scene.add(outerWallZ1);
 
 outerWallZ1.position.z = (-FIELD_LENGTH/2) + (0.5/2);
@@ -393,6 +410,7 @@ outerWallZ1.position.z = (-FIELD_LENGTH/2) + (0.5/2);
 let	outerWallZ2Geometry = new THREE.BoxGeometry(FIELD_WIDTH, OUTER_WALL_HEIGHT, 0.5);
 let	outerWallZ2Material = new THREE.MeshStandardMaterial({color: 0x90384A});
 let	outerWallZ2 = new THREE.Mesh(outerWallZ2Geometry, outerWallZ2Material);
+outerWallZ2.receiveShadow = true;
 scene.add(outerWallZ2);
 
 outerWallZ2.position.z = (FIELD_LENGTH/2) - (0.5/2);
@@ -468,16 +486,38 @@ function	resetBall(lossIndentifier) {
 	}, 800);
 }
 
+function	addSetCount(player) {
+	if (player === 1) {
+		player1Sets[player1SetCount].material.opacity = 1;
+	}	else {
+		player2Sets[player2SetCount].material.opacity = 1;
+	}
+}
+
 function	annouceWinner(player) {
 	if (player == 1) {
 		//player 1 wins
 		console.log("Player 1 wins a set!");
 		document.getElementById("winner1").style.display = "initial";
+
+		//update set
+		player1SetCount++;
+		addSetCount(player);
+		if (player1SetCount === 3) {
+			announceSetWinnet(player);
+		}
 		//stopGame();
 	} else if (player == 2) {
 		//player 2 wins
 		console.log("Player 2 wins a set!");
 		document.getElementById("winner2").style.display = "initial";
+
+		//update set
+		player2SetCount++;
+		addSetCount(player);
+		if (player2SetCount === 3) {
+			announceSetWinnet(player);
+		}
 		//stopGame();
 	}
 }
