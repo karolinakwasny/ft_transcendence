@@ -7,6 +7,31 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
+//GAME START	==========================================================================================================================================
+
+//Variables for configuring the game
+const	FIELD_WIDTH = 30;
+const	FIELD_LENGTH = 42;
+const	FIELD_HEIGHT = 10; //Not used as there is no y direction
+
+const	PLAYER_WIDTH = 4;
+const	PLAYER_HEIGHT = 1;
+const	OUTER_WALL_HEIGHT = 0.8;
+
+//Score
+const	MAX_SCORE = 3;
+
+//Max set count
+const	MAX_SET_COUNT = 3
+
+//Ball
+const	BALL_RADIUS = 0.8;
+const	BALL_SPEED = 2;
+var		BALL_MOVE = true;
+
+//z direction x direction
+var ballDirZ = 1, ballDirX = 1;
+
 //Game start
 var	gameStart = false;
 
@@ -99,24 +124,6 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: soft shadows
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-//GAME START	==========================================================================================================================================
-
-//Variables for configuring the game
-var FIELD_WIDTH = 30;
-var	FIELD_LENGTH = 42;
-var	FIELD_HEIGHT = 10; //Not used as there is no y direction
-
-var	PLAYER_WIDTH = 4;
-var	PLAYER_HEIGHT = 1;
-var OUTER_WALL_HEIGHT = 0.8;
-
-//Ball
-var BALL_RADIUS = 0.8;
-var BALL_SPEED = 2;
-var BALL_MOVE = true;
-
-//z direction x direction
-var ballDirZ = 1, ballDirX = 1;
 
 
 //Player object
@@ -148,7 +155,7 @@ scene.add(player1);
 
 
 //Player 1 sets
-let		player1Sets  = [3];
+let		player1Sets  = [MAX_SET_COUNT];
 let 	player1SetCount = 0;
 const	player1Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
 const	player1Set1Material = new THREE.MeshStandardMaterial({color: 0xff0000, opacity: 0.2, transparent: true});
@@ -159,7 +166,7 @@ scene.add(player1Set1);
 player1Sets[0] = player1Set1;
 
 player1Set1.position.z = 2;
-player1Set1.position.y = 5;
+player1Set1.position.y = 3;
 player1Set1.position.x = -FIELD_WIDTH / 2 -4;
 
 const	player1Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -171,7 +178,7 @@ scene.add(player1Set2);
 player1Sets[1] = player1Set2;
 
 player1Set2.position.z = 2;
-player1Set2.position.y = 7;
+player1Set2.position.y = 5.5;
 player1Set2.position.x = -FIELD_WIDTH / 2 -4;
 
 
@@ -184,7 +191,7 @@ scene.add(player1Set3);
 player1Sets[2] = player1Set3;
 
 player1Set3.position.z = 2;
-player1Set3.position.y = 3;
+player1Set3.position.y = 8;
 player1Set3.position.x = -FIELD_WIDTH / 2 -4;
 
 
@@ -207,7 +214,7 @@ scene.add(player2);
 
 
 //Player2 sets
-let		player2Sets  = [3];
+let		player2Sets  = [MAX_SET_COUNT];
 let		player2SetCount = 0;
 const	player2Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
 const	player2Set1Material = new THREE.MeshStandardMaterial({color: 0xffffff, opacity: 0.2, transparent: true});
@@ -218,7 +225,7 @@ scene.add(player2Set1);
 player2Sets[0] = player2Set1;
 
 player2Set1.position.z = -2;
-player2Set1.position.y = 5;
+player2Set1.position.y = 3;
 player2Set1.position.x = -FIELD_WIDTH / 2 -4;
 
 const	player2Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -230,7 +237,7 @@ scene.add(player2Set2);
 player2Sets[1] = player2Set2;
 
 player2Set2.position.z = -2;
-player2Set2.position.y = 7;
+player2Set2.position.y = 5.5;
 player2Set2.position.x = -FIELD_WIDTH / 2 -4;
 
 
@@ -243,7 +250,7 @@ scene.add(player2Set3);
 player2Sets[2] = player2Set3;
 
 player2Set3.position.z = -2;
-player2Set3.position.y = 3;
+player2Set3.position.y = 8;
 player2Set3.position.x = -FIELD_WIDTH / 2 -4;
 
 
@@ -486,11 +493,47 @@ function	resetBall(lossIndentifier) {
 	}, 800);
 }
 
-function	addSetCount(player) {
+
+function stopGame(player) {
+	//display the end screen
+	score1 = 0;
+	score2 = 0;
+	Player2.playerScore = 0;
+	Player1.playerScore = 0;
+	player1SetCount = 0;
+	player2SetCount = 0;
+	for (let i = 0; i < MAX_SET_COUNT; ++i) {
+		player1Sets[i].material.opacity = 0.2;
+		player2Sets[i].material.opacity = 0.2;
+	}
+	gameStart = false;
+	BALL_MOVE = false;
+
+	document.getElementById('player1_score').innerText = Player2.playerScore;
+	document.getElementById('player2_score').innerText = Player1.playerScore;
+	document.getElementById("winner1").style.display = "none";
+	document.getElementById("winner2").style.display = "none";
+}
+
+function	announceSetWinner(player) {
+	if (1 === player) {
+		console.log("Player 1 has won the entire game!");
+		//Display the winner
+		document.getElementById("game_winner1").style.display = "initial";
+		updateScore(0, 1);
+	} else {
+		console.log("Player 2 has won the entire game!");
+		//Display the winner
+		document.getElementById("game_winner2").style.display = "initial";
+		updateScore(0, 1);
+	}
+}
+
+function	addSetCount(player, playerSetCount) {
 	if (player === 1) {
-		player1Sets[player1SetCount].material.opacity = 1;
+		player1Sets[playerSetCount].material.opacity = 1;
 	}	else {
-		player2Sets[player2SetCount].material.opacity = 1;
+		player2Sets[playerSetCount].material.opacity = 1;
 	}
 }
 
@@ -502,11 +545,15 @@ function	annouceWinner(player) {
 
 		//update set
 		player1SetCount++;
-		addSetCount(player);
-		if (player1SetCount === 3) {
-			announceSetWinnet(player);
+		console.log("Player 1 Set Count: " + player1SetCount);
+		if (player1SetCount <= MAX_SET_COUNT) {
+			addSetCount(player, player1SetCount - 1);
 		}
-		//stopGame();
+
+		if (player1SetCount === MAX_SET_COUNT) {
+			announceSetWinner(player);
+			stopGame();
+		}
 	} else if (player == 2) {
 		//player 2 wins
 		console.log("Player 2 wins a set!");
@@ -514,11 +561,14 @@ function	annouceWinner(player) {
 
 		//update set
 		player2SetCount++;
-		addSetCount(player);
-		if (player2SetCount === 3) {
-			announceSetWinnet(player);
+		console.log("Player 2 Set Count: " + player2SetCount);
+		if (player2SetCount <= MAX_SET_COUNT) {
+			addSetCount(player, player2SetCount - 1);
 		}
-		//stopGame();
+		if (player2SetCount === MAX_SET_COUNT) {
+			announceSetWinner(player);
+			stopGame();
+		}
 	}
 }
 
@@ -528,13 +578,18 @@ function	ballMovement() {
 		outerWallZ2.material.color.set(0xFFFFFF);
 		Player2.playerScore++;
 		updateScore(Player2.playerScore, 2);
-		if (Player2.playerScore == 10) {
+		if (0 === Player2.playerScore % MAX_SCORE) {
 			annouceWinner(2);
+			document.getElementById("winner2").style.display = "none";
+			Player2.playerScore = 0;
+			Player1.playerScore = 0;
+			updateScore(Player2.playerScore, 2);
+			updateScore(Player1.playerScore, 1);
+			document.getElementById('player1_score').innerText = Player1.playerScore;
 		}
 		Player2.canPlayerScore = false;
 		console.log("Player 2 Scores!! Score: ", Player2.playerScore);
 		document.getElementById('player2_score').innerText = Player2.playerScore;
-
 		resetBall(1);
 	}
 
@@ -543,8 +598,14 @@ function	ballMovement() {
 		outerWallZ1.material.color.set(0xFF0000);
 		Player1.playerScore++;
 		updateScore(Player1.playerScore, 1);
-		if (Player1.playerScore == 10) {
+		if (0 === Player1.playerScore % MAX_SCORE) {
 			annouceWinner(1);
+			document.getElementById("winner1").style.display = "none";
+			Player1.playerScore = 0;
+			Player2.playerScore = 0;
+			updateScore(Player1.playerScore, 1);
+			updateScore(Player2.playerScore, 2);
+			document.getElementById('player2_score').innerText = Player2.playerScore;
 		}
 		Player1.canScorePlayer = false;
 		console.log("Player 1 Scores!! Score: ", Player1.playerScore);
