@@ -1,272 +1,16 @@
 import './style.css';
 import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import {OBJLoader} from 'three/addons/loaders/OBJLoader.js'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import {scene, renderer, camera} from './start_threejs_and_lights.js';
+
+//My imports
+import	{movePlayer, keysPressed} from './player_controls.js';
+import {Player1, Player2, player1, player2, player1BBox, player2BBox, player1Sets, player2Sets, player1SetCount, player2SetCount} from './player_variables.js';
+import { setPlayer1SetCount, setPlayer2SetCount, incrementPlayer1SetCountByOne, incrementPlayer2SetCountByOne } from './player_variables.js';
+import { FIELD_WIDTH, FIELD_HEIGHT, FIELD_LENGTH } from './field_variables.js';
+import * as GlobalVar from './global_variables.js';
 
-//GAME START	==========================================================================================================================================
-
-//Variables for configuring the game
-const	FIELD_WIDTH = 30;
-const	FIELD_LENGTH = 42;
-const	FIELD_HEIGHT = 10; //Not used as there is no y direction
-
-const	PLAYER_WIDTH = 4;
-const	PLAYER_HEIGHT = 1;
-const	OUTER_WALL_HEIGHT = 0.8;
-
-//Score
-const	MAX_SCORE = 3;
-
-//Max set count
-const	MAX_SET_COUNT = 3
-
-//Ball
-const	BALL_RADIUS = 0.8;
-const	BALL_SPEED = 2;
-var		BALL_MOVE = true;
-
-//z direction x direction
-var ballDirZ = 1, ballDirX = 1;
-
-//Game start
-var	gameStart = false;
-
-//Setting up rendering ==============================================================================================================================================
-
-//GUI
-const gui = new dat.GUI();
-
-//STARTING THREEJS
-const scene = new THREE.Scene();
-
-const aspect = window.innerWidth / window.innerHeight;
-
-const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-camera.position.set(20, 20, 20);
-camera.lookAt(0, 1, 0); // Look at the center of the field
-
-//Adding directional lighting
-const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.5);
-directionalLight.shadow.mapSize.width = 512; // Size of the shadow map
-directionalLight.shadow.mapSize.height = 512;
-
-
-// Adjust shadow camera to control the width and height of the light's effect
-directionalLight.shadow.camera.left = -FIELD_WIDTH / 2; 
-directionalLight.shadow.camera.right = FIELD_WIDTH / 2; 
-directionalLight.shadow.camera.top = FIELD_LENGTH / 2; 
-directionalLight.shadow.camera.bottom = -FIELD_LENGTH / 2; 
-
-
-scene.add(directionalLight);
-directionalLight.position.set(0, 30, 0);
-directionalLight.castShadow = true;
-
-//directional light helper
-// const directionalLighthelper = new THREE.DirectionalLightHelper( directionalLight, 10 );
-// scene.add( directionalLighthelper );
-
-//Ambient light
-const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.2);
-scene.add(ambientLight);
-
-const spotLight = new THREE.SpotLight( 0xffffff, 800 );
-// spotLight.position.set( 0, 50, 0 );
-// spotLight.map = new THREE.TextureLoader().load( url );
-
-spotLight.castShadow = true;
-
-spotLight.shadow.mapSize.width = 2048;
-spotLight.shadow.mapSize.height = 2048;
-spotLight.shadow.camera.near = 10;
-spotLight.shadow.camera.far = 20;
-spotLight.shadow.camera.fov = 30;
-
-
-spotLight.position.set(0, 20, 0);  // Positioned above the field
-spotLight.target.position.set(0, 0, 0);  // Ensure the light targets the center of the field
-scene.add(spotLight.target);
-
-
-scene.add( spotLight );
-
-
-// //directional light helper
-
-// const spotLighthelper = new THREE.SpotLightHelper( spotLight, 10 );
-// scene.add( spotLighthelper );
-
-// Optional: Helper to visualize the shadow camera frustum
-// const shadowCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
-// scene.add(shadowCameraHelper);
-
-// const directionalCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-// scene.add(directionalCameraHelper);
-
-
-camera.position.set(20, 20, 20);
-
-camera.lookAt(0, 0, 0);
-
-//Rendering
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setAnimationLoop( animate );
-document.body.appendChild(renderer.domElement);
-
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: soft shadows
-
-const controls = new OrbitControls(camera, renderer.domElement);
-
-
-
-//Player object
-
-function createPlayer() {
-    this.paddleDirX = 0;
-    this.paddleDirY = 0;
-    this.playerScore = 0;
-    this.playerSetScore = 0;
-    this.canPlayerScore = true;
-}
-
-function createPlayerConstructionObject(color = 0xff0000, positionZ = 0, positionY = 0, width = 4, height = 1) {
-	const playerGeometry = new THREE.BoxGeometry(width, height, 1);
-	const playerMaterial = new THREE.MeshStandardMaterial({ color: color });
-	const playerMesh = new THREE.Mesh(playerGeometry, playerMaterial);
-
-	playerMesh.castShadow = true;
-	playerMesh.position.z = positionZ;
-	playerMesh.position.y = positionY;
-
-	return playerMesh; // Directly return the mesh if no other properties are needed
-}
-
-//Player1
-const Player1 = new createPlayer();
-const player1 =  createPlayerConstructionObject(0xff0000, FIELD_LENGTH/2 -1.5, 1.6);
-scene.add(player1);
-
-
-//Player 1 sets
-let		player1Sets  = [MAX_SET_COUNT];
-let 	player1SetCount = 0;
-const	player1Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set1Material = new THREE.MeshStandardMaterial({color: 0xff0000, opacity: 0.2, transparent: true});
-const	player1Set1 = new THREE.Mesh(player1Set1Geometry, player1Set1Material);
-player1Set1.castShadow = true;
-scene.add(player1Set1);
-
-player1Sets[0] = player1Set1;
-
-player1Set1.position.z = 2;
-player1Set1.position.y = 3;
-player1Set1.position.x = -FIELD_WIDTH / 2 -4;
-
-const	player1Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set2Material = new THREE.MeshStandardMaterial({color: 0xff0000, opacity: 0.2, transparent: true});
-const	player1Set2 = new THREE.Mesh(player1Set2Geometry, player1Set2Material);
-player1Set2.castShadow = true;
-scene.add(player1Set2);
-
-player1Sets[1] = player1Set2;
-
-player1Set2.position.z = 2;
-player1Set2.position.y = 5.5;
-player1Set2.position.x = -FIELD_WIDTH / 2 -4;
-
-
-const	player1Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player1Set3Material = new THREE.MeshStandardMaterial({color: 0xff0000, opacity: 0.2, transparent: true});
-const	player1Set3 = new THREE.Mesh(player1Set3Geometry, player1Set3Material);
-player1Set3.castShadow = true;
-scene.add(player1Set3);
-
-player1Sets[2] = player1Set3;
-
-player1Set3.position.z = 2;
-player1Set3.position.y = 8;
-player1Set3.position.x = -FIELD_WIDTH / 2 -4;
-
-
-//Bounding Box Player1
-const	player1BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-
-const player1BBoxHelper = new THREE.BoxHelper(player1, 0xffff00); // Yellow wireframe color
-scene.add(player1BBoxHelper);
-
-player1BBox.setFromObject(player1);
-console.log(player1BBox);
-
-
-
-
-//Player2
-const Player2 = new createPlayer();
-const player2 =  createPlayerConstructionObject(0xFFFFFF, -FIELD_LENGTH/2 + 1.5, 1.6);
-scene.add(player2);
-
-
-//Player2 sets
-let		player2Sets  = [MAX_SET_COUNT];
-let		player2SetCount = 0;
-const	player2Set1Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set1Material = new THREE.MeshStandardMaterial({color: 0xffffff, opacity: 0.2, transparent: true});
-const	player2Set1 = new THREE.Mesh(player2Set1Geometry, player2Set1Material);
-player2Set1.castShadow = true;
-scene.add(player2Set1);
-
-player2Sets[0] = player2Set1;
-
-player2Set1.position.z = -2;
-player2Set1.position.y = 3;
-player2Set1.position.x = -FIELD_WIDTH / 2 -4;
-
-const	player2Set2Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set2Material = new THREE.MeshStandardMaterial({color: 0xffffff, opacity: 0.2, transparent: true});
-const	player2Set2 = new THREE.Mesh(player2Set2Geometry, player2Set2Material);
-player1Set2.castShadow = true;
-scene.add(player2Set2);
-
-player2Sets[1] = player2Set2;
-
-player2Set2.position.z = -2;
-player2Set2.position.y = 5.5;
-player2Set2.position.x = -FIELD_WIDTH / 2 -4;
-
-
-const	player2Set3Geometry = new THREE.BoxGeometry(1, 1, 1);
-const	player2Set3Material = new THREE.MeshStandardMaterial({color: 0xffffff, opacity: 0.2, transparent: true});
-const	player2Set3 = new THREE.Mesh(player2Set3Geometry, player2Set3Material);
-player2Set3.castShadow = true;
-scene.add(player2Set3);
-
-player2Sets[2] = player2Set3;
-
-player2Set3.position.z = -2;
-player2Set3.position.y = 8;
-player2Set3.position.x = -FIELD_WIDTH / 2 -4;
-
-
-//Bounding Box Player2
-const	player2BBox = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-
-const player2BBoxHelper = new THREE.BoxHelper(player2, 0xffff00); // Yellow wireframe color
-scene.add(player2BBoxHelper);
-
-player2BBox.setFromObject(player2);
-console.log(player2BBox);
-
-
-
-let score1 = 0;
-let score2 = 0;
 
 //SCORE TEXTS	===================================================================================================================================
 
@@ -279,8 +23,8 @@ loader.load("./fonts/Poppins_Bold.json", function (font) {
     loadedFont = font;  // Store the loaded font
 
     // Initial display of score
-    createText(score1, 1);
-	createText(score2, 2);
+    createText(GlobalVar.score1, 1);
+	createText(GlobalVar.score2, 2);
 });
 
 // Function to create the text and update the scene
@@ -340,20 +84,20 @@ function startBallMovement() {
 	const	randomXNumber = Math.random();
 
 	if (randomXNumber > 0.5) {
-		ballDirX = -1;
+		GlobalVar.setBallDirX(-1);
 	} else {
-		ballDirX = 1
+		GlobalVar.setBallDirX(1);
 	}
 
 	//Zdirection
 	const	randomYNumber = Math.random();
 	if (randomYNumber > 0.5) {
-		ballDirZ = -1;
+		GlobalVar.setBallDirZ(-1);
 	} else {
-		ballDirZ = 1
+		GlobalVar.setBallDirZ(1);
 	}
 
-	gameStart = true;
+	GlobalVar.setGameStart(true);
 }
 
 //=============PLAYER MOVEMENT SECTION===================
@@ -405,7 +149,7 @@ innerPLayingField.receiveShadow = true;
 scene.add(innerPLayingField);
 
 //Outer playing field wall z1
-let	outerWallZ1Geometry = new THREE.BoxGeometry(FIELD_WIDTH, OUTER_WALL_HEIGHT, 0.5);
+let	outerWallZ1Geometry = new THREE.BoxGeometry(FIELD_WIDTH, GlobalVar.OUTER_WALL_HEIGHT, 0.5);
 let	outerWallZ1Material = new THREE.MeshStandardMaterial({color: 0x90384A});
 let	outerWallZ1 = new THREE.Mesh(outerWallZ1Geometry, outerWallZ1Material);
 outerWallZ1.receiveShadow = true;
@@ -414,7 +158,7 @@ scene.add(outerWallZ1);
 outerWallZ1.position.z = (-FIELD_LENGTH/2) + (0.5/2);
 
 //Outer playing field wall z2
-let	outerWallZ2Geometry = new THREE.BoxGeometry(FIELD_WIDTH, OUTER_WALL_HEIGHT, 0.5);
+let	outerWallZ2Geometry = new THREE.BoxGeometry(FIELD_WIDTH, GlobalVar.OUTER_WALL_HEIGHT, 0.5);
 let	outerWallZ2Material = new THREE.MeshStandardMaterial({color: 0x90384A});
 let	outerWallZ2 = new THREE.Mesh(outerWallZ2Geometry, outerWallZ2Material);
 outerWallZ2.receiveShadow = true;
@@ -423,7 +167,7 @@ scene.add(outerWallZ2);
 outerWallZ2.position.z = (FIELD_LENGTH/2) - (0.5/2);
 
 //Outer playing field wall x1
-let	outerWallX1Geometry = new THREE.BoxGeometry(0.5, OUTER_WALL_HEIGHT, FIELD_LENGTH-1);
+let	outerWallX1Geometry = new THREE.BoxGeometry(0.5, GlobalVar.OUTER_WALL_HEIGHT, FIELD_LENGTH-1);
 let	outerWallX1Material = new THREE.MeshStandardMaterial({color: 0x1F2135});
 let	outerWallX1 = new THREE.Mesh(outerWallX1Geometry, outerWallX1Material);
 scene.add(outerWallX1);
@@ -431,7 +175,7 @@ scene.add(outerWallX1);
 outerWallX1.position.x = (-FIELD_WIDTH/2) + (0.5/2);
 
 //Outer playing field wall x2
-let	outerWallX2Geometry = new THREE.BoxGeometry(0.5, OUTER_WALL_HEIGHT, FIELD_LENGTH-1);
+let	outerWallX2Geometry = new THREE.BoxGeometry(0.5, GlobalVar.OUTER_WALL_HEIGHT, FIELD_LENGTH-1);
 let	outerWallX2Material = new THREE.MeshStandardMaterial({color: 0x1F2135});
 let	outerWallX2 = new THREE.Mesh(outerWallX2Geometry, outerWallX2Material);
 scene.add(outerWallX2);
@@ -457,7 +201,7 @@ const ball = new THREE.Mesh(ballGeometry, ballMaterial);
 ball.castShadow = true;
 scene.add(ball);
 
-const ballBoundingSphere = new THREE.Sphere(ball.position, BALL_RADIUS);
+const ballBoundingSphere = new THREE.Sphere(ball.position, GlobalVar.BALL_RADIUS);
 
 ball.position.x = 0;
 ball.position.z = 0;
@@ -467,7 +211,7 @@ ball.position.y = 1.6;
 function	resetBall(lossIndentifier) {
 	ball.position.x = 0;
 	ball.position.z = 0;
-	BALL_MOVE = false;
+	GlobalVar.setBallMove(false);
 	let count = 3;
 	const timer = setInterval(function() {
 		count--;
@@ -478,17 +222,17 @@ function	resetBall(lossIndentifier) {
 		
 			// ballSpeed = 2;
 			if (lossIndentifier == 1) {
-				ballDirX = -1;
+				GlobalVar.setBallDirX(-1);
 			} else {
-				ballDirX = +1;
+				GlobalVar.setBallDirX(+1);
 			}
 		
 			if (lossIndentifier == 1) {
-				ballDirZ = -1;
+				GlobalVar.setBallDirZ(-1);
 			} else {
-				ballDirZ = +1;
+				GlobalVar.setBallDirZ(+1);
 			}
-			BALL_MOVE = true;
+			GlobalVar.setBallMove(true);
 		}
 	}, 800);
 }
@@ -496,8 +240,8 @@ function	resetBall(lossIndentifier) {
 
 function stopGame(player) {
 	//display the end screen
-	score1 = 0;
-	score2 = 0;
+	GlobalVar.score1 = 0;
+	GlobalVar.score2 = 0;
 	Player2.playerScore = 0;
 	Player1.playerScore = 0;
 	player1SetCount = 0;
@@ -506,8 +250,8 @@ function stopGame(player) {
 		player1Sets[i].material.opacity = 0.2;
 		player2Sets[i].material.opacity = 0.2;
 	}
-	gameStart = false;
-	BALL_MOVE = false;
+	GlobalVar.setGameStart(false);
+	GlobalVar.setBallMove(false);
 
 	document.getElementById('player1_score').innerText = Player2.playerScore;
 	document.getElementById('player2_score').innerText = Player1.playerScore;
@@ -544,13 +288,13 @@ function	annouceWinner(player) {
 		document.getElementById("winner1").style.display = "initial";
 
 		//update set
-		player1SetCount++;
+		incrementPlayer1SetCountByOne();
 		console.log("Player 1 Set Count: " + player1SetCount);
-		if (player1SetCount <= MAX_SET_COUNT) {
+		if (player1SetCount <= GlobalVar.MAX_SET_COUNT) {
 			addSetCount(player, player1SetCount - 1);
 		}
 
-		if (player1SetCount === MAX_SET_COUNT) {
+		if (player1SetCount === GlobalVar.MAX_SET_COUNT) {
 			announceSetWinner(player);
 			stopGame();
 		}
@@ -560,12 +304,12 @@ function	annouceWinner(player) {
 		document.getElementById("winner2").style.display = "initial";
 
 		//update set
-		player2SetCount++;
+		incrementPlayer2SetCountByOne();
 		console.log("Player 2 Set Count: " + player2SetCount);
-		if (player2SetCount <= MAX_SET_COUNT) {
+		if (player2SetCount <= GlobalVar.MAX_SET_COUNT) {
 			addSetCount(player, player2SetCount - 1);
 		}
-		if (player2SetCount === MAX_SET_COUNT) {
+		if (player2SetCount === GlobalVar.MAX_SET_COUNT) {
 			announceSetWinner(player);
 			stopGame();
 		}
@@ -578,7 +322,7 @@ function	ballMovement() {
 		outerWallZ2.material.color.set(0xFFFFFF);
 		Player2.playerScore++;
 		updateScore(Player2.playerScore, 2);
-		if (0 === Player2.playerScore % MAX_SCORE) {
+		if (0 === Player2.playerScore % GlobalVar.MAX_SCORE) {
 			annouceWinner(2);
 			document.getElementById("winner2").style.display = "none";
 			Player2.playerScore = 0;
@@ -598,7 +342,7 @@ function	ballMovement() {
 		outerWallZ1.material.color.set(0xFF0000);
 		Player1.playerScore++;
 		updateScore(Player1.playerScore, 1);
-		if (0 === Player1.playerScore % MAX_SCORE) {
+		if (0 === Player1.playerScore % GlobalVar.MAX_SCORE) {
 			annouceWinner(1);
 			document.getElementById("winner1").style.display = "none";
 			Player1.playerScore = 0;
@@ -614,7 +358,7 @@ function	ballMovement() {
 		resetBall(2);  // Reset ball after 1 second
 	}
 
-	if (ball.position.x >= (FIELD_WIDTH / 2) - BALL_RADIUS) {
+	if (ball.position.x >= (FIELD_WIDTH / 2) - GlobalVar.BALL_RADIUS) {
 		outerWallX2.material.color.set(0x2C2F4B);
 		let count = 3;
 		const timer = setInterval(function() {
@@ -624,12 +368,12 @@ function	ballMovement() {
 				outerWallX2.material.color.set(0x1F2135);
 			}
 		}, 300);
-		ballDirX = -1;
+		GlobalVar.setBallDirX(-1);
 	}
 
-	if (ball.position.x <= -(FIELD_WIDTH / 2) + BALL_RADIUS) {
+	if (ball.position.x <= -(FIELD_WIDTH / 2) + GlobalVar.BALL_RADIUS) {
 		outerWallX1.material.color.set(0x2C2F4B);
-		ballDirX = +1;
+		GlobalVar.setBallDirX(+1);
 		let count = 3;
 		const timer = setInterval(function() {
 			count--;
@@ -641,81 +385,6 @@ function	ballMovement() {
 	}
 
 }
-
-const keysPressed = {};
-
-document.body.addEventListener("keydown", (e) => {
-  keysPressed[e.key] = true;
-  //console.log("KeyPressed: ", keysPressed);
-  movePlayer();
-});
-
-document.body.addEventListener("keyup", (ev) => {
-	//Player1
-	if (keysPressed['a']) {
-		Player1.paddleDirX = 0;
-	}
-	if (keysPressed['d']) {
-		Player1.paddleDirX = 0;
-	}
-
-	//Player2
-	if (keysPressed['l']) {
-		Player2.paddleDirX = 0;
-	}
-	if (keysPressed['j']) {
-		Player2.paddleDirX = 0;
-	}
-	keysPressed[ev.key] = false;
-});
-
-function playerOne() {
-	if (keysPressed['a']) {
-		if (player1.position.x - PLAYER_WIDTH / 2 >= (-FIELD_WIDTH / 2) + 0.5 ) {
-			Player1.paddleDirX = -1;
-		} else {
-			Player1.paddleDirX = 0;
-		}
-	}
-
-	if ( keysPressed['d']) {
-		if (player1.position.x + PLAYER_WIDTH / 2 <= (FIELD_WIDTH / 2)  - 0.5 ) {
-			Player1.paddleDirX = 1;
-		} else {
-			Player1.paddleDirX = 0;
-		}
- 	}
-
-	player1.position.x += Player1.paddleDirX * 0.5;
-	player1BBoxHelper.update();         // Update the wireframe position
-}
-
-function playerTwo() {
-	if (keysPressed['j']) {
-		if (player2.position.x - PLAYER_WIDTH / 2 >= (-FIELD_WIDTH / 2) + 0.5 ) {
-			Player2.paddleDirX = -1;
-		} else {
-			Player2.paddleDirX = 0;
-		}
-	}
-
-	if ( keysPressed['l']) {
-		if (player2.position.x + PLAYER_WIDTH / 2 <= (FIELD_WIDTH / 2)  - 0.5 ) {
-			Player2.paddleDirX = 1;
-		} else {
-			Player2.paddleDirX = 0;
-		}
-	}
-
-
-	player2.position.x += Player2.paddleDirX;
-	player2BBoxHelper.update();         // Update the wireframe position
-}
-
-function movePlayer() {
-	playerOne();
-	playerTwo();
-};
 
 
 //paddle logic
@@ -729,41 +398,41 @@ function paddleLogic() {
 	if(player1BBox.intersectsSphere(ballBoundingSphere) == true) {
 		console.log("HITT PADDLE 1");
 		// player1.scale.x = 1.5;
-		ballDirZ = -ballDirZ;
-		ballDirX -= Player1.paddleDirX * 0.2;
+		GlobalVar.setBallDirZ(-GlobalVar.ballDirZ);
+		GlobalVar.setBallDirX(GlobalVar.ballDirX - (Player1.paddleDirX * 0.2));
 	}
 	if(player2BBox.intersectsSphere(ballBoundingSphere) == true) {
 		console.log("HITT PADDLE 2");
 		// player1.scale.x = 1.5;
-		ballDirZ = -ballDirZ;
-		ballDirX -= Player2.paddleDirX * 0.2;
+		GlobalVar.setBallDirZ(-GlobalVar.ballDirZ);
+		GlobalVar.setBallDirX(GlobalVar.ballDirX - (Player2.paddleDirX * 0.2));
 	}
 }
 
 function ballMove() {
-	if (BALL_MOVE) {
-		ball.position.x += ballDirX * 0.1;
-		ball.position.z += ballDirZ * 0.1;
+	if (GlobalVar.BALL_MOVE) {
+		ball.position.x += GlobalVar.ballDirX * 0.1;
+		ball.position.z += GlobalVar.ballDirZ * 0.1;
 	}
 }
 
 function rotateSets() {
-	player1Set1.rotation.x -= 0.01;
-	player1Set2.rotation.x += 0.01;	
-	player1Set3.rotation.x += 0.01;
+	player1Sets[0].rotation.x -= 0.01;
+	player1Sets[1].rotation.x += 0.01;	
+	player1Sets[2].rotation.x += 0.01;
 
-	player1Set1.rotation.y += 0.01;
-	player1Set2.rotation.y -= 0.01;	
-	player1Set3.rotation.y += 0.01;
+	player1Sets[0].rotation.y += 0.01;
+	player1Sets[1].rotation.y -= 0.01;	
+	player1Sets[2].rotation.y += 0.01;
 
 
-	player2Set1.rotation.x += 0.01;
-	player2Set2.rotation.x -= 0.01;	
-	player2Set3.rotation.x += 0.01;
+	player2Sets[0].rotation.x += 0.01;
+	player2Sets[1].rotation.x -= 0.01;	
+	player2Sets[2].rotation.x += 0.01;
 
-	player2Set1.rotation.y += 0.01;
-	player2Set2.rotation.y += 0.01;	
-	player2Set3.rotation.y -= 0.01;
+	player2Sets[0].rotation.y += 0.01;
+	player2Sets[1].rotation.y += 0.01;	
+	player2Sets[2].rotation.y -= 0.01;
 
 
 }
@@ -773,13 +442,17 @@ function animate() {
 
 	rotateSets();
 	renderer.setAnimationLoop(animate);
-	if (gameStart == false) {
+	if (GlobalVar.gameStart === false) {
 		startBallMovement();
 	}
 	paddleLogic();
 	ballMovement();
 	ballMove();
 }
+
+export {animate};
+
+
 
 
 
@@ -789,7 +462,6 @@ window.addEventListener('resize', function() {
   camera.right = d * aspect;
   camera.top = d;
   camera.bottom = -d;
-  camera.updateProjectionMatrix();
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
