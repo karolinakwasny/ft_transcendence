@@ -240,13 +240,13 @@ function	resetBall(lossIndentifier) {
 
 function stopGame(player) {
 	//display the end screen
-	GlobalVar.score1 = 0;
-	GlobalVar.score2 = 0;
+	GlobalVar.setScore1(0);
+	GlobalVar.setScore2(0);
 	Player2.playerScore = 0;
 	Player1.playerScore = 0;
-	player1SetCount = 0;
-	player2SetCount = 0;
-	for (let i = 0; i < MAX_SET_COUNT; ++i) {
+	setPlayer1SetCount(0);
+	setPlayer2SetCount(0);
+	for (let i = 0; i < GlobalVar.MAX_SET_COUNT; ++i) {
 		player1Sets[i].material.opacity = 0.2;
 		player2Sets[i].material.opacity = 0.2;
 	}

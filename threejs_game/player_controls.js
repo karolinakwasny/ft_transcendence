@@ -1,6 +1,5 @@
-import {Player1, Player2, player1, player2, player1BBox, player1BBoxHelper, player2BBox, player2BBoxHelper} from './player_variables.js';
+import {PLAYER_WIDTH, Player1, Player2, player1, player2, player1BBox, player1BBoxHelper, player2BBox, player2BBoxHelper} from './player_variables.js';
 import { FIELD_WIDTH, FIELD_LENGTH, FIELD_HEIGHT } from './field_variables.js';
-import { PLAYER_WIDTH} from './global_variables.js';
 
 const keysPressed = {};
 

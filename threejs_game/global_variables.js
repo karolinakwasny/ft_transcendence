@@ -1,11 +1,8 @@
-//GAME START	==========================================================================================================================================
 
-export	const	PLAYER_WIDTH = 4;
-export	const	PLAYER_HEIGHT = 1;
 export	const	OUTER_WALL_HEIGHT = 0.8;
 
 //Score
-export	const	MAX_SCORE = 3;
+export	const	MAX_SCORE = 1;
 
 //Max set count
 export	const	MAX_SET_COUNT = 3
@@ -13,6 +10,10 @@ export	const	MAX_SET_COUNT = 3
 //Ball
 export	const	BALL_RADIUS = 0.8;
 export	const	BALL_SPEED = 2;
+
+export	let score1 = 0;
+export	let score2 = 0;
+
 export	var		BALL_MOVE = true;
 
 //z direction x direction
@@ -40,7 +41,18 @@ export function setBallMove(trueOrFalse) {
 	BALL_MOVE = trueOrFalse;
 }
 
+export function setScore1(points) {
+	score1 = points;
+}
 
+export function setScore2(points) {
+	score2 = points;
+}
 
-export	let score1 = 0;
-export	let score2 = 0;
+export function incrementScore1() {
+	score1++;
+}
+
+export function incrementScore2() {
+	score2++;
+}

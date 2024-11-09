@@ -5,6 +5,9 @@ import * as GlobalVar from './global_variables.js';
 import { FIELD_LENGTH, FIELD_WIDTH, FIELD_HEIGHT } from "./field_variables";
 import {scene} from './start_threejs_and_lights';
 
+export	const	PLAYER_WIDTH = 4;
+export	const	PLAYER_HEIGHT = 1;
+
 //Player object
 function createPlayer() {
     this.paddleDirX = 0;
