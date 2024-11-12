@@ -1,0 +1,111 @@
+#cover {
+	/* border: 1px solid white; */
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	background-image: radial-gradient(farthest-side at 130% 90%, #E84646 3%, #54364B 40%, #2C2F4B 57%, #1F2135 97%);
+}
+
+body {
+	position: relative;
+}
+
+.checkboxLabel {
+	/* border: 1px solid red; */
+	font-family: "Poppins", sans-serif;
+	color: white;
+}
+
+#buttonHolder {
+	display: flex;
+	/*Debugging*/
+	justify-content: center;
+	/* padding-left: 1rem; */
+	/* padding-right: 1rem; */
+	gap: 2rem;
+	/* border: 1px solid yellow; */
+}
+
+#remoteIdHolder {
+	margin-top: 2rem;
+	display: none;
+}
+
+#localIdHolder {
+	margin-top: 2rem;
+	display: initial;
+}
+
+#cover {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+}
+
+.gamePageButton {
+	font-family: "Poppins", sans-serif;
+	font-size: 1.05rem;
+	font-weight: 600;
+	background-color: #90384A;
+	color: #1B1C2D;
+	width: 160px;
+	height: 50px;
+	border-radius: 0.5rem;
+	border: none;
+	margin-top: 3rem;
+}
+
+.gamePageButton:hover {
+	background-color: #E84646;
+	color: #ffffff;
+}
+
+.radioBoxLabel {
+	border: 1px solid white;
+	font-family: "Poppins", sans-serif;
+	font-size: 1rem;
+	color: white;
+	border-radius: 0.5rem;
+	padding-left: 2rem;
+	padding-right: 2rem;
+	padding-top: 0.8rem;
+	padding-bottom: 0.8rem;
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+}
+
+.gameChoice {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+	background-color: white;
+}
+
+.gameChoice:checked {
+	background-color: #E84646;
+}
+
+#computerModel {
+	margin-right: 4rem;
+	margin-left: -4rem;
+	/* border: 1px red solid; */
+	width: 600px;
+	height: 600px;
+
+}
+
+#beforeStartButton {
+	/* border: 1px solid yellow; */
+	display: flex;
+	flex-direction: column;
+}
