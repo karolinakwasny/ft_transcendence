@@ -17,37 +17,36 @@
 							<label class="radioBoxLabel"><input type="radio" name="gameOption" value="Remote" id="remoteGame" class="gameChoice" onclick="isOptionWithFieldSelected('REMOTE')">Remote</label>
 							<label class="radioBoxLabel"><input type="radio" name="gameOption" value="Computer" id="" class="gameChoice" onclick="isOptionWithFieldSelected('COMPUTER')">Computer</label>
 						</div>
-						<div id="localIdHolder"><input type="text"></div>
-						<div id="remoteIdHolder"><input type="text"></div>
+						<div id="localGamePlayerNames">
+							<div id="localIdHolder"><input type="text" placeholder="Player1"></div>
+							<div id="localIdHolder"><input type="text" placeholder="Player2"></div>
+						</div>
+						<div id="remoteIdHolder"><input type="text" placeholder="Lobby code"></div>
 					</div>
 					<button type="submit" class="gamePageButton">START GAME</button>
 				</div>
 				<script>
 					function isOptionWithFieldSelected(gameChoice) {
+						let	localField = document.getElementById('localGamePlayerNames');
+						let	remoteField = document.getElementById('remoteIdHolder');
 						if ("REMOTE" === gameChoice || "LOCAL" === gameChoice) {
 							if ("REMOTE" === gameChoice) {
 								var	remoteGame = document.getElementById('remoteGame');
 								if (remoteGame.checked === true) {
 									console.log("remote game has been chosen!");
-									let	remoteField = document.getElementById('remoteIdHolder');
 									remoteField.style.display = "initial";
-									let	localField = document.getElementById('localIdHolder');
 									localField.style.display = "none";
 								}
 							} else if ("LOCAL" === gameChoice) {
 							var	localGame = document.getElementById('localGame');
 							if (localGame.checked === true) {
 								console.log("local game has been chosen!");
-								let	localField = document.getElementById('localIdHolder');
-								localField.style.display = "initial";
-								let	remoteField = document.getElementById('remoteIdHolder');
+								localField.style.display = "flex";
 								remoteField.style.display = "none";
 							}
 						}
 						} else {
-							let	remoteField = document.getElementById('remoteIdHolder');
 							remoteField.style.display = "none";
-							let	localField = document.getElementById('localIdHolder');
 							localField.style.display = "none";
 						}
 					}

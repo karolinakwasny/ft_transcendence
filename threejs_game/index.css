@@ -109,3 +109,9 @@ body {
 	display: flex;
 	flex-direction: column;
 }
+
+#localGamePlayerNames {
+	/* border: 1px solid red; */
+	display: flex;
+	gap: 2.5rem;
+}
