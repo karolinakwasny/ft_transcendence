@@ -1,67 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8">
-		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="index.css">
-    	<title>Index</title>
-  	</head>
-	<body style="margin: 0;">
-			<form action="" id="cover">
-				<canvas id="computerModel"><script type="module" src="./gameChoicePage.js"></script></canvas>
-				<div>
-					<div id="beforeStartButton">
-						<div id="buttonHolder">
-							<label class="radioBoxLabel"><input type="radio" name="gameOption" value="Local" id="localGame" class="gameChoice" onclick="isOptionWithFieldSelected('LOCAL')" checked>Local</label>
-							<label class="radioBoxLabel"><input type="radio" name="gameOption" value="Remote" id="remoteGame" class="gameChoice" onclick="isOptionWithFieldSelected('REMOTE')">Remote</label>
-							<label class="radioBoxLabel"><input type="radio" name="gameOption" value="Computer" id="" class="gameChoice" onclick="isOptionWithFieldSelected('COMPUTER')">Computer</label>
-						</div>
-						<div id="localGamePlayerNames">
-							<div id="localIdHolder"><input type="text" placeholder="Player1"></div>
-							<div id="localIdHolder"><input type="text" placeholder="Player2"></div>
-						</div>
-						<div id="remoteIdHolder"><input type="text" placeholder="Lobby code"></div>
-					</div>
-					<button type="submit" class="gamePageButton">START GAME</button>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<link rel="stylesheet" href="style.css">
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+		<div id="gameEndScreen">
+			<div id="winnerHolder">
+				<h1 id="winnerOfTheGameTag">Winner is Player 1</h1>
+				<h2 id="gameEndScreenScoreTag">Score: 10 : 0</h2>
+				<div class="gameEndScreenButtonContainer">
+					<a href="index.html"><div class="gamePageEndScreen_Button"><p>GAME PAGE</p></div></a>
+					<a href="game.html"><div class="gamePageEndScreen_Button"><p>REMATCH</p></div></a>
 				</div>
-				<script>
-					function isOptionWithFieldSelected(gameChoice) {
-						let	localField = document.getElementById('localGamePlayerNames');
-						let	remoteField = document.getElementById('remoteIdHolder');
-						if ("REMOTE" === gameChoice || "LOCAL" === gameChoice) {
-							if ("REMOTE" === gameChoice) {
-								var	remoteGame = document.getElementById('remoteGame');
-								if (remoteGame.checked === true) {
-									console.log("remote game has been chosen!");
-									remoteField.style.display = "initial";
-									localField.style.display = "none";
-								}
-							} else if ("LOCAL" === gameChoice) {
-							var	localGame = document.getElementById('localGame');
-							if (localGame.checked === true) {
-								console.log("local game has been chosen!");
-								localField.style.display = "flex";
-								remoteField.style.display = "none";
-							}
-						}
-						} else {
-							remoteField.style.display = "none";
-							localField.style.display = "none";
-						}
-					}
-
-					document.getElementById("cover").addEventListener("submit", function(event) {
-						event.preventDefault(); // Prevent immediate navigation
-
-						// Simulate processing time or delay, then submit form and redirect
-						setTimeout(() => {
-							document.getElementById("cover").submit(); // Submit form data
-							window.location.href = "game.html";  // Redirect after form submission
-						}, 300); // Adjust delay as needed
-					});
-				</script>
-			</form>
+			</div>
 		</div>
+		<div id="score_count"><h2>SCORE</h2><h2 id="player1_score">0</h2><h2> : </h2><h2 id="player2_score">0</h2></h2></div>
+		<div id="set_count"><h2>SET</h2><h2 id="player1_sets">0</h2><h2> : </h2><h2 id="player2_sets">0</h2></h2></div>
+		<div id="Winner"><h2 id="winner1">Winner Player 1</h2><h2 id="winner2">Winner Player 2</h2></div>
+		<div id="game_winner"><h2 id="game_winner1">Game Winner Player 1</h2><h2 id="game_winner2">Game Winner Player 2</h2></div>
+		<script type="module" src="/main.js"></script>
 	</body>
 </html>
