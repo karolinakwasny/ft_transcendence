@@ -1,22 +1,22 @@
 SSL=./nginx/certs
-HOSTNAME ?= $(shell hostname -i)
+HOSTNAME = localhost
 
 createDir = mkdir -p $1
 
+up: cert create_env_dev cp_env
+	@echo "🔄 Starting development environment..."
+	@chmod +x backend/script.sh
+	@echo "✅ Script permissions set."
+	@echo "🚀 Bringing up development containers..."
+	docker-compose -f docker-compose.dev.yml up --build
 
-up: cert create_env cp_env
+prod: cert create_env cp_env
 	@echo "🔄 Starting production environment..."
 	@chmod +x backend/script.sh
 	@echo "✅ Script permissions set."
 	@echo "🚀 Bringing up production containers..."
 	docker-compose up --build
 
-dev: cert create_env_dev cp_env
-	@echo "🔄 Starting development environment..."
-	@chmod +x backend/script.sh
-	@echo "✅ Script permissions set."
-	@echo "🚀 Bringing up development containers..."
-	docker-compose -f docker-compose.dev.yml up --build
 
 front:
 	@echo "🚀 Starting frontend..."
@@ -102,7 +102,6 @@ create_env:
 	@if [ -f .env ]; then rm .env; echo "✅ Old .env removed."; fi
 	touch .env
 	@cat ./.secrets >> .env
-	@echo  >> .env
 	@echo "HOST_IP=$(HOSTNAME)" >> .env
 	@echo "HOST_IP=$(HOSTNAME)" 
 	@echo "FRONTEND_URL=https://$(HOSTNAME)" >> .env
