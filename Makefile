@@ -3,7 +3,7 @@ HOSTNAME = localhost
 
 createDir = mkdir -p $1
 
-up: cert create_env_dev cp_env
+up: create_env_dev cp_env
 	@echo "🔄 Starting development environment..."
 	@chmod +x backend/script.sh
 	@echo "✅ Script permissions set."
@@ -115,11 +115,8 @@ create_env_dev:
 	@if [ -f .env ]; then rm .env; echo "✅ Old .env removed."; fi
 	touch .env
 	@cat ./.secrets.dev >> .env
-	@echo "HOST_IP=$(HOSTNAME)" >> .env
-	@echo "HOST_IP=$(HOSTNAME)" 
-	@echo "FRONTEND_URL=https://$(HOSTNAME)" >> .env
-	@echo "REACT_APP_BACKEND_URL=https://$(HOSTNAME)" >> .env
-	@echo "REACT_APP_BACKEND_WS=wss://$(HOSTNAME)" >> .env
-	@echo "NGINX_SERVER_NAME=$(HOSTNAME)" >> .env
+	@echo "FRONTEND_URL=http://localhost:8081" >> .env
+	@echo "REACT_APP_BACKEND_URL=http://localhost:8000" >> .env
+	@echo "REACT_APP_BACKEND_WS=ws://localhost:8000" >> .env
 	@echo "✅ Development .env file created."
 
