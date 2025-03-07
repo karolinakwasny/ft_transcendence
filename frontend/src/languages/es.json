@@ -238,5 +238,6 @@
 	"This password is too common." : "Esta contraseña es demasiado común.",
 	"This password is entirely numeric." : "Esta contraseña es completamente numérica.",
 	"Email must be in the format: example@domain.com" : "El correo electrónico debe tener el formato: example@domain.com",
-	"Display name must be not more than 15 characters long." : "El nombre visible no debe tener más de 15 caracteres."
+	"Display name must be not more than 15 characters long." : "El nombre visible no debe tener más de 15 caracteres.",
+	"Invalid OTP code. Please try again." : "Código OTP no válido. Por favor, inténtalo de nuevo."
 }

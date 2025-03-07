@@ -238,5 +238,6 @@
 	"This password is too common." : "Šis slaptažodis yra per dažnas.",
 	"This password is entirely numeric." : "Šis slaptažodis yra vien tik skaičiai.",
 	"Email must be in the format: example@domain.com" : "El. pašto adresas turi būti tokio formato: example@domain.com",
-	"Display name must be not more than 15 characters long." : "Rodymo vardas turi būti ne ilgesnis nei 15 simbolių."
+	"Display name must be not more than 15 characters long." : "Rodymo vardas turi būti ne ilgesnis nei 15 simbolių.",
+	"Invalid OTP code. Please try again." : "Neteisingas OTP kodas. Bandykite dar kartą."
 }

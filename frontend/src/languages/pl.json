@@ -238,5 +238,6 @@
 	"This password is too common." : "To hasło jest zbyt popularne.",
 	"This password is entirely numeric." : "To hasło składa się wyłącznie z cyfr.",
 	"Email must be in the format: example@domain.com" : "Adres e-mail musi mieć format: example@domain.com",
-	"Display name must be not more than 15 characters long." : "Pseudonim nie może mieć więcej niż 15 znaków."
+	"Display name must be not more than 15 characters long." : "Pseudonim nie może mieć więcej niż 15 znaków.",
+	"Invalid OTP code. Please try again." : "Nieprawidłowy kod OTP. Spróbuj ponownie."
 }

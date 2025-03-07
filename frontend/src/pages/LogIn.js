@@ -22,10 +22,12 @@ const LogIn = () => {
 	const [isSignUp, setIsSignUp] = useState(false);
 	const [showOTPModal, setShowOTPModal] = useState(false);
 	const [loginCredentials, setLoginCredentials] = useState(null);
+    const [otp, setOtp] = useState('');
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
+	const [errorOTP, setErrorOTP] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
@@ -43,26 +45,29 @@ const LogIn = () => {
         }
     }, [navigate, handleLogout]);
 
-  const handleOTPSubmit = async (otp) => {
-    try {
-      	const response = await axiosInstance.post(baseUrl + '/mfa/', {
-			username: loginCredentials.username, // Include the stored username
-			password: loginCredentials.password, // Include the stored password
-			otp: otp // Add the OTP code provided by the user
-      	});
+  	const handleOTPSubmit = async (otp) => {
+		setErrorOTP('');
+		try {
+			const response = await axiosInstance.post(baseUrl + '/mfa/', {
+				username: loginCredentials.username, // Include the stored username
+				password: loginCredentials.password, // Include the stored password
+				otp: otp // Add the OTP code provided by the user
+			});
 
-		const { access, refresh } = response.data;
-		localStorage.setItem('access_token', access);
-		localStorage.setItem('refresh_token', refresh);
-    
-			setShowOTPModal(false);
-			setIsLoggedIn(true);
-				
-			navigate('/profile');
-		} catch (error) {
-			console.error('Error verifying OTP:', error);
-			setOtp('');
-		}
+			const { access, refresh } = response.data;
+			localStorage.setItem('access_token', access);
+			localStorage.setItem('refresh_token', refresh);
+		
+				setShowOTPModal(false);
+				setIsLoggedIn(true);
+					
+				navigate('/profile');
+			} catch (error) {
+				console.error('Error verifying OTP:', error);
+				setErrorOTP(t('Invalid OTP code. Please try again.'));
+				setOtp('');
+			}
+		setOtp('');
   	};
 
 	const handleSubmit = async (event) => {
@@ -237,6 +242,7 @@ const LogIn = () => {
         <OTPModal
           onSubmit={handleOTPSubmit}
           onClose={() => setShowOTPModal(false)}
+		  error={errorOTP}
         />
       )}
 		</div>
