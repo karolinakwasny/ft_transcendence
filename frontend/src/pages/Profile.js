@@ -297,7 +297,7 @@ const handleToggle2FA = async (password = null) => {
 										aria-label={t("Edit display name")}
 									/>
 									{/* Save button with check symbol */}
-									<div id="profileEditDisplayNameButtonHolder">
+									<span id="profileEditDisplayNameButtonHolder">
 										<button
 											onClick={handleSaveDisplayName}
 											className="profileButtonChangeNameSaveCancel"
@@ -314,11 +314,11 @@ const handleToggle2FA = async (password = null) => {
 										>
 											<span className="text-red-600">✕</span>
 										</button>
-									</div>
+									</span>
 								</>
 							) : (
 								<>
-									<div id="profilePenAndNameHolder">
+									<span id="profilePenAndNameHolder">
 										{/* Display current display name */}
 										<span>{profile.display_name + ' '}</span>
 										{/* Edit button with pencil symbol */}
@@ -330,7 +330,7 @@ const handleToggle2FA = async (password = null) => {
 										>
 											<span className="write-symbol">✎</span>
 										</button>
-									</div>
+									</span>
 								</>
 							)}
 						</p>

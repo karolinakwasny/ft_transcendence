@@ -16,22 +16,22 @@ class Command(BaseCommand):
                 {
                     'username': 'Lukas',
                     'email': 'user1@example.com',
-                    'password': 'ILoveDjango',
+                    'password': '123',
                     },
                 {
                     'username': 'Adam',
                     'email': 'user2@example.com',
-                    'password': 'ILoveDjango',
+                    'password': '123',
                     },
                 {
                     'username': 'Erwin',
                     'email': 'user3@example.com',
-                    'password': 'ILoveDjango',
+                    'password': '123',
                     },
                 {
                     'username': 'Yison',
                     'email': 'user4@example.com',
-                    'password': 'ILoveDjango',
+                    'password': '123',
                     },
         ]
 
