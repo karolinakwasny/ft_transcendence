@@ -117,8 +117,8 @@ create_env_dev:
 	@cat ./.secrets.dev >> .env
 	@echo "HOST_IP=$(HOSTNAME)" >> .env
 	@echo "HOST_IP=$(HOSTNAME)" 
-	@echo "FRONTEND_URL=https://$(HOSTNAME)" >> .env
-	@echo "REACT_APP_BACKEND_URL=https://$(HOSTNAME)" >> .env
+	@echo "FRONTEND_URL=https://$(hostname)" >> .env
+	@echo "REACT_APP_BACKEND_URL=https://$(hostname)" >> .env
 	@echo "REACT_APP_BACKEND_WS=wss://$(HOSTNAME)" >> .env
 	@echo "NGINX_SERVER_NAME=$(HOSTNAME)" >> .env
 	@echo "✅ Development .env file created."

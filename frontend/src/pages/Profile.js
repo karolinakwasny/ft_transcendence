@@ -92,26 +92,16 @@ const Profile = () => {
 	}, []);
 
 	useEffect(() => {
-		const token = localStorage.getItem('access_token'); // Assuming JWT or similar token
+		const token = localStorage.getItem('access_token');
 		if (!user_id) {
 			return;
 		}
 
-		// Construct the WebSocket URL with the token as a query parameter
-		//const wsUrl = `wss://localhost/ws/online-status/?user_id=${user_id}&token=${token}`;
 		const wsUrl = `${wsBaseUrl}/ws/online-status/?user_id=${user_id}&token=${token}`;
 
-		// Create a new WebSocket instance
+		
 		const ws = new WebSocket(wsUrl);
-	//	ws.onopen = () => console.log('WebSocket connection established');
-
-	//	ws.onmessage = (event) => {
-	//		const data = JSON.parse(event.data);
-	//		console.log('Data received:', data);
-	//	};
-
-	//	ws.onerror = (error) => console.error('WebSocket error:', error);
-	//	ws.onclose = () => console.log('WebSocket connection closed');
+	
 
 	}, [status, user_id]);
 
@@ -197,17 +187,12 @@ const Profile = () => {
 	// Function to handle successful password authentication
 	const handlePasswordSuccess = () => {
 
-			// console.log('Password successfully authenticated (handlePasswordSuccess)');
-
+			setIsSaving2FA(true);
 			setPasswordModalOpen(false);
 			setOtpActive(true); 
-			// console.log('after closing the passwordmodal.');
-
-			// Optionally, you can call handleToggle2FA here if needed
-			//handleToggle2FA();
+			
 	};
-	// Handler for initiating 2FA toggle
-	// Opens password confirmation modal instead of immediately toggling
+
 	const handleInitiateToggle2FA = () => {
 		if (!profile.otp_active) {
 			setPasswordModalOpen(true);
@@ -216,11 +201,9 @@ const Profile = () => {
 		}
 	};
 
-	// Handler for toggling 2FA status after password confirmation
-	// Makes a PATCH request to update the otp_active status
-	// Updates local state to reflect the change
+	
 const handleToggle2FA = async (password = null) => {
-	// console.log('in active to false.');
+	
 	setIsSaving2FA(true);
 	const userId = localStorage.getItem('user_id');
 	const token = localStorage.getItem('access_token');
@@ -238,10 +221,8 @@ const handleToggle2FA = async (password = null) => {
 				}
 			}
 		);
-		// console.log('Response:', response.data);
 		alert(t('2FA successfully deactivated'))
 
-		// Update local state with new 2FA status
 		setProfile(prev => ({
 			...prev,
 			otp_active: !prev.otp_active
@@ -267,7 +248,7 @@ const handleToggle2FA = async (password = null) => {
 
 	return (
 		<div className="d-flex flex-column align-items-center w-100 profilePageHolder" id="profilePageHolder" style={{minHeight: `${height - 90}px`}}>
-			<h1 className="pageHeadingH1Style1 profileHeading">{t("profile")}</h1>
+			<h1 className="pageHeadingH1Style1 profileHeading">{t("HeaderProfile")}</h1>
 			<div className='profileCardHolder  mb-0 w-100' style={{ fontSize: `${fontSize}px` }}>
 				<div className='profileCardStyle1' style={{ fontSize: `${fontSize}px` }}>
 					<h2>{t("Basic Information")}</h2>
@@ -378,7 +359,13 @@ const handleToggle2FA = async (password = null) => {
 						onSubmit={handlePasswordSuccess}
 						onPasswordSuccess={handlePasswordSuccess} // Pass the callback
 					/>
-					{isOtpActive && <Otp onSuccess={() => setOtpActive(false)} />}
+					{isOtpActive && <Otp onSuccess={() => { setOtpActive(false)
+															setIsSaving2FA(false)
+															setProfile(prev => ({
+																...prev,
+																otp_active: !prev.otp_active
+															})); }}/>
+														}
 				</div>
 				<StatisticsCard	losses={profile.losses}
 								wins={profile.wins}

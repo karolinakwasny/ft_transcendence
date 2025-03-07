@@ -44,7 +44,9 @@ const Otp = ({ onSuccess }) => {
 			alert(t('2FA successfully activated'));
 			if (onSuccess) onSuccess();
 		} catch (error) {
+			console.log('Error in otp:', error);
 			console.error('Error:', error);
+			alert(t('Failed to activate 2FA'));
 		}
 	};
 
