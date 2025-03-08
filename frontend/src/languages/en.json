@@ -227,6 +227,7 @@
 	"Decrease text size" : "Decrease text size",
 	"QR Code for Mobile Authenticator Setup" : "QR Code for Mobile Authenticator Setup",
 	"Submit OTP Code" : "Submit OTP Code",
+	"Invalid OTP code." : "Invalid OTP code.",
 	"Upload avatar image" : "Upload avatar image",
 	"Edit avatar" : "Edit avatar",
 	"Edit display name" : "Edit display name",

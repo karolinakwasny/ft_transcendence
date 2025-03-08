@@ -221,7 +221,7 @@ const handleToggle2FA = async (password = null) => {
 				}
 			}
 		);
-		alert(t('2FA successfully deactivated'))
+		// alert(t('2FA successfully deactivated'))
 
 		setProfile(prev => ({
 			...prev,

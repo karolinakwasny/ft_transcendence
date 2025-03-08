@@ -164,6 +164,7 @@
 	"Confirm": "Patvirtinti",
 
 	"Enter OTP Code": "Įveskite OTP kodą",
+	"Invalid OTP code." : "Neteisingas OTP kodas.",
 	"Please enter the one-time password sent to your device.": 
 		"Įveskite vienkartinį slaptažodį, išsiųstą į jūsų įrenginį.",
 	"Enter OTP code": "Įveskite OTP kodą",

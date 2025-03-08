@@ -9,6 +9,7 @@ const PasswordModal = ({ isOpen, onClose, onSubmit, onPasswordSuccess }) => {
     const [password, setPassword] = useState('');
 	const { t } = useTranslation();
 	const { fontSize } = useContext(AccessibilityContext);
+	const [error, setError] = useState('');
     const { width, height } = useWindowDimensions();
 
 	const scalestyle = {
@@ -36,6 +37,9 @@ const PasswordModal = ({ isOpen, onClose, onSubmit, onPasswordSuccess }) => {
             if (!response.ok) {
                 const errorData = await response.json();
                 if (response.status === 400 && errorData.non_field_errors && errorData.non_field_errors.includes("OTP is already activated for this user.")) {
+					// if (errorData.non_field_errors[0] === "OTP is already activated for this user.") {
+						// setError(t('OTP is already activated for this user.'));
+					// }
                     if (onPasswordSuccess) onPasswordSuccess();
                     return;
                 }
@@ -75,6 +79,7 @@ const PasswordModal = ({ isOpen, onClose, onSubmit, onPasswordSuccess }) => {
                         required
 						aria-label={t("Enter your password")}
                     />
+					{error && <p className="tfa-message">{error}</p>}
                     <div className="tfa-buttons d-flex flex-column-reverse" style={scalestyle}>
                         <button
                             type="button"

@@ -33,7 +33,7 @@ const Otp = () => {
 				}
 			);
 			localStorage.removeItem('qr_code_url');
-			alert(t("2FA successfully activated"));
+			// alert(t("2FA successfully activated"));
 			navigate('/profile');
 		} catch (error) {
 			console.error('Error:', error);

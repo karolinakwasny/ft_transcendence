@@ -12,6 +12,7 @@ const Otp = ({ onSuccess }) => {
 	const qr_code_url = localStorage.getItem('qr_code_url');
 	const BASE_URL = process.env.REACT_APP_BACKEND_URL; 
 	const qrCodeImageUrl = `${BASE_URL}${qr_code_url}`; 
+	const [error, setError] = useState('');
 	const { width, height } = useWindowDimensions();
 
 	const [otpCode, setOtpCode] = useState('');
@@ -41,12 +42,19 @@ const Otp = ({ onSuccess }) => {
 				}
 			);
 			localStorage.removeItem('qr_code_url');
-			alert(t('2FA successfully activated'));
+			if (!response.ok) {
+				const errorData = await response.json();
+				if (errorData.non_field_errors.includes("Invalid OTP code.")) {
+					setError(t('Invalid OTP code.'));
+				}
+			}
+			// alert(t('2FA successfully activated'));
 			if (onSuccess) onSuccess();
 		} catch (error) {
+			
 			console.log('Error in otp:', error);
 			console.error('Error:', error);
-			alert(t('Failed to activate 2FA'));
+			// alert(t('Failed to activate 2FA'));
 		}
 	};
 
@@ -86,6 +94,7 @@ const Otp = ({ onSuccess }) => {
                                     aria-label={t("Enter OTP code to activate 2FA")}
 								/>
 							</div>
+							{error && <p className="tfa-message">{error}</p>}
 							<button type="submit" className="otp-input" style={scalestyle}>{t("Submit")}</button>
 						</form>
 					</div>
