@@ -181,6 +181,9 @@
 	"Keyboard Controls": "Klaviatūros valdikliai",
 	"Start Game": "Pradėti žaidimą",
 
+	"You can start the game": "Galite pradėti žaidimą",
+	"You are playing against ": "Žaidžiate prieš ",
+
 	"Invalid credentials": "Neteisingi prisijungimo duomenys",
 	"Authentication failed": "Autentifikacija nepavyko",
 	"You can not play pong with yourself": "Negalite žaisti pong su savimi",

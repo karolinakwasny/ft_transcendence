@@ -180,6 +180,9 @@
 	"Keyboard Controls": "Sterowanie klawiaturą",
 	"Start Game": "Rozpocznij grę",
 
+	"You can start the game": "Możesz rozpocząć grę",
+	"You are playing against ": "Grając przeciwko ",
+
 	"Invalid credentials": "Nieprawidłowe dane uwierzytelniające",
 	"Authentication failed": "Uwierzytelnianie nie powiodło się",
 	"You can not play pong with yourself": "Nie możesz grać w ponga sam ze sobą",

@@ -180,6 +180,9 @@
 	"Keyboard Controls": "Keyboard Controls",
 	"Start Game": "Start Game",
 
+	"You can start the game": "You can start the game",
+	"You are playing against ": "You are playing against ",
+
 	"Invalid credentials": "Invalid credentials",
 	"Authentication failed": "Authentication failed",
 	"You can not play pong with yourself": "You can not play pong with yourself",
