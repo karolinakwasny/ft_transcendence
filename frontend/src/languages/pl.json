@@ -15,6 +15,7 @@
 	"HomeButton": "GRAJ TERAZ",
 
 	"LogInTitle": "Zaloguj się",
+	"Sign in to your account or create a new one": "Zaloguj się na swoje konto lub utwórz nowe",
 	"LogInText": "ZALOGUJ SIĘ",
 	"LogInText2": "ZAREJESTRUJ SIĘ",
 	"LogInText3": "Nazwa użytkownika",
@@ -179,6 +180,9 @@
 	"Keyboard Controls": "Sterowanie klawiaturą",
 	"Start Game": "Rozpocznij grę",
 
+	"You can start the game": "Możesz rozpocząć grę",
+	"You are playing against ": "Grając przeciwko ",
+
 	"Invalid credentials": "Nieprawidłowe dane uwierzytelniające",
 	"Authentication failed": "Uwierzytelnianie nie powiodło się",
 	"You can not play pong with yourself": "Nie możesz grać w ponga sam ze sobą",
@@ -226,6 +230,7 @@
 	"Decrease text size" : "Zmniejsz rozmiar tekstu",
 	"QR Code for Mobile Authenticator Setup" : "Kod QR do konfiguracji autoryzacji mobilnej",
 	"Submit OTP Code" : "Prześlij kod OTP",
+	"Invalid OTP code." : "Nieprawidłowy kod OTP.",
 	"Upload avatar image" : "Prześlij obraz awatara",
 	"Edit avatar" : "Edytuj awatar",
 	"Edit display name" : "Edytuj pseudonim",
@@ -238,5 +243,7 @@
 	"This password is too common." : "To hasło jest zbyt popularne.",
 	"This password is entirely numeric." : "To hasło składa się wyłącznie z cyfr.",
 	"Email must be in the format: example@domain.com" : "Adres e-mail musi mieć format: example@domain.com",
-	"Display name must be not more than 15 characters long." : "Pseudonim nie może mieć więcej niż 15 znaków."
+	"Display name must be not more than 15 characters long." : "Pseudonim nie może mieć więcej niż 15 znaków.",
+	"Invalid OTP code. Please try again." : "Nieprawidłowy kod OTP. Spróbuj ponownie.",
+	"Password and confirm password do not match." : "Hasło i potwierdzenie hasła są różne."
 }

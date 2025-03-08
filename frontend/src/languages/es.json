@@ -15,6 +15,7 @@
 	"HomeButton": "JUGAR AHORA",
 
 	"LogInTitle": "Iniciar sesión",
+	"Sign in to your account or create a new one": "Inicia sesión en tu cuenta o crea una nueva",
 	"LogInText": "INICIAR SESIÓN",
 	"LogInText2": "REGISTRARSE",
 	"LogInText3": "Nombre de usuario",
@@ -179,6 +180,9 @@
 	"Keyboard Controls": "Controles de teclado",
 	"Start Game": "Iniciar juego",
 
+	"You can start the game": "Puedes iniciar el juego",
+	"You are playing against ": "Estás jugando contra ",
+
 	"Invalid credentials": "Credenciales inválidas",
 	"Authentication failed": "Autenticación fallida",
 	"You can not play pong with yourself": "No puedes jugar pong contigo mismo",
@@ -226,6 +230,7 @@
 	"Decrease text size": "Disminuir tamaño de texto",
 	"QR Code for Mobile Authenticator Setup": "Código QR para configuración de Autenticador móvil",
 	"Submit OTP Code": "Enviar código OTP",
+	"Invalid OTP code." : "Código OTP no válido.",
 	"Upload avatar image": "Subir imagen de avatar",
 	"Edit avatar": "Editar avatar",
 	"Edit display name": "Editar nombre visible",
@@ -238,5 +243,7 @@
 	"This password is too common." : "Esta contraseña es demasiado común.",
 	"This password is entirely numeric." : "Esta contraseña es completamente numérica.",
 	"Email must be in the format: example@domain.com" : "El correo electrónico debe tener el formato: example@domain.com",
-	"Display name must be not more than 15 characters long." : "El nombre visible no debe tener más de 15 caracteres."
+	"Display name must be not more than 15 characters long." : "El nombre visible no debe tener más de 15 caracteres.",
+	"Invalid OTP code. Please try again." : "Código OTP no válido. Por favor, inténtalo de nuevo.",
+	"Password and confirm password do not match." : "La contraseña y la confirmación de contraseña no coinciden."
 }

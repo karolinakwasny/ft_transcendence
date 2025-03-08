@@ -12,6 +12,7 @@ const AuthUserForm = ({ scaleStyle }) => {
     const {
         isOpponentAuthenticated,
         setIsOpponentAuthenticated,
+		player2DisplayName,
         setPlayer2DisplayName,
         setPlayer2Id,
         setPlayer1DisplayName,
@@ -77,6 +78,20 @@ const AuthUserForm = ({ scaleStyle }) => {
             setIsBeingSubmitted(false);
         }
     };
+
+	if (isOpponentAuthenticated) {
+		return (
+			<div className="auth-form d-flex flex-column" style={scaleStyle}>
+				<h4 style={scaleStyle}>
+					{t("You can start the game")} 
+				</h4>
+				<p>
+					{t("You are playing against ")} 
+					{player2DisplayName}
+				</p>
+			</div>
+		)
+	}
 
     return (
         <form onSubmit={handleAuthentication} className="auth-form d-flex flex-column" style={scaleStyle}>

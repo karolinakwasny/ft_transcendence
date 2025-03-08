@@ -15,6 +15,7 @@
 	"HomeButton": "ŽAISTI DABAR",
 
 	"LogInTitle": "Prisijungti",
+	"Sign in to your account or create a new one": "Prisijunkite prie savo paskyros arba sukurkite naują",
 	"LogInText": "PRISIJUNGTI",
 	"LogInText2": "REGISTRUOTIS",
 	"LogInText3": "Vartotojo vardas",
@@ -163,6 +164,7 @@
 	"Confirm": "Patvirtinti",
 
 	"Enter OTP Code": "Įveskite OTP kodą",
+	"Invalid OTP code." : "Neteisingas OTP kodas.",
 	"Please enter the one-time password sent to your device.": 
 		"Įveskite vienkartinį slaptažodį, išsiųstą į jūsų įrenginį.",
 	"Enter OTP code": "Įveskite OTP kodą",
@@ -178,6 +180,9 @@
 	"option2": "parinktis2",
 	"Keyboard Controls": "Klaviatūros valdikliai",
 	"Start Game": "Pradėti žaidimą",
+
+	"You can start the game": "Galite pradėti žaidimą",
+	"You are playing against ": "Žaidžiate prieš ",
 
 	"Invalid credentials": "Neteisingi prisijungimo duomenys",
 	"Authentication failed": "Autentifikacija nepavyko",
@@ -238,5 +243,7 @@
 	"This password is too common." : "Šis slaptažodis yra per dažnas.",
 	"This password is entirely numeric." : "Šis slaptažodis yra vien tik skaičiai.",
 	"Email must be in the format: example@domain.com" : "El. pašto adresas turi būti tokio formato: example@domain.com",
-	"Display name must be not more than 15 characters long." : "Rodymo vardas turi būti ne ilgesnis nei 15 simbolių."
+	"Display name must be not more than 15 characters long." : "Rodymo vardas turi būti ne ilgesnis nei 15 simbolių.",
+	"Invalid OTP code. Please try again." : "Neteisingas OTP kodas. Bandykite dar kartą.",
+	"Password and confirm password do not match." : "Slaptažodis ir patvirtinimas nesutampa."
 }

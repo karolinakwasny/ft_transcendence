@@ -11,6 +11,7 @@ import { createTournament } from '../../services/postCreateTournament';
 const PlayTournamentSetup = ({ setForceUpdate, scaleStyle }) => {
     const { t } = useTranslation();
 	const navigate = useNavigate();
+	const [error, setError] = useState('');
 	const { isTournamentReady, 
 			setStartTheTournament, 
 			tournamentPlayers, 
@@ -31,8 +32,9 @@ const PlayTournamentSetup = ({ setForceUpdate, scaleStyle }) => {
     }, [shouldReload, tournamentMatchID]);
 
 	const handleClick = async () => {
+		setError('');
 
-		 if (!userLoggedInId) {
+		if (!userLoggedInId) {
 			console.error("User ID is missing.");
 			return;
     	}
@@ -55,7 +57,12 @@ const PlayTournamentSetup = ({ setForceUpdate, scaleStyle }) => {
 
 			if (!success) {
 				console.error("Error creating tournament:", error);
-				alert(error);
+				// if (error === "Duplicate player IDs are not allowed.") 
+				alert(t("Duplicate player IDs are not allowed."));
+				// else 
+				// 	setError(error);
+			
+				setForceUpdate(prev => prev + 1);
 				return;
 			}
 			if (Array.isArray(data) && data.length > 0) {
@@ -63,15 +70,15 @@ const PlayTournamentSetup = ({ setForceUpdate, scaleStyle }) => {
 				setTournamentMatchID(tournamentId);
 				setStartTheTournament(true);
 				setNavbarOff(true);
+				setForceUpdate(prev => prev + 1);
 			} else {
 				console.error("Unexpected response format:", data);
 			}
 		} catch (error) {
 			console.error("Error saving players to the tournament:", error);
-			alert(error.message);
+			setError(error.message);
+			setForceUpdate(prev => prev + 1);
 		}
-		navigate("/play");
-		setForceUpdate(prev => prev + 1);
 	};
 
     return (
@@ -79,7 +86,8 @@ const PlayTournamentSetup = ({ setForceUpdate, scaleStyle }) => {
             <div className="playCardHolderStyle" style={scaleStyle}>
             	<h3 style={scaleStyle}>{t("PlayTitleTournament")}</h3>
             	<p style={scaleStyle} className="playCardDescription">{t("PlayDescriptionTournament")}</p>
-            	<AuthTournamentForm scaleStyle={scaleStyle}/>
+            	<AuthTournamentForm style={scaleStyle}/>
+				{error && <p className="text-red-500" style={scaleStyle}>{error}</p>}
             	<button className="buttonStyle1" 
 					style={scaleStyle} 
 					onClick={handleClick} 

@@ -16,7 +16,7 @@ const PlayMultiplayerMode = ({ scaleStyle }) => {
 			<div className="playCardHolderStyle" style={scaleStyle}> {/*card basic mode"*/}
 				<h3 style={scaleStyle}>{t("PlayTitleMultiplayer")}</h3>
 				<p style={scaleStyle} className="playCardDescription">{t("PlayDescriptionMultiplayer")}</p>
-				<AuthUserForm scaleStyle={scaleStyle}/>
+				<AuthUserForm style={scaleStyle}/>
 				<button className="buttonStyle1"
 						style={scaleStyle} 
 						onClick={() => {
