@@ -15,6 +15,7 @@
 	"HomeButton": "PLAY NOW",
 
 	"LogInTitle": "Log In",
+	"Sign in to your account or create a new one": "Sign in to your account or create a new one",
 	"LogInText": "LOG IN",
 	"LogInText2": "SIGN UP",
 	"LogInText3": "Username",
@@ -239,5 +240,6 @@
 	"This password is entirely numeric." : "This password is entirely numeric.",
 	"Email must be in the format: example@domain.com" : "Email must be in the format: example@domain.com",
 	"Display name must be not more than 15 characters long." : "Display name must be not more than 15 characters long.",
-	"Invalid OTP code. Please try again." : "Invalid OTP code. Please try again."
+	"Invalid OTP code. Please try again." : "Invalid OTP code. Please try again.",
+	"Password and confirm password do not match." : "Password and confirm password do not match."
 }

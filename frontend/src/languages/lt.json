@@ -15,6 +15,7 @@
 	"HomeButton": "ŽAISTI DABAR",
 
 	"LogInTitle": "Prisijungti",
+	"Sign in to your account or create a new one": "Prisijunkite prie savo paskyros arba sukurkite naują",
 	"LogInText": "PRISIJUNGTI",
 	"LogInText2": "REGISTRUOTIS",
 	"LogInText3": "Vartotojo vardas",
@@ -239,5 +240,6 @@
 	"This password is entirely numeric." : "Šis slaptažodis yra vien tik skaičiai.",
 	"Email must be in the format: example@domain.com" : "El. pašto adresas turi būti tokio formato: example@domain.com",
 	"Display name must be not more than 15 characters long." : "Rodymo vardas turi būti ne ilgesnis nei 15 simbolių.",
-	"Invalid OTP code. Please try again." : "Neteisingas OTP kodas. Bandykite dar kartą."
+	"Invalid OTP code. Please try again." : "Neteisingas OTP kodas. Bandykite dar kartą.",
+	"Password and confirm password do not match." : "Slaptažodis ir patvirtinimas nesutampa."
 }

@@ -15,6 +15,7 @@
 	"HomeButton": "JUGAR AHORA",
 
 	"LogInTitle": "Iniciar sesión",
+	"Sign in to your account or create a new one": "Inicia sesión en tu cuenta o crea una nueva",
 	"LogInText": "INICIAR SESIÓN",
 	"LogInText2": "REGISTRARSE",
 	"LogInText3": "Nombre de usuario",
@@ -239,5 +240,6 @@
 	"This password is entirely numeric." : "Esta contraseña es completamente numérica.",
 	"Email must be in the format: example@domain.com" : "El correo electrónico debe tener el formato: example@domain.com",
 	"Display name must be not more than 15 characters long." : "El nombre visible no debe tener más de 15 caracteres.",
-	"Invalid OTP code. Please try again." : "Código OTP no válido. Por favor, inténtalo de nuevo."
+	"Invalid OTP code. Please try again." : "Código OTP no válido. Por favor, inténtalo de nuevo.",
+	"Password and confirm password do not match." : "La contraseña y la confirmación de contraseña no coinciden."
 }
