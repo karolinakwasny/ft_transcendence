@@ -17,6 +17,7 @@ const AuthTournamentForm = ({ scaleStyle }) => {
     const currentPlayerNumber = (localStoragePlayers.length + tournamentPlayers.length) + 1;
 
     useEffect(() => {
+		
 		const savedPlayers = JSON.parse(localStorage.getItem('tournamentPlayers')) || [];
 		setLocalStoragePlayers(savedPlayers);
 		setTournamentPlayers(savedPlayers);

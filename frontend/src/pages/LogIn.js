@@ -168,7 +168,7 @@ const LogIn = () => {
 					{t("LogInTitle")}
 				</h1>
 				<div className="loginCardHolderStyle"> 
-					<div className='welcome-text' >{t("Sign in to your account or create a new one")}</div>
+					{/* <div className='welcome-text' >{t("Sign in to your account or create a new one")}</div> */}
 					<div>
 						<div className="login-toggle">
 							<input
