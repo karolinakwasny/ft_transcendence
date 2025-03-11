@@ -1,4 +1,4 @@
-![Minipong banner](https://github.com/erwkuvi/ft_transcendence/blob/main/assets/minipong_banner.png)
+![Minipong banner](https://github.com/erwkuvi/ft_transcendence/blob/main/minipong_banner.png)
 
 # ft_transcendence
 
