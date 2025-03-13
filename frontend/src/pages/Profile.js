@@ -55,10 +55,6 @@ const Profile = () => {
 		}
 	}, [navigate, isLoggedIn]);
 
-	useEffect(() => {
-		setOtpActive(false);
-	}, []);
-
 	if (!isLoggedIn) {
         return <p>Loading...</p>; 
     }
@@ -363,13 +359,14 @@ const handleToggle2FA = async (password = null) => {
 						onSubmit={handlePasswordSuccess}
 						onPasswordSuccess={handlePasswordSuccess} // Pass the callback
 					/>
-					{isOtpActive && <Otp onSuccess={() => { setOtpActive(false)
-															setIsSaving2FA(false)
-															setProfile(prev => ({
-																...prev,
-																otp_active: !prev.otp_active
-															})); }}/>
-														}
+					{isOtpActive && <Otp onSuccess={() => { 
+						setOtpActive(false)
+						setIsSaving2FA(false)
+						setProfile(prev => ({
+							...prev,
+							otp_active: !prev.otp_active
+						})); }}/>
+					}
 				</div>
 				<StatisticsCard	losses={profile.losses}
 								wins={profile.wins}

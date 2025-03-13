@@ -37,10 +37,10 @@ const PasswordModal = ({ isOpen, onClose, onSubmit, onPasswordSuccess }) => {
 						if (!response.ok) {
 								const errorData = await response.json();
 								if (response.status === 400) {
-										//if (errorData.non_field_errors && errorData.non_field_errors.includes("OTP is already activated for this user.")) {
-										//		if (onPasswordSuccess) onPasswordSuccess();
-										//	return;
-										//}
+										if (errorData.non_field_errors && errorData.non_field_errors.includes("OTP is already activated for this user.")) {
+											//if (onPasswordSuccess) onPasswordSuccess();
+											return;
+										}
 										if (errorData.non_field_errors && errorData.non_field_errors.includes("Incorrect password.")) {
 												setError(t('Incorrect password.'));
 												return;
