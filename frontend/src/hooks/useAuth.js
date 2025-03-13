@@ -5,9 +5,12 @@ export const useAuth = () => {
   const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleLogout = () => {
+
+    console.log('handleLogout function called');
     setIsLoggedIn(false); // Update state for logged-out status
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+		localStorage.clear();
+    //localStorage.removeItem('access_token');
+    //localStorage.removeItem('refresh_token');
     
   };
 

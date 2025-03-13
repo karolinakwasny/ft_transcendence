@@ -40,11 +40,32 @@ const LogIn = () => {
 	}
 
 	useEffect(() => {
-        const accessToken = localStorage.getItem('access_token');
-        if (!accessToken) {
-            handleLogout();  
-        }
-    }, [navigate, handleLogout]);
+			const accessToken = localStorage.getItem('access_token');
+			const refreshToken = localStorage.getItem('refresh_token');
+
+			const refreshAccessToken = async () => {
+					try {
+							const response = await axiosInstance.post(`${baseUrl}/api/token/refresh/`, {
+									refresh: refreshToken,
+							});
+							const { access, refresh } = response.data;
+							localStorage.setItem('access_token', access);
+							localStorage.setItem('refresh_token', refresh);
+							window.location.reload();
+					} catch (error) {
+							console.error('Error refreshing access token:', error);
+							handleLogout();
+					}
+			};
+
+			if (!accessToken) {
+					if (refreshToken) {
+							refreshAccessToken();
+					} else {
+							handleLogout();
+					}
+			}
+	}, [navigate, handleLogout]);
 
   	const handleOTPSubmit = async (otp) => {
 		setErrorOTP('');
