@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth'
 
 export const logout = () => {
+	console.log('AxiosInstance Logout function called');
 	localStorage.removeItem('access_token');
 	localStorage.removeItem('refresh_token');
   };
@@ -40,13 +41,14 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config;
 
         // Check if the error response is 401 (Unauthorized) and not already retried
-        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+        //if (error.response && error.response.status === 401 && !originalRequest._retry) {
+        if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
             const refreshToken = localStorage.getItem('refresh_token');
             if (!refreshToken) {
                 logout();
-				return Promise.reject(error);
+								return Promise.reject(error);
             }
 
             try {
@@ -60,7 +62,7 @@ axiosInstance.interceptors.response.use(
                 originalRequest.headers['Authorization'] = `JWT ${response.data.access}`;
                 return axios(originalRequest);  // Retry the original request with the new token
             } catch (refreshError) {
-				console.error('Error refreshing token:', refreshError);  // Log the error for the refresh attempt
+								console.error('Error refreshing token:', refreshError);  // Log the error for the refresh attempt
                 logout();
                 return Promise.reject(refreshError);
             }

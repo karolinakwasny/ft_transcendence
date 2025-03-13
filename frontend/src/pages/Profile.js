@@ -55,6 +55,10 @@ const Profile = () => {
 		}
 	}, [navigate, isLoggedIn]);
 
+	useEffect(() => {
+		setOtpActive(false);
+	}, []);
+
 	if (!isLoggedIn) {
         return <p>Loading...</p>; 
     }

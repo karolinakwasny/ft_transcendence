@@ -22,12 +22,13 @@ def match_results_to_profile(sender, **kwargs):
         #print('player1:', player1)
         #print('player2:', player2)
 
-        if match.winner == player1:
-            player1.wins += 1
-            player2.losses += 1
-        else:
-            player1.losses += 1
-            player2.wins += 1
+        if match.winner:
+            if match.winner == player1:
+                player1.wins += 1
+                player2.losses += 1
+            else:
+                player1.losses += 1
+                player2.wins += 1
         player1.save()
         player2.save()
 

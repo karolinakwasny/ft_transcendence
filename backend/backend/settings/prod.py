@@ -6,6 +6,9 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
+# For https connection 
+BASE_URL_SCHEME = 'https'
+
 HOST_IP = env('HOST_IP')
 FRONTEND_URL = env('FRONTEND_URL')
 
@@ -76,3 +79,23 @@ CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL,
 	"https://localhost",
 ]
+
+# ----------------- OAUTH 2.0 - 42 INTRA SETTINGS -----------------:
+# 42 Intra auth URL
+API_42_AUTH_URL = 'https://api.intra.42.fr/oauth/authorize'
+# 42 Intra access token endpoint
+API_42_ACCESS_TOKEN_ENDPOINT = 'https://api.intra.42.fr/oauth/token'
+# 42 Intra redirect URI
+API_42_REDIRECT_URI = f'{FRONTEND_URL}/42-callback/'
+API_42_REDIRECT_URI_MATCH = f'{FRONTEND_URL}/42-callback-match/'
+# 42 Intra entrypoint URL
+API_42_INTRA_ENTRYPOINT_URL = 'https://api.intra.42.fr/v2/me'
+# 42 Intra frontend callback URL
+API_42_FRONTEND_CALLBACK_URL = f'${FRONTEND_URL}/auth-success'
+# one-time code lifetime in seconds
+EXCHANGE_CODE_TIMEOUT = 30
+# API CLIENT ID
+INTRA_UID_42 = os.environ['CLIENT_ID']
+# API CLIENT SECRET
+INTRA_SECRET_42 = os.environ['CLIENT_SECRET']
+

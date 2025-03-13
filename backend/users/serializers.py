@@ -296,8 +296,8 @@ class OTPActivateSerializer(serializers.Serializer):
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             raise serializers.ValidationError("User not found.")
-        if user.otp_base32:
-            raise serializers.ValidationError("OTP is already activated for this user.")
+        #if user.otp_base32:
+        # raise serializers.ValidationError("OTP is already activated for this user.")
         if not user.check_password(password):
             raise serializers.ValidationError("Incorrect password.")
         return attrs
