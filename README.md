@@ -6,10 +6,6 @@ Designed and developed a full-stack web application, integrating modern web tech
 
 This project is part of the core curriculum at 42 Schools and aims to familiarize students with common technologies used in full-stack development.
 
-### Technologies
-| Feature | Description |
-| --- | --- |
-| Users can subscribe to the website in a secure way. | ![Signup](https://github.com/erwkuvi/ft_transcendence/blob/main/assets/signup-login.gif) |
 
 
 - **Backend**: Django (REST Framework) - Python
