@@ -8,6 +8,8 @@ This project is part of the core curriculum at 42 Schools and aims to familiariz
 
 ### Technologies
 
+![Signup](https://github.com/erwkuvi/ft_transcendence/blob/main/assets/signup-login.gif)
+
 - **Backend**: Django (REST Framework) - Python
 - **Frontend**: React - JavaScript
 - **Database**: PostgreSQL
