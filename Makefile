@@ -3,6 +3,22 @@ HOSTNAME = localhost
 
 createDir = mkdir -p $1
 
+render: cert create_env cp_env
+	@echo "🔄 Starting production environment..."
+	@chmod +x backend/script.sh
+	@echo "✅ Script permissions set."
+	@echo "🚀 Building and starting backend container..."
+	@docker build -t backend -f backend/Dockerfile .
+	@docker run --name backend --env-file .env -d -p 8000:8000 backend
+	@echo "🚀 Building and starting frontend container..."
+	@docker build -t frontend -f frontend/Dockerfile .
+	@docker run --name frontend --env-file .env -d -p 80:80 frontend
+	@echo "🚀 Building and starting Nginx container..."
+	@docker build -t nginx -f nginx/Dockerfile .
+	@docker run --name nginx --env-file .env -d -p 80:80 -p 443:443 nginx
+	@echo "✅ Production environment up and running!"
+
+
 up: create_env_dev cp_env
 	@echo "🔄 Starting development environment..."
 	@chmod +x backend/script.sh
