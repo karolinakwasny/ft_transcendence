@@ -6,6 +6,7 @@ import { ProfileContext } from '../../context/ProfileContext';
 
 const ProfileBasicInfo = ({ loadProfile, style }) => {
 	const { t } = useTranslation();
+	const [error, setError] = useState('');
 	const fileInputRef = useRef(null);
 	const {	profile, setProfile, 
 				setPasswordModalOpen, 
@@ -20,12 +21,12 @@ const ProfileBasicInfo = ({ loadProfile, style }) => {
   const handleSaveDisplayName = async () => {
     if (!newDisplayName || newDisplayName === profile.display_name) return;
 	if (newDisplayName.length < 3) {
-		alert(t('Display name must be at least 3 characters long.'));
+		setError(t('Display name must be at least 3 characters long.'));
 		return;
 	}
 
 	if (newDisplayName.length > 15) {
-		alert(t('Display name must be not more than 15 characters long.'));
+		setError(t('Display name must be not more than 15 characters long.'));
 		return;
 	}
 
@@ -37,7 +38,7 @@ const ProfileBasicInfo = ({ loadProfile, style }) => {
       await loadProfile();
     } catch (err) {
       console.error('Error updating display name:', err);
-      alert(t('Failed to update display name'));
+      setError(t('Failed to update display name'));
     }
   };
 
@@ -51,7 +52,7 @@ const ProfileBasicInfo = ({ loadProfile, style }) => {
   const handleAvatarChange = async (event) => {
     const file = event.target.files[0];
     if (!file || !file.type.startsWith('image/')) {
-      alert('Please select an image file');
+	  setError('Please select an image file');
       return;
     }
 
@@ -61,7 +62,7 @@ const ProfileBasicInfo = ({ loadProfile, style }) => {
       await loadProfile();
     } catch (err) {
       console.error('Error updating avatar:', err);
-      alert(t('Failed to update avatar'));
+      setError(t('Failed to update avatar'));
     }
   };
 
@@ -173,12 +174,13 @@ const ProfileBasicInfo = ({ loadProfile, style }) => {
 				id="profileEditDisplayNameButton" 
 				title="Edit display name" 
 				aria-label={t("Edit display name")}
-			  >
+				>
         		<span className="write-symbol">✎</span>
               </button>
             </span>
           )}
         </p>
+		{error && <p className="tfa-message">{error}</p>}
         <p>{t("email")} <span>{profile.email}</span></p>
       </div>
 	  {profile.auth_provider !== "42api" && (
