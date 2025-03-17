@@ -3,7 +3,7 @@ HOSTNAME = localhost
 
 createDir = mkdir -p $1
 
-render: cert create_env cp_env
+render: cert  cp_env
 	@echo "🔄 Starting production environment..."
 	@chmod +x backend/script.sh
 	@echo "✅ Script permissions set."
