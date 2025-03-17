@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { NotFound, Unauthorized, ServerError, BadGateway, GatewayTimeout, RequestTimeout } from './pages/ErrorPages';
 import { GameProvider } from "./context/GameContext";
+import { ProfileProvider } from "./context/ProfileContext";
 import { AuthGuard } from './guards/authGuard';
 import { OAuth42CallbackHandler } from './guards/intraPlayerGuard';
 import Header from './components/Header';
@@ -50,42 +51,47 @@ function App() {
 
 	return (
 		<AccessibilityProvider>
-			<ScrollToTop />
-			{!navbarOff && <Header />}
-			<div className="App">
-				<AuthGuard />
-				<Main>
-					<ScrollReset>
-						<Routes>
-							{/* Error Pages */}
-							<Route path="*" element={<NotFound />} />
-							<Route path="/404" element={<NotFound />} />
-							<Route path="/401" element={<Unauthorized />} />
-							<Route path="/500" element={<ServerError />} />
-							<Route path="/502" element={<BadGateway />} />
-							<Route path="/504" element={<GatewayTimeout />} />
-							<Route path="/408" element={<RequestTimeout />} />
+			<ProfileProvider>
+				<ScrollToTop />
+				{!navbarOff && <Header />}
+				<div className="App">
+					<AuthGuard />
+					<Main>
+						<ScrollReset>
+							<Routes>
+								{/* Error Pages */}
+								<Route path="*" element={<NotFound />} />
+								<Route path="/404" element={<NotFound />} />
+								<Route path="/401" element={<Unauthorized />} />
+								<Route path="/500" element={<ServerError />} />
+								<Route path="/502" element={<BadGateway />} />
+								<Route path="/504" element={<GatewayTimeout />} />
+								<Route path="/408" element={<RequestTimeout />} />
 
-							<Route path="/" element={<Home />} />
-							<Route path="/about" element={<About />} />
-							<Route path="/login" element={isLoggedIn ? <Profile /> : <LogIn />} />
-							<Route
-								path="/play"
-								element={
-									<GameProvider>
-										<OAuth42CallbackHandler/>
-										<Play />
-									</GameProvider>
-								}
-							/>
+								<Route path="/" element={<Home />} />
+								<Route path="/about" element={<About />} />
+								<Route path="/login" element={isLoggedIn ? <Profile /> : <LogIn />} />
+								<Route
+									path="/play"
+									element={
+										<GameProvider>
+											<OAuth42CallbackHandler/>
+											<Play />
+										</GameProvider>
+									}
+								/>
 
-							{/* 🔒 Protected Routes */}
-							<Route path="/profile" element={isLoggedIn ? <Profile /> : <LogIn />} />
-						</Routes>
-					</ScrollReset>
-				</Main>
-			</div>
-			{!navbarOff && <Footer />}
+								{/* 🔒 Protected Routes */}
+								<Route 
+									path="/profile" 
+									element={ isLoggedIn ? <Profile /> : <LogIn /> } 
+								/>
+							</Routes>
+						</ScrollReset>
+					</Main>
+				</div>
+				{!navbarOff && <Footer />}
+			</ProfileProvider>
 		</AccessibilityProvider>
 	);
 }

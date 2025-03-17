@@ -25,7 +25,7 @@ const Otp = ({ onSuccess }) => {
 	const handleCodeSubmition = async (event) => {
 		event.preventDefault();
 		const userId = localStorage.getItem('user_id');
-		const token = localStorage.getItem('token');
+		const token = localStorage.getItem('access_token');
 
 		try {
 			const response = await axiosInstance.post(
@@ -42,22 +42,22 @@ const Otp = ({ onSuccess }) => {
 				}
 			);
 			localStorage.removeItem('qr_code_url');
-			console.log("data: ", response.non_field_errors[0])
-			if (!response.ok) {
-				console.log("response data", response.data)
-				const errorData = await response.json();
-				console.log("response data", errorData)
-
-				if (errorData.non_field_errors.includes("Invalid OTP code.")) {
-					setError(t('Invalid OTP code.'));
-				}
-			}
+			
 			// alert(t('2FA successfully activated'));
 			if (onSuccess) onSuccess();
 		} catch (error) {
-			
-			console.error('Error:', error);
-			// alert(t('Failed to activate 2FA'));
+			if (error.response) {
+				const { data, status } = error.response;
+				console.log("Response Data:", data);
+				
+				if (status === 400 && data.non_field_errors[0] === "Invalid OTP code.") {
+					setError(t("Invalid OTP code."));
+				} else {
+					setError(t("An error occurred. Please try again."));
+				}
+			} else {
+				setError(t("Failed to connect to server. Please try again later."));
+			}
 		}
 	};
 

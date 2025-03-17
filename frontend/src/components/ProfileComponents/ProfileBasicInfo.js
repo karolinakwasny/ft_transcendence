@@ -1,18 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { updateUserProfile } from '../../services/patchUserProfile';
 import axiosInstance from '../../services/axiosInstance';
+import { ProfileContext } from '../../context/ProfileContext';
 
-const ProfileBasicInfo = ({ profile, setProfile, loadProfile, style, setPasswordModalOpen, isSaving2FA, setIsSaving2FA }) => {
-  const { t } = useTranslation();
-  const fileInputRef = useRef(null);
-  const [isEditingDisplayName, setIsEditingDisplayName] = useState(false);
-//   const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
-  
-  const [newDisplayName, setNewDisplayName] = useState(profile.display_name);
-//   const [isSaving2FA, setIsSaving2FA] = useState(false);
-  const BASE_URL = process.env.REACT_APP_BACKEND_URL;
-  const handleEditDisplayName = () => setIsEditingDisplayName(true);
+const ProfileBasicInfo = ({ loadProfile, style }) => {
+	const { t } = useTranslation();
+	const fileInputRef = useRef(null);
+	const {	profile, setProfile, 
+				setPasswordModalOpen, 
+				isSaving2FA, setIsSaving2FA } = useContext(ProfileContext);
+		
+	const [isEditingDisplayName, setIsEditingDisplayName] = useState(false);
+	const [newDisplayName, setNewDisplayName] = useState(profile.display_name);
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
+ 	const handleEditDisplayName = () => setIsEditingDisplayName(true);
 
   const handleSaveDisplayName = async () => {
     if (!newDisplayName || newDisplayName === profile.display_name) return;
@@ -179,17 +182,17 @@ const ProfileBasicInfo = ({ profile, setProfile, loadProfile, style, setPassword
         <p>{t("email")} <span>{profile.email}</span></p>
       </div>
 	  {profile.auth_provider !== "42api" && (
-					<div className="mt-4">
-							<button
-									onClick={handleInitiateToggle2FA}
-									disabled={isSaving2FA}
-									className="buttonStyle1"
-									aria-label={profile.otp_active ? t("Disable 2FA") : t("Enable 2FA")}
-							>
-									{isSaving2FA ? t("Saving...") : profile.otp_active ? t("Disable 2FA") : t("Enable 2FA")}
-							</button>
-					</div>
-			)}
+		<div className="mt-4">
+			<button
+				onClick={handleInitiateToggle2FA}
+				disabled={isSaving2FA}
+				className="buttonStyle1"
+				aria-label={profile.otp_active ? t("Disable 2FA") : t("Enable 2FA")}
+			>
+				{isSaving2FA ? t("Saving...") : profile.otp_active ? t("Disable 2FA") : t("Enable 2FA")}
+			</button>
+		</div>
+		)}
 	</div>
   );
 };

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AccessibilityContext } from '../AccessibilityContext';
 import { AuthContext } from '../context/AuthContext';
+import { ProfileContext } from '../context/ProfileContext';
 import useWindowDimensions from '../components/userWindowDimensions';
 import { fetchUsers } from '../services/fetchUsers';
 import { getUserProfile } from '../services/getProfile';
@@ -16,25 +17,28 @@ import './Profile.css';
 
 const Profile = () => {
 	const {t} = useTranslation();
-	const { fontSize } = useContext(AccessibilityContext); 
 	const navigate = useNavigate(); 
-	const scaleStyle = { fontSize: `${fontSize}px` };
 	const { height } = useWindowDimensions();
-	
+	const [status, setStatus] = useState('');
+	const { fontSize } = useContext(AccessibilityContext); 
+	const scaleStyle = { fontSize: `${fontSize}px` };
 	const { isLoggedIn } = useContext(AuthContext);
-	const [profile, setProfile] = useState(null);
+
+	const { 
+			setIsSaving2FA,
+			loading, setLoading,
+			profile, setProfile, 
+		 	personLoggedIn, setPersonLoggedIn,
+			isPasswordModalOpen, setPasswordModalOpen,
+			isOtpActive, setOtpActive,
+			setNewDisplayName } = useContext(ProfileContext);
+
 	const [friends, setFriends] = useState([]);
 	const [allUsers, setAllUsers] = useState([]);
-	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const [isSaving2FA, setIsSaving2FA] = useState(false);
-	const [personLoggedIn, setPersonLoggedIn] = useState(null);
-	const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
-	const [isOtpActive, setOtpActive] = useState(false); // State for OTP activation
+
 	const wsBaseUrl = process.env.REACT_APP_BACKEND_WS;
-	const [status, setStatus] = useState(''); //for online-status
 	const user_id = localStorage.getItem('user_id');
-	const [newDisplayName, setNewDisplayName] = useState('');
 	
 	useEffect(() => {
 		if (!isLoggedIn) {
@@ -107,13 +111,8 @@ const Profile = () => {
 			</h1>
 			<div className='profileCardHolder  mb-0 w-100' style={scaleStyle}>
 				<ProfileBasicInfo 
-									profile={profile} 
-									setProfile={setProfile} 
 									loadProfile={loadProfile} 
 									style={scaleStyle}
-									setPasswordModalOpen={setPasswordModalOpen}
-									isSaving2FA={isSaving2FA}
-									setIsSaving2FA={setIsSaving2FA}
 				/>
 				<StatisticsCard	
 									losses={profile.losses}
@@ -128,20 +127,20 @@ const Profile = () => {
 									personLoggedIn={personLoggedIn}
 				/>	
 			</div>
-					<PasswordModal
-						isOpen={isPasswordModalOpen}
-						onClose={() => setPasswordModalOpen(false)}
-						onSubmit={handlePasswordSuccess}
-						onPasswordSuccess={handlePasswordSuccess} // Pass the callback
-					/>
-					{isOtpActive && <Otp onSuccess={() => { 
-						setOtpActive(false)
-						setIsSaving2FA(false)
-						setProfile(prev => ({
-							...prev,
-							otp_active: !prev.otp_active
-						})); }}/>
-					}
+			<PasswordModal
+								isOpen={isPasswordModalOpen}
+								onClose={() => setPasswordModalOpen(false)}
+								onSubmit={handlePasswordSuccess}
+								onPasswordSuccess={handlePasswordSuccess} // Pass the callback
+			/>
+			{isOtpActive && <Otp onSuccess={() => { 
+								setOtpActive(false)
+								setIsSaving2FA(false)
+								setProfile(prev => ({
+									...prev,
+									otp_active: !prev.otp_active
+								})); }}/>
+			}
 		</div>
 	);
 };
