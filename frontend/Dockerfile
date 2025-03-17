@@ -48,7 +48,7 @@ RUN mkdir -p /var/cache/nginx/client_temp && \
     chown -R appuser:appgroup /var/cache/nginx
 # Copy built React files to Nginx public folder
 COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
+# COPY nginx.conf /etc/nginx/nginx.conf
 # Expose port 80
 EXPOSE 80
 
