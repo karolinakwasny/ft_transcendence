@@ -131,7 +131,7 @@ const Profile = () => {
 								isOpen={isPasswordModalOpen}
 								onClose={() => setPasswordModalOpen(false)}
 								onSubmit={handlePasswordSuccess}
-								onPasswordSuccess={handlePasswordSuccess} // Pass the callback
+								onPasswordSuccess={handlePasswordSuccess}
 			/>
 			{isOtpActive && <Otp onSuccess={() => { 
 								setOtpActive(false)

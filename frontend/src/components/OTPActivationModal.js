@@ -43,7 +43,6 @@ const Otp = ({ onSuccess }) => {
 			);
 			localStorage.removeItem('qr_code_url');
 			
-			// alert(t('2FA successfully activated'));
 			if (onSuccess) onSuccess();
 		} catch (error) {
 			if (error.response) {

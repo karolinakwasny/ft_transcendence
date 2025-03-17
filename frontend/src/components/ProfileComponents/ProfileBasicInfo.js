@@ -93,7 +93,6 @@ const ProfileBasicInfo = ({ loadProfile, style }) => {
 				}
 			}
 		);
-		// alert(t('2FA successfully deactivated'))
 
 		setProfile(prev => ({
 			...prev,
