@@ -10,52 +10,7 @@ import { getAllPlayers } from '../../services/getAllUsers';
 import { exitTournament } from '../../services/postExitTournament';  
 import useWindowDimensions from '../userWindowDimensions';
 
-// function disableNavigationButtons() {
-// 	let pageContent = document.getElementById("pageContentID");
-// 	let pongHeading = document.getElementById("pongHeading");
-
-// 	if (pongHeading) {
-// 		pongHeading.style.display = 'none';
-// 	}
-
-// 	if (pageContent) {
-// 		pageContent.style.padding  = '0px';
-// 		pageContent.style.margin   = '0px';
-// 		pageContent.style.position = 'relative';
-// 		pageContent.style.zIndex   = '1000';
-// 	}
-
-// 	let navbar = document.getElementById("navbarID");
-// 	if (navbar) {
-// 		navbar.style.display = 'none';
-// 	}
-
-// 	let footer = document.getElementById("footerID");
-// 	if (footer) {
-// 		footer.style.display = 'none';
-// 	}
-// }
-
-// function turnOnFooterNavbar() {
-//     let footer = document.getElementById("footerID");
-//     if (footer && footer.style.display === "none") {
-//         footer.style.display = "flex";
-//     }
-
-//     let navbar = document.getElementById("navbarID");
-//     if (navbar && navbar.style.display === "none") {
-//         navbar.style.display = "flex";
-//     }
-
-// 	let pongHeading  = document.getElementById("pongHeading");
-// 	if (pongHeading && pongHeading.style.display === "none") {
-// 		pongHeading.style.display = "flex";
-// 	}
-// }
-
-
 const TournamentScreen = ({ setForceUpdate }) => {
-	// disableNavigationButtons();
     const { t } = useTranslation();
 	const navigate = useNavigate();
     const { setTournamentPlayers, 

@@ -42,8 +42,12 @@ const Otp = ({ onSuccess }) => {
 				}
 			);
 			localStorage.removeItem('qr_code_url');
+			console.log("data: ", response.non_field_errors[0])
 			if (!response.ok) {
+				console.log("response data", response.data)
 				const errorData = await response.json();
+				console.log("response data", errorData)
+
 				if (errorData.non_field_errors.includes("Invalid OTP code.")) {
 					setError(t('Invalid OTP code.'));
 				}
@@ -52,7 +56,6 @@ const Otp = ({ onSuccess }) => {
 			if (onSuccess) onSuccess();
 		} catch (error) {
 			
-			console.log('Error in otp:', error);
 			console.error('Error:', error);
 			// alert(t('Failed to activate 2FA'));
 		}
