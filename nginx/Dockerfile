@@ -24,7 +24,7 @@ RUN apk update && apk add --no-cache gettext netcat-openbsd iputils
 COPY ./nginx.conf /etc/nginx/nginx.template
 
 # Copy SSL certificates
-COPY ./certs /etc/nginx/certs
+# COPY ./certs /etc/nginx/certs
 
 # Replace environment variables and start NGINX
 #CMD envsubst '$NGINX_SERVER_NAME' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g "daemon off;"
