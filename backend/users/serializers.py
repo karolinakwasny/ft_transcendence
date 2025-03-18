@@ -107,41 +107,6 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         return user
 
 
-#class UserCreateSerializer(BaseUserCreateSerializer):
-#
-#    class Meta(BaseUserCreateSerializer.Meta):
-#        model = User
-#        fields = ['id', 'username',
-#                  'email', 'qr_code', 'password']
-#        extra_kwargs = {
-#            "password": {"write_only": True},
-#            "qr_code": {"read_only": True},
-#        }
-#
-#    def validate_username(self, value):
-#        if not re.match(r'^[a-zA-Z0-9._-]{3,30}$', value):
-#            raise serializers.ValidationError("Username must be 3-30 characters long and can only contain letters, numbers, underscores, hyphens, and periods.")
-#        return value
-#
-#    def validate(self, attrs: dict):
-#        self.validate_username(attrs.get("username"))
-#        email = attrs.get("email").lower().strip()
-#        if User.objects.filter(email__iexact=email).exists():
-#            raise serializers.ValidationError({"email": "Email already exists!"})
-#        self.validate_username(attrs.get("username"))
-#        return super().validate(attrs)
-#
-#    def create(self, validated_data: dict):
-#        email = validated_data.get("email")
-#        username = validated_data.get("username")
-#        user = User(
-#            email=email,
-#            username=username,  # Inherited from AbstractUser
-#        )
-#        # Use set_password for proper password hashing
-#        user.set_password(validated_data.get("password"))
-#        user.save()
-#        return user
 
 # for the current user, which information is shown
 class UserSerializer(BaseUserSerializer):
@@ -160,8 +125,8 @@ class PlayerProfileSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(source='user.id', read_only=True)
     username = serializers.CharField(read_only=True)
     profile_id = serializers.IntegerField(read_only=True, source='id')
-    wins = serializers.IntegerField(read_only=True)
-    losses = serializers.IntegerField(read_only=True)
+    wins = serializers.ReadOnlyField()
+    losses = serializers.ReadOnlyField()
     friends = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     matches_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Match.objects.all(), required=False, source='matches')
     email = serializers.SerializerMethodField()
@@ -236,6 +201,10 @@ class MatchSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         instance = super().save(**kwargs)
         match_created.send_robust(self.__class__, match=instance)
+
+        instance.player1.refresh_from_db()
+        if instance.player2:
+            instance.player2.refresh_from_db()
         #print('after signal in serializer')
         return instance
 

@@ -76,8 +76,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class PlayerProfileViewSet(RetrieveModelMixin, UpdateModelMixin, viewsets.GenericViewSet):
     queryset = PlayerProfile.objects.all()
     serializer_class = PlayerProfileSerializer
-    permission_classes = [IsAuthenticated]
-    #permission_classes = [AllowAny] # for development
+    #permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny] # for development
     parser_classes = [MultiPartParser, FormParser]  # Add parsers for file uploads
 
     def list(self, request, *args, **kwargs):
@@ -110,8 +110,8 @@ class PlayerProfileViewSet(RetrieveModelMixin, UpdateModelMixin, viewsets.Generi
 class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
-    #permission_classes = [AllowAny] # for development
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny] # for development
+    #permission_classes = [IsAuthenticated]
 
 #    def get_queryset(self):
 #        if self.request.user.is_staff:

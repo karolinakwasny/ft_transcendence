@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getAllPlayers } from '../../services/getAllUsers';
+import { getAllPlayers } from '../../../services/getAllUsers';
 import { useTranslation } from 'react-i18next';
 
 const UserList = ({ friends }) => {

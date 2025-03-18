@@ -60,26 +60,6 @@ const StatisticsCard = ({ losses, wins, fontSize }) => {
     );
   };
 
-
-//   <div className='profileCardStyle1' style={{ fontSize: `${fontSize}px` }}>
-//   <h2>{t("Stats")}</h2>
-//   <div id="profileStatsInfoHolder">
-//     <p>{t("Games played")} <span>{profile.matches_id.join(', ')}</span></p>
-//     <p>{t("Wins")} <span>{profile.wins}</span></p>
-//   </div>
-// </div>
-// <div className='profileCardStyle1' style={{ fontSize: `${fontSize}px` }}>
-//   <h2>{t("List of friends")}</h2>
-//   <ListFriends friends={friends}/>
-//   <Filter className="inputFieldStyle1" placeholder={t("Search for users")} type="text" value={query} onChange={handleSearch}/>
-//   <ListUsers	filterUsers={filterUsers}
-//         setAllUsers={setAllUsers}
-//         setFilterUsers={setFilterUsers}
-//         setFriends={setFriends}
-//         personLoggedIn={personLoggedIn}/>
-// </div>
-// </div>
-
   return (
     <div className='profileCardStyle1' style={{ fontSize: `${fontSize}px`, textAlign: 'center' }}>
       <h2>{t("Stats")}</h2>

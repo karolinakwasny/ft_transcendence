@@ -111,14 +111,14 @@ function Ball({player1Ref, player2Ref, handleScore}) {
 		//GOAL
 		if ((newPosition[2] + BALL_RADIUS) > (halfLength - PLAYER_LEN) & 
 			 collidedWithPlayer2 === false) {
-			// alert("GOAL1");
+
 			handleScore(2);
 			position.current = [0, 1, 0];
 			velocity.current = [0.1, 0, 0.1];
 			return;
 		} else if ((newPosition[2] - BALL_RADIUS) < (-halfLength + PLAYER_LEN) &
 					collidedWithPlayer1 === false) {
-			// alert("GOAL2");
+
 			handleScore(1);
 			position.current = [0, 1, 0];
 			velocity.current = [0.1, 0, -0.1];
@@ -448,8 +448,6 @@ function Pong() {
 				updatedScores.p1_in_set_score = 0; // Reset score for next set
 				updatedScores.p1_won_set_count++;
 				if (updatedScores.p1_won_set_count >= MAX_SET_COUNT) {
-					// alert('Player 1 has won the game!');
-					//SEND THE STATISTICAL DATA BACK TO THE DATABASE
 					postMatchResults(player1Id, updatedScores, iDTournamentGame, player1Id, player2Id);
 					setWinner(player1DisplayName ? player1DisplayName : t("Player 1"));
 				}
@@ -461,8 +459,6 @@ function Pong() {
 				updatedScores.p2_in_set_score = 0; // Reset score for next set
 				updatedScores.p2_won_set_count++;
 				if (updatedScores.p2_won_set_count >= MAX_SET_COUNT) {
-					// alert('Player 2 has won the game!');
-					//SEND THE STATISTICAL DATA BACK TO THE DATABASE
 					postMatchResults(player2Id, updatedScores, iDTournamentGame, player1Id, player2Id);
 					setWinner(player2DisplayName ? player2DisplayName : t("Player 2"));
 				}
