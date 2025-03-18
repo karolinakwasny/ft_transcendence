@@ -47,6 +47,31 @@ class PlayerProfile(models.Model):
     matches = models.ManyToManyField(
         'Match', through='PlayerMatch', related_name='stats', blank=True)
 
+    def get_wins(self):
+        # Get the number of matches where this player is the winner
+        return self.won_matches.count()
+
+    def get_losses(self):
+        # Get the total number of matches the player has participated in
+        total_matches = self.player1_matches.count() + self.player2_matches.count()
+
+        # Get the number of matches won by the player
+        won_matches = self.won_matches.count()
+
+        # Calculate the total number of losses
+        total_losses = total_matches - won_matches
+
+        #print(f"Total losses: {total_losses}")
+        return total_losses
+
+    @property
+    def wins(self):
+        return self.get_wins()
+
+    @property
+    def losses(self):
+        return self.get_losses()
+
     def __str__(self):
         return str(self.user.id)
 
