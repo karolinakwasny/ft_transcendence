@@ -48,19 +48,12 @@ class PlayerProfile(models.Model):
         'Match', through='PlayerMatch', related_name='stats', blank=True)
 
     def get_wins(self):
-        # Get the number of matches where this player is the winner
         return self.won_matches.count()
 
     def get_losses(self):
-        # Get the total number of matches the player has participated in
-        total_matches = self.player1_matches.count() + self.player2_matches.count()
-
-        # Get the number of matches won by the player
+        total_matches = self.player1_matches.filter(winner__isnull=False).count() + self.player2_matches.filter(winner__isnull=False).count()
         won_matches = self.won_matches.count()
-
-        # Calculate the total number of losses
         total_losses = total_matches - won_matches
-
         #print(f"Total losses: {total_losses}")
         return total_losses
 
