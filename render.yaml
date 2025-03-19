@@ -30,7 +30,6 @@ services:
     envVars:
       - fromFile: .env
     dependsOn:
-      - postgresql
       - django
 
   # Django (Backend)
@@ -42,37 +41,18 @@ services:
     envVars:
       - fromFile: .env
       - key: DATABASE_URL
-        value: ${DATABASE_URL}
+        value: ${DATABASE_URL}  # This will be provided by the Render PostgreSQL database
     disk:
       - name: static_data
         mountPath: /app/static
       - name: media_data
         mountPath: /app/media
     dependsOn:
-      - postgresql
+      - postgresql  # Django depends on the PostgreSQL database
 
+databases:
   # PostgreSQL (Database)
   - name: postgresql
-    type: postgres
-    env: docker
-    image: postgres:16
-    envVars:
-      - key: POSTGRES_DB
-        value: ${POSTGRES_DB}
-      - key: POSTGRES_USER
-        value: ${POSTGRES_USER}
-      - key: POSTGRES_PASSWORD
-        value: ${POSTGRES_PASSWORD}
-      - key: POSTGRES_HOST
-        value: ${POSTGRES_HOST}
-      - key: POSTGRES_PORT
-        value: ${POSTGRES_PORT}
-    disk:
-      - name: postgresql_data
-        mountPath: /var/lib/postgresql/data
-
-volumes:
-  react_node_modules:
-  media_data:
-  static_data:
-  postgresql_data:
+    databaseName: ${POSTGRES_DB}
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
