@@ -6,8 +6,8 @@ services:
     dockerfilePath: ./nginx/Dockerfile
     envVars:
       - fromFile: .env
-    disk:
-      - name: media
+    disks:
+      - name: media_data
         mountPath: /app/media
     healthCheckPath: /
     startCommand: ''
@@ -37,10 +37,10 @@ services:
       - fromFile: .env
       - key: DATABASE_URL
         value: ${DATABASE_URL}  # This will be provided by the Render PostgreSQL database
-    disk:
-      - name: static
+    disks:
+      - name: static_data
         mountPath: /app/static
-      - name: media
+      - name: media_data
         mountPath: /app/media
 
 databases:
