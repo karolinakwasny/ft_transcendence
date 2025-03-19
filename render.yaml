@@ -7,7 +7,7 @@ services:
     envVars:
       - fromFile: .env
     disk:
-      - name: media_data
+      - name: media
         mountPath: /app/media
     healthCheckPath: /
     startCommand: ''
@@ -38,9 +38,9 @@ services:
       - key: DATABASE_URL
         value: ${DATABASE_URL}  # This will be provided by the Render PostgreSQL database
     disk:
-      - name: static_data
+      - name: static
         mountPath: /app/static
-      - name: media_data
+      - name: media
         mountPath: /app/media
 
 databases:
