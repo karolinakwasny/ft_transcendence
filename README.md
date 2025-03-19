@@ -71,7 +71,7 @@ This project was a team effort, and we are proud of the results.
 
 - The pong game was built using Three.js to achieve a 3D visual effect.
 
-![3D Feature](https://github.com/erwkuvi/ft_transcendence/blob/main/assets/3d-tecniques.gif)
+![3D Feature](https://github.com/erwkuvi/ft_transcendence/blob/main/assets/3d-techniques.gif)
 
 ---
 
