@@ -1,4 +1,5 @@
 services:
+  # NGINX (Reverse Proxy)
   - name: nginx
     type: web
     env: docker
@@ -12,7 +13,7 @@ services:
     startCommand: ''
     autoDeploy: true
     domains:
-      - ft_transcendence_kkeklk.com
+      - ft_transcendence_kkeklk.com  # Replace with your custom domain
     routes:
       - type: rewrite
         source: /static/*
@@ -21,6 +22,7 @@ services:
       - django
       - react
 
+  # React (Frontend)
   - name: react
     type: web
     env: docker
@@ -28,8 +30,10 @@ services:
     envVars:
       - fromFile: .env
     dependsOn:
+      - postgresql
       - django
 
+  # Django (Backend)
   - name: django
     type: web
     env: docker
@@ -45,14 +49,30 @@ services:
       - name: media_data
         mountPath: /app/media
     dependsOn:
-      - react
+      - postgresql
+
+  # PostgreSQL (Database)
+  - name: postgresql
+    type: postgres
+    env: docker
+    image: postgres:16
+    envVars:
+      - key: POSTGRES_DB
+        value: ${POSTGRES_DB}
+      - key: POSTGRES_USER
+        value: ${POSTGRES_USER}
+      - key: POSTGRES_PASSWORD
+        value: ${POSTGRES_PASSWORD}
+      - key: POSTGRES_HOST
+        value: ${POSTGRES_HOST}
+      - key: POSTGRES_PORT
+        value: ${POSTGRES_PORT}
+    disk:
+      - name: postgresql_data
+        mountPath: /var/lib/postgresql/data
 
 volumes:
   react_node_modules:
   media_data:
   static_data:
-
-networks:
-  transcend:
-    name: transcend
-    driver: bridge
+  postgresql_data:
