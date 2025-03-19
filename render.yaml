@@ -12,7 +12,7 @@ services:
     startCommand: ''
     autoDeploy: true
     domains:
-      - your-domain.com  # Change to your actual domain
+      - ft_transcendence_kkeklk.com
     routes:
       - type: rewrite
         source: /static/*
@@ -28,7 +28,6 @@ services:
     envVars:
       - fromFile: .env
     dependsOn:
-      - postgresql
       - django
 
   - name: django
@@ -38,30 +37,38 @@ services:
     startCommand: ./script.sh
     envVars:
       - fromFile: .env
+      - key: POSTGRES_DB
+        value: ${POSTGRES_DB}  # Replace with the actual database name
+      - key: POSTGRES_USER
+        value: ${POSTGRES_USER}
+      - key: POSTGRES_PASSWORD
+        value: ${POSTGRES_PASSWORD}
+      - key: POSTGRES_HOST
+        value: ${POSTGRES_HOST}  # This could be the Render URL for the database service
+      - key: POSTGRES_PORT
+        value: ${POSTGRES_PORT}
     disk:
       - name: static_data
         mountPath: /app/static
       - name: media_data
         mountPath: /app/media
     dependsOn:
-      - postgresql
+      - react
 
+# Render-managed PostgreSQL service setup (use Render's built-in PostgreSQL service)
   - name: postgresql
-    type: database
-    env: docker
-    image: postgres:16
+    type: postgres
     envVars:
       - fromFile: .env
-      - key: POSTGRES_DB
-        value: ${POSTGRES_DB}
-      - key: POSTGRES_USER
-        value: ${POSTGRES_USER}
-      - key: POSTGRES_PASSWORD
-        value: ${POSTGRES_PASSWORD}
-      - key: POSTGRES_HOST
-        value: ${POSTGRES_HOST}
-      - key: POSTGRES_PORT
-        value: ${POSTGRES_PORT}
-    disk:
-      - name: postgresql_data
-        mountPath: /var/lib/postgresql/data
+    autoDeploy: true
+    # Render will automatically create and manage this service for you
+
+volumes:
+  react_node_modules:
+  media_data:
+  static_data:
+
+networks:
+  transcend:
+    name: transcend
+    driver: bridge
