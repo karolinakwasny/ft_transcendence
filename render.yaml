@@ -18,9 +18,6 @@ services:
       - type: rewrite
         source: /static/*
         destination: /app/static/$1
-    dependsOn:
-      - django
-      - react
 
   # React (Frontend)
   - name: react
@@ -29,8 +26,6 @@ services:
     dockerfilePath: ./frontend/Dockerfile
     envVars:
       - fromFile: .env
-    dependsOn:
-      - django
 
   # Django (Backend)
   - name: django
@@ -47,12 +42,9 @@ services:
         mountPath: /app/static
       - name: media_data
         mountPath: /app/media
-    dependsOn:
-      - postgresql  # Django depends on the PostgreSQL database
 
 databases:
   # PostgreSQL (Database)
   - name: postgresql
     databaseName: ${POSTGRES_DB}
     user: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
