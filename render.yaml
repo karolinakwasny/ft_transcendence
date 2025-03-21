@@ -13,6 +13,7 @@ services:
     autoDeploy: true
     domains:
       - ft-transcendence.com
+    plan: free
 
   # React (Frontend)
   - name: react
@@ -21,6 +22,7 @@ services:
     envVars:
       - fromGroup: ft_transcendence
     dockerfilePath: ./frontend/Dockerfile
+    plan: free
 
   # Django (Backend)
   - name: django
@@ -32,6 +34,7 @@ services:
     disk:
         name: static_data
         mountPath: /app/static
+    plan: free
 
 databases:
   # PostgreSQL (Database)
