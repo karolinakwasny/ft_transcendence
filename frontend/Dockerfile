@@ -30,12 +30,12 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY frontend/package.json package-lock.json ./
+COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install --omit=dev
 
 
 # Copy all files and build the project
-COPY . .
+COPY frontend .
 RUN npm run build
 
 # --- Second stage: Use Nginx for serving static files ---
