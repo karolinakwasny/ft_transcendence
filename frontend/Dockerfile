@@ -30,7 +30,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY package.json package-lock.json ./
+COPY frontend/package.json package-lock.json ./
 RUN npm install --omit=dev
 
 
