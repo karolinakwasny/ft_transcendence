@@ -67,9 +67,9 @@ COPY backend/media/ /app/media/
 EXPOSE 8000
 
 # Ensure script is executable
-RUN chmod +x script.sh
+RUN chmod +x backend/script.sh
 
 # Start the application
-CMD ["./script.sh"]
+CMD ["backend/script.sh"]
 
 
