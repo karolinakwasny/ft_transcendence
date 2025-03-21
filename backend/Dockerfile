@@ -38,7 +38,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Copy requirements file and install dependencies
-COPY ./requirements.txt /app/
+COPY backend/requirements.txt /app/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -61,7 +61,7 @@ COPY . /app/
 RUN mkdir -p /app/media/avatars
 
 # ✅ Copy default media files from your local machine into the container
-COPY media/ /app/media/
+COPY backend/media/ /app/media/
 
 # Expose Django application port
 EXPOSE 8000
