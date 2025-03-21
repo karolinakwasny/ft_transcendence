@@ -3,12 +3,13 @@ services:
   - name: nginx
     type: web
     runtime: docker
+    envVars:
+      - fromGroup: ft_transcendence
     dockerfilePath: ./nginx/Dockerfile
     disk:
         name: media_data
         mountPath: /app/media
     healthCheckPath: /
-    startCommand: ''
     autoDeploy: true
     domains:
       - ft_transcendence_kkeklk.com
@@ -17,12 +18,16 @@ services:
   - name: react
     type: web
     runtime: docker
+    envVars:
+      - fromGroup: ft_transcendence
     dockerfilePath: ./frontend/Dockerfile
 
   # Django (Backend)
   - name: django
     type: web
     runtime: docker
+    envVars:
+      - fromGroup: ft_transcendence
     dockerfilePath: ./backend/Dockerfile
     startCommand: ./script.sh
     disk:
@@ -32,5 +37,6 @@ services:
 databases:
   # PostgreSQL (Database)
   - name: postgresql
-    databaseName: ${POSTGRES_DB}
-    user: ${POSTGRES_USER}
+    postgresMajorVersion: "16"
+    databaseName: karolina1  
+    user: karolina1  
