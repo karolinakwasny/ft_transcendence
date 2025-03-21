@@ -6,9 +6,9 @@ services:
     envVars:
       - fromGroup: ft_transcendence
     dockerfilePath: ./nginx/Dockerfile
-    disk:
-        name: media_data
-        mountPath: /app/media
+    # disk:
+    #     name: media_data
+    #     mountPath: /app/media
     healthCheckPath: /
     autoDeploy: true
     domains:
@@ -31,9 +31,9 @@ services:
     dockerfilePath: ./backend/Dockerfile
     envVars:
       - fromGroup: ft_transcendence
-    disk:
-        name: static_data
-        mountPath: /app/static
+    # disk:
+    #     name: static_data
+    #     mountPath: /app/static
     plan: free
 
 databases:
