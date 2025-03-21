@@ -27,7 +27,6 @@ services:
     type: web
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
-    startCommand: ./script.sh
     envVars:
       - fromGroup: ft_transcendence
     disk:
