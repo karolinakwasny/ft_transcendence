@@ -12,7 +12,7 @@ services:
     healthCheckPath: /
     autoDeploy: true
     domains:
-      - ft-transcendence-kkeklk.com
+      - ft-transcendence.com
 
   # React (Frontend)
   - name: react
