@@ -17,7 +17,7 @@ DEBUG = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ('django-insecure-x1a#yw-&_gh&jvp06gn)m2x-d@_z06ghuygo$^!f5s8g+)_mql')
 
-ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', 'django-9mgr.onrender.com']
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),

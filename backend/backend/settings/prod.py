@@ -20,6 +20,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "django",
+	"django-9mgr.onrender.com",
 ]
 
 # SECURITY WARNING: keep the secret key used in production secret!
