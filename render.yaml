@@ -2,43 +2,31 @@ services:
   # NGINX (Reverse Proxy)
   - name: nginx
     type: web
-    env: docker
+    runtime: docker
     dockerfilePath: ./nginx/Dockerfile
-    envVars:
-      - fromFile: .env
     disk:
-      - name: media_data
+        name: media_data
         mountPath: /app/media
     healthCheckPath: /
     startCommand: ''
     autoDeploy: true
     domains:
-      - ft_transcendence_kkeklk.com  # Replace with your custom domain
-    routes:
-      - type: rewrite
-        source: /static/*
-        destination: /app/static/$1
+      - ft_transcendence_kkeklk.com
 
   # React (Frontend)
   - name: react
     type: web
-    env: docker
+    runtime: docker
     dockerfilePath: ./frontend/Dockerfile
-    envVars:
-      - fromFile: .env
 
   # Django (Backend)
   - name: django
     type: web
-    env: docker
+    runtime: docker
     dockerfilePath: ./backend/Dockerfile
     startCommand: ./script.sh
-    envVars:
-      - fromFile: .env
-      - key: DATABASE_URL
-        value: ${DATABASE_URL}  # This will be provided by the Render PostgreSQL database
     disk:
-      - name: static_data
+        name: static_data
         mountPath: /app/static
 
 databases:
