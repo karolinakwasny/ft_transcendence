@@ -12,7 +12,7 @@ services:
     healthCheckPath: /
     autoDeploy: true
     domains:
-      - ft_transcendence_kkeklk.com
+      - ft-transcendence-kkeklk.com
 
   # React (Frontend)
   - name: react
@@ -26,10 +26,10 @@ services:
   - name: django
     type: web
     runtime: docker
-    envVars:
-      - fromGroup: ft_transcendence
     dockerfilePath: ./backend/Dockerfile
     startCommand: ./script.sh
+    envVars:
+      - fromGroup: ft_transcendence
     disk:
         name: static_data
         mountPath: /app/static
