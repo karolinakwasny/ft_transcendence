@@ -1,6 +1,7 @@
 services:
   # NGINX (Reverse Proxy)
   - name: nginx
+    plan: free
     type: web
     runtime: docker
     envVars:
@@ -16,6 +17,7 @@ services:
 
   # React (Frontend)
   - name: react
+    plan: free
     type: web
     runtime: docker
     envVars:
@@ -24,6 +26,7 @@ services:
 
   # Django (Backend)
   - name: django
+    plan: free
     type: web
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
@@ -36,6 +39,7 @@ services:
 databases:
   # PostgreSQL (Database)
   - name: postgresql
+    plan: free
     postgresMajorVersion: "16"
     databaseName: karolina1  
     user: karolina1  
