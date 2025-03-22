@@ -21,7 +21,7 @@ FROM nginx:stable-alpine
 RUN apk update && apk add --no-cache gettext netcat-openbsd iputils
 
 # COPY nginx/script.sh script.sh
-RUN chmod -x script.sh
+RUN chmod -x nginx/script.sh
 
 # RUN ls -l script.sh
 
