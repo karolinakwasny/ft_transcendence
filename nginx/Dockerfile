@@ -23,6 +23,9 @@ RUN apk update && apk add --no-cache gettext netcat-openbsd iputils
 COPY nginx/script.sh script.sh
 RUN chmod +x script.sh
 
+RUN ls -l script.sh
+
+
 # Copy the template nginx.conf (will contain variables like ${NGINX_SERVER_NAME})
 COPY nginx/nginx.conf /etc/nginx/nginx.template
 
