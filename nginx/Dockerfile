@@ -36,6 +36,6 @@ COPY nginx/nginx.conf /etc/nginx/nginx.template
 # Replace environment variables and start NGINX
 #CMD envsubst '$NGINX_SERVER_NAME' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g "daemon off;"
 # Replace environment variables and start NGINX using a writable config location
-CMD ["/nginx/entrypoint.sh"]
+ENTRYPOINT ["/nginx/entrypoint.sh"]
 
 
