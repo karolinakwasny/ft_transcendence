@@ -18,16 +18,17 @@ This project is part of the core curriculum at 42 Schools and aims to familiariz
 | **Reverse Proxy** | Nginx                        |
 | **Containerization** | Docker & Docker Compose |
 
-This project was a team effort, and we are proud of the results.
 
 ---
 
 ## My Role in This Project
 
-- Set up the django for backend
+- Set up Django and PostgreSQL.
 - Set up the deployment environment using Docker containers and Docker Compose.
 - Implemented friend service in backend.
 - Developed most of the frontend.
+
+This project was a team effort. I would like to thank my team members for their valuable contributions: Erwin Küchel for his work on Django and NGINX, and Lukas Kavaliauskis for creating the 3D game. Their efforts were instrumental in the success of this project.
 
 ---
 
