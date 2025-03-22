@@ -24,10 +24,10 @@ This project was a team effort, and we are proud of the results.
 
 ## My Role in This Project
 
-- Implemented user management and authentication systems.
-- Integrated remote authentication using the 42 API.
-- Developed Two-Factor Authentication (2FA) and JWT, including frontend integration.
-- Configured the reverse proxy for secure connections using self-signed TLS certificates.
+- Set up the django for backend
+- Set up the deployment environment using Docker containers and Docker Compose.
+- Implemented friend service in backend.
+- Developed most of the frontend.
 
 ---
 
