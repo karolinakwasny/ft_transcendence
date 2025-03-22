@@ -21,7 +21,7 @@ FROM nginx:stable-alpine
 RUN apk update && apk add --no-cache gettext netcat-openbsd iputils
 
 # COPY nginx/script.sh script.sh
-RUN chmod -x nginx/script.sh
+RUN chmod -x nginx/entrypoint.sh
 
 # RUN ls -l script.sh
 
@@ -35,6 +35,6 @@ COPY nginx/nginx.conf /etc/nginx/nginx.template
 # Replace environment variables and start NGINX
 #CMD envsubst '$NGINX_SERVER_NAME' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g "daemon off;"
 # Replace environment variables and start NGINX using a writable config location
-CMD ["nginx/script.sh"]
+CMD ["nginx/entrypoint.sh"]
 
 
