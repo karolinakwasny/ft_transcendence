@@ -11,8 +11,6 @@ services:
     #     mountPath: /app/media
     healthCheckPath: /
     autoDeploy: true
-    domains:
-      - ft-transcendence.com
     plan: free
 
   # React (Frontend)
