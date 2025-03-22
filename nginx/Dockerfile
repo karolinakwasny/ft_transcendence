@@ -20,8 +20,8 @@ FROM nginx:stable-alpine
 # Install necessary tools including envsubst
 RUN apk update && apk add --no-cache gettext netcat-openbsd iputils
 
-RUN chmod +x ./script.sh
-COPY ./script.sh script.sh
+RUN chmod +x nginx/script.sh
+COPY nginx/script.sh /script.sh
 
 # Copy the template nginx.conf (will contain variables like ${NGINX_SERVER_NAME})
 COPY nginx/nginx.conf /etc/nginx/nginx.template
