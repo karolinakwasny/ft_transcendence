@@ -22,10 +22,9 @@ RUN apk update && apk add --no-cache gettext netcat-openbsd iputils
 
 COPY nginx/entrypoint.sh /nginx/entrypoint.sh
 
-# COPY nginx/script.sh script.sh
 RUN chmod -x /nginx/entrypoint.sh
 
-# RUN ls -l script.sh
+RUN ls -l /nginx/entrypoint.sh
 
 
 # Copy the template nginx.conf (will contain variables like ${NGINX_SERVER_NAME})
