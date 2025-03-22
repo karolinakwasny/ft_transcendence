@@ -35,6 +35,6 @@ COPY nginx/nginx.conf /etc/nginx/nginx.template
 # Replace environment variables and start NGINX
 #CMD envsubst '$NGINX_SERVER_NAME' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g "daemon off;"
 # Replace environment variables and start NGINX using a writable config location
-CMD ["/bin/sh", "-c", "script.sh && envsubst '$NGINX_SERVER_NAME' < /etc/nginx/nginx.template > /tmp/nginx.conf && nginx -c /tmp/nginx.conf -g 'daemon off;'"]
+CMD ["/script.sh", "&&", "envsubst", "$NGINX_SERVER_NAME", "<", "/etc/nginx/nginx.template", ">", "/tmp/nginx.conf", "&&", "nginx", "-c", "/tmp/nginx.conf", "-g", "'daemon off;'"]
 
 
