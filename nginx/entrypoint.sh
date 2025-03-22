@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 SSL="./nginx/certs"
 HOSTNAME="localhost"
 
