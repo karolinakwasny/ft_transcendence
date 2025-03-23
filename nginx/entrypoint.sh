@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x 
+
 SSL="./nginx/certs"
 HOSTNAME="localhost"
 
@@ -12,7 +14,7 @@ generate_certificates() {
     echo "🔍 Checking SSL certificates..."
     createDir "$SSL"
 
-    if [[ -f "$SSL/privkey.key" && -f "$SSL/fullchain.crt" ]]; then
+    if [ -f "$SSL/privkey.key" && -f "$SSL/fullchain.crt" ]; then
         echo "🟢 Certificates already exist."
     else
         echo "🔧 Generating new SSL certificates..."
@@ -30,14 +32,14 @@ generate_certificates() {
 copy_env() {
     echo "🔄 Copying environment files..."
 
-    if [[ ! -L frontend/.env ]]; then
+    if [ ! -L frontend/.env ]; then
         cp ./.env frontend/.env
         echo "✅ Environment file copied to frontend."
     else
         echo "⚠️  Env file frontend/.env already exists."
     fi
 
-    if [[ ! -L backend/users/management/commands/.env ]]; then
+    if [ ! -L backend/users/management/commands/.env ]; then
         cp ./.env backend/users/management/commands/.env
         echo "✅ Environment file copied to backend."
     else
