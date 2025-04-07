@@ -3,7 +3,7 @@
 set -x 
 
 SSL="./nginx/certs"
-HOSTNAME="localhost"
+HOSTNAME="nginx-jm1p.onrender.com"
 
 createDir() {
     mkdir -p "$1"
@@ -23,7 +23,8 @@ generate_certificates() {
         curl -JLO "https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64" && \
         mv mkcert-v1.4.4-linux-amd64 /usr/local/bin/mkcert && chmod +x /usr/local/bin/mkcert && \
         mkcert -install && mkcert -key-file /certs/privkey.key -cert-file /certs/fullchain.crt '"$HOSTNAME"
-
+		
+		ls -l $SSL
         echo "✅ SSL certificates generated successfully."
     fi
 }
