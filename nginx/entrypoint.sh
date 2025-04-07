@@ -13,13 +13,18 @@ createDir() {
 generate_certificates() {
     echo "🔍 Decoding SSL certificates from environment variables..."
 
-    createDir "$SSL"
+    mkdir -p /etc/nginx/certs/
+	mkdir -p "$SSL"
 
     # Decode the base64 encoded SSL certificates and save them to the right files
     echo "$SSL_CERT" | base64 -d > "$SSL/fullchain.crt"
     echo "$SSL_KEY" | base64 -d > "$SSL/privkey.key"
 
+	mv ./nginx/certs/fullchain.crt /etc/nginx/certs/
+	mv ./nginx/certs/privkey.key /etc/nginx/certs/
+
 	ls -l "$SSL"  # List files to ensure certificates exist
+	
 	chmod 644 /etc/nginx/certs/fullchain.crt /etc/nginx/certs/privkey.key
     chmod 644 "$SSL/fullchain.crt" "$SSL/privkey.key"
 	echo "🔑 SSL certificates generated and saved to $SSL."
