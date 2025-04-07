@@ -22,6 +22,8 @@ generate_certificates() {
 	ls -l "$SSL"  # List files to ensure certificates exist
 	chmod 644 /etc/nginx/certs/fullchain.crt /etc/nginx/certs/privkey.key
     chmod 644 "$SSL/fullchain.crt" "$SSL/privkey.key"
+	echo "🔑 SSL certificates generated and saved to $SSL."
+    ls -l /etc/nginx/certs/
 
     echo "✅ SSL certificates decoded and saved successfully."
 }
