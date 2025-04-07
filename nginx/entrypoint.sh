@@ -19,6 +19,9 @@ generate_certificates() {
     echo "$SSL_CERT" | base64 -d > "$SSL/fullchain.crt"
     echo "$SSL_KEY" | base64 -d > "$SSL/privkey.key"
 
+	ls -l "$SSL"  # List files to ensure certificates exist
+    chmod 644 "$SSL/fullchain.crt" "$SSL/privkey.key"
+
     echo "✅ SSL certificates decoded and saved successfully."
 }
 
