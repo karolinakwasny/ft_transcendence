@@ -11,22 +11,15 @@ createDir() {
 
 # Function to generate SSL certificates
 generate_certificates() {
-    echo "🔍 Checking SSL certificates..."
+    echo "🔍 Decoding SSL certificates from environment variables..."
+
     createDir "$SSL"
 
-    if [ -f "$SSL/privkey.key" && -f "$SSL/fullchain.crt" ]; then
-        echo "🟢 Certificates already exist."
-    else
-        echo "🔧 Generating new SSL certificates..."
-        docker run --rm --hostname "$HOSTNAME" -v "$SSL":/certs -it alpine sh -c \
-        'apk add --no-cache nss-tools curl && \
-        curl -JLO "https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64" && \
-        mv mkcert-v1.4.4-linux-amd64 /usr/local/bin/mkcert && chmod +x /usr/local/bin/mkcert && \
-        mkcert -install && mkcert -key-file /certs/privkey.key -cert-file /certs/fullchain.crt '"$HOSTNAME"
-		
-		ls -l $SSL
-        echo "✅ SSL certificates generated successfully."
-    fi
+    # Decode the base64 encoded SSL certificates and save them to the right files
+    echo "$SSL_CERT" | base64 -d > "$SSL/fullchain.crt"
+    echo "$SSL_KEY" | base64 -d > "$SSL/privkey.key"
+
+    echo "✅ SSL certificates decoded and saved successfully."
 }
 
 # Function to copy environment files
