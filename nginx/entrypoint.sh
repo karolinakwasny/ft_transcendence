@@ -2,7 +2,7 @@
 
 set -x 
 
-SSL="/etc/nginx/certs"
+# SSL="/etc/nginx/certs"
 HOSTNAME="nginx-jm1p.onrender.com"
 
 createDir() {
@@ -10,25 +10,25 @@ createDir() {
 }
 
 # Function to generate SSL certificates
-generate_certificates() {
-    echo "🔍 Decoding SSL certificates from environment variables..."
+# generate_certificates() {
+#     echo "🔍 Decoding SSL certificates from environment variables..."
 
-	mkdir -p "$SSL"
+# 	mkdir -p "$SSL"
 
-    # Decode the base64 encoded SSL certificates and save them to the right files
-    echo "$SSL_CERT" | base64 -d > "$SSL/fullchain.crt"
-    echo "$SSL_KEY" | base64 -d > "$SSL/privkey.key"
+#     # Decode the base64 encoded SSL certificates and save them to the right files
+#     echo "$SSL_CERT" | base64 -d > "$SSL/fullchain.crt"
+#     echo "$SSL_KEY" | base64 -d > "$SSL/privkey.key"
 
 	
 
-	ls -l "$SSL"  # List files to ensure certificates exist
+# 	ls -l "$SSL"  # List files to ensure certificates exist
 
-    chmod 644 "$SSL/fullchain.crt" "$SSL/privkey.key"
-	echo "🔑 SSL certificates generated and saved to $SSL."
-    ls -l /etc/nginx/certs/
+#     chmod 644 "$SSL/fullchain.crt" "$SSL/privkey.key"
+# 	echo "🔑 SSL certificates generated and saved to $SSL."
+#     ls -l /etc/nginx/certs/
 
-    echo "✅ SSL certificates decoded and saved successfully."
-}
+#     echo "✅ SSL certificates decoded and saved successfully."
+# }
 
 # Function to copy environment files
 # copy_env() {
@@ -74,7 +74,7 @@ configure_nginx() {
 }
 
 # Run all functions
-generate_certificates
+# generate_certificates
 # create_env
 # copy_env
 configure_nginx
