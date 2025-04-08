@@ -78,6 +78,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL,
+	"https://react-sab2.onrender.com",
 	"https://localhost",
 ]
 
