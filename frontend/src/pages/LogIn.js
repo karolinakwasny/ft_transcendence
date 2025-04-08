@@ -70,7 +70,6 @@ const LogIn = () => {
   	const handleOTPSubmit = async (otp) => {
 		setErrorOTP('');
 		try {
-			console.log("baseUrl", baseUrl);
 			const response = await axiosInstance.post(baseUrl + '/mfa/', {
 				username: loginCredentials.username, // Include the stored username
 				password: loginCredentials.password, // Include the stored password
