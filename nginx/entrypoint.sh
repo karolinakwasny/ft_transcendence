@@ -2,7 +2,7 @@
 
 set -x 
 
-SSL="./nginx/certs"
+SSL="/etc/nginx/certs"
 HOSTNAME="nginx-jm1p.onrender.com"
 
 createDir() {
