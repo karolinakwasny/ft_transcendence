@@ -1,17 +1,17 @@
 services:
   # NGINX (Reverse Proxy)
-  - name: nginx
-    type: web
-    runtime: docker
-    envVars:
-      - fromGroup: ft_transcendence
-    dockerfilePath: ./nginx/Dockerfile
-    # disk:
-    #     name: media_data
-    #     mountPath: /app/media
-    healthCheckPath: /
-    autoDeploy: true
-    plan: free
+  # - name: nginx
+  #   type: web
+  #   runtime: docker
+  #   envVars:
+  #     - fromGroup: ft_transcendence
+  #   dockerfilePath: ./nginx/Dockerfile
+  #   # disk:
+  #   #     name: media_data
+  #   #     mountPath: /app/media
+  #   healthCheckPath: /
+  #   autoDeploy: true
+  #   plan: free
 
   # React (Frontend)
   - name: react
