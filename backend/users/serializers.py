@@ -209,10 +209,15 @@ class PlayerProfileSerializer(serializers.ModelSerializer):
         return obj.user.username
 
     def get_avatar(self, obj):
+    # Cloudinary default avatar
+        default_cloudinary_avatar = "https://res.cloudinary.com/dh02cgaa5/image/upload/v1744200171/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector_my9c16.jpg"
+
+        if not obj.avatar or obj.avatar.name == "avatars/avatar.png":
+            return default_cloudinary_avatar
+
         request = self.context.get('request')
-        if request and obj.avatar:
-            return request.build_absolute_uri(obj.avatar.url)
-        return None
+        return request.build_absolute_uri(obj.avatar.url) if request else obj.avatar.url
+
 
 
 class PlayerMatchSerializer(serializers.ModelSerializer):
