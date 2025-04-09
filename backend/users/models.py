@@ -28,7 +28,7 @@ class PlayerProfile(models.Model):
     display_name = models.CharField(max_length=50, unique=True)
     avatar = models.ImageField(
         upload_to="avatars/",
-        default='avatar.png',
+        default='https://res.cloudinary.com/dh02cgaa5/image/upload/v1744205808/avatar.png',
         null=True, blank=True,
         validators=[validate_file_size]
     )
