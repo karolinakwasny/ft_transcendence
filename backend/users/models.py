@@ -47,6 +47,12 @@ class PlayerProfile(models.Model):
     matches = models.ManyToManyField(
         'Match', through='PlayerMatch', related_name='stats', blank=True)
 
+    def save(self, *args, **kwargs):
+        # Normalize avatar file path before saving
+        if self.avatar:
+            self.avatar.name = self.avatar.name.replace("\\", "/")
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return str(self.user.id)
 
