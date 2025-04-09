@@ -210,7 +210,7 @@ class PlayerProfileSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
     # Cloudinary default avatar
-        default_cloudinary_avatar = "https://res.cloudinary.com/dh02cgaa5/image/upload/v1744205808/avatars/avatar.png"
+        default_cloudinary_avatar = "https://res.cloudinary.com/dh02cgaa5/image/upload/v1744205808/avatars/avatar.png.png"
         
         if not obj.avatar or obj.avatar.name == 'avatars/avatar.png':
             return default_cloudinary_avatar
