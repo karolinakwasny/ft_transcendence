@@ -216,6 +216,7 @@ class PlayerProfileSerializer(serializers.ModelSerializer):
             return default_cloudinary_avatar
 
         request = self.context.get('request')
+        avatar_url = obj.avatar.url.replace("\\", "/")
         return request.build_absolute_uri(obj.avatar.url) if request else obj.avatar.url
 
 
