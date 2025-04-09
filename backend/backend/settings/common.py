@@ -26,8 +26,16 @@ environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -87,6 +95,8 @@ INSTALLED_APPS = [
 	'game',
 	'users',
 	'friends',
+	'cloudinary',
+    'cloudinary_storage',
 ]
 
 ASGI_APPLICATION = 'backend.asgi.application'
