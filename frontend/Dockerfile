@@ -5,8 +5,8 @@ WORKDIR /app
 # Accept API URL at build time
 ARG REACT_APP_BACKEND_URL
 ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
-ARG	REACT_APP_BACKEND_WS
-ENV REACT_APP_BACKEND_WS=$REACT_APP_BACKEND_WS
+# ARG	REACT_APP_BACKEND_WS
+# ENV REACT_APP_BACKEND_WS=$REACT_APP_BACKEND_WS
 
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install --omit=dev
@@ -14,7 +14,7 @@ RUN npm install --omit=dev
 
 COPY frontend .
 RUN REACT_APP_BACKEND_URL=https://django-9mgr.onrender.com \
-	REACT_APP_BACKEND_WS=ws://django-9mgr.onrender.com \
+	# REACT_APP_BACKEND_WS=ws://django-9mgr.onrender.com \
 	npm run build
 
 # --- Second stage: Use Nginx for serving static files ---
