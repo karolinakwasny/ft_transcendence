@@ -14,7 +14,7 @@ services:
   #   plan: free
 
   # React (Frontend)
-  - name: react
+  - name: transcendence
     type: web
     runtime: docker
     envVars:
