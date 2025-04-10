@@ -10,7 +10,7 @@ class User(AbstractUser):
     auth_provider=models.CharField(max_length=50, default=AUTH_PROVIDERS.get("email"))
     otpauth_url = models.CharField(max_length=225, blank=True, null=True)#represents the value encoded into the generated QR code
     otp_base32 = models.CharField(max_length=255, null=True)#serves as a unique identifier for a user 
-    qr_code = models.FileField(upload_to="qr/", blank=True, null=True)
+    # qr_code = models.FileField(upload_to="qr/", blank=True, null=True)
     qr_code = models.ImageField(upload_to="qrcode/",blank=True, null=True)
     login_otp = models.CharField(max_length=255, null=True, blank=True)
     login_otp_used = models.BooleanField(default=True)
