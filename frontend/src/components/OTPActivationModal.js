@@ -11,7 +11,7 @@ const Otp = ({ onSuccess }) => {
 
 	const qr_code_url = localStorage.getItem('qr_code_url');
 	const BASE_URL = process.env.REACT_APP_BACKEND_URL; 
-	const qrCodeImageUrl = `${BASE_URL}${qr_code_url}`; 
+	const qrCodeImageUrl = `${qr_code_url}`; 
 	const [error, setError] = useState('');
 	const { width, height } = useWindowDimensions();
 
