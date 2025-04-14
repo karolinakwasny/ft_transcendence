@@ -166,6 +166,7 @@ DATABASES = {
         'PORT': env('POSTGRES_PORT'),
 		'OPTIONS': {
             'sslmode': 'require',
+			'options': '-c endpoint=ep-quiet-grass-a65663fz-pooler',
         }
 	}
 }
