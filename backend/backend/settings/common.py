@@ -15,6 +15,7 @@ from pathlib import Path
 
 import os
 import environ
+import dj_database_url
 
 from datetime import timedelta
 
@@ -157,18 +158,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': env('POSTGRES_DB'),
-		'USER': env('POSTGRES_USER'),
-		'PASSWORD': env('POSTGRES_PASSWORD'),
-		'HOST': env('POSTGRES_HOST'),
-        'PORT': env('POSTGRES_PORT'),
-		'OPTIONS': {
-            'sslmode': 'require',
-			'options': '-c endpoint=ep-quiet-grass-a65663fz-pooler',
-        }
-	}
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL')),
 }
 
 

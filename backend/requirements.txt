@@ -21,3 +21,4 @@ Pillow  											# Image processing for the profile photos handling
 #dj-database-url  							# Database configuration from URL -- maybe not needed anymore
 cloudinary
 django-cloudinary-storage
+dj-database-url
