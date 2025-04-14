@@ -79,7 +79,6 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL,
 	"https://transcendence-cs0d.onrender.com",
-	"https://localhost",
 ]
 
 # ----------------- OAUTH 2.0 - 42 INTRA SETTINGS -----------------:
