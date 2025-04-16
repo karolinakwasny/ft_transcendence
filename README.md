@@ -8,6 +8,28 @@ This project is part of the core curriculum at 42 Schools and aims to familiariz
 
 ---
 
+## Live Demo
+
+Check out the live version of the project here: [**Live Demo**](https://transcendence-cs0d.onrender.com/)
+
+**Note:**  
+- This application is hosted entirely on free-tier services.  
+- As a result, the initial load may take **50 seconds or more** if the app has been inactive.  
+- This delay happens because the server enters a sleep state after **15 minutes** of inactivity.  
+- Once active, the app runs smoothly.
+
+---
+
+## Deployment Details
+
+The project is fully deployed using free-tier cloud services:
+
+- **[Neon](https://neon.tech/):** PostgreSQL database hosting.
+- **[Cloudinary](https://cloudinary.com/):** Image storage and delivery.
+- **[Render](https://render.com/):** Hosting for both the frontend (React) and backend (Django) using containerized services via Blueprints.
+
+---
+
 ## Technologies Used
 
 | System           | Technologies                   |
