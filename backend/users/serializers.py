@@ -111,11 +111,10 @@ class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = User
         fields = ['id', 'username',
-                  'email', 'qr_code', 'password', 'otp_active', 'auth_provider', 'qr_code_generated_at']
+                  'email', 'qr_code', 'password', 'otp_active', 'auth_provider']
         extra_kwargs = {
             "password": {"write_only": True},
             "qr_code": {"read_only": False},
-            "qr_code_generated_at": {"read_only": True},
         }
 
 # Serializer for Player

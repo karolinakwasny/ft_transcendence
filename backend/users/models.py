@@ -15,7 +15,7 @@ class User(AbstractUser):
     login_otp_used = models.BooleanField(default=True)
     otp_created_at = models.DateTimeField(blank=True, null=True)
     otp_active = models.BooleanField(default=False)
-    qr_code_generated_at = models.DateTimeField(blank=True, null=True)
+    # qr_code_generated_at = models.DateTimeField(blank=True, null=True)
 
 class PlayerProfile(models.Model):
     LANGUAGE_CHOICES = [
