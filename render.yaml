@@ -1,18 +1,4 @@
 services:
-  # NGINX (Reverse Proxy)
-  # - name: nginx
-  #   type: web
-  #   runtime: docker
-  #   envVars:
-  #     - fromGroup: ft_transcendence
-  #   dockerfilePath: ./nginx/Dockerfile
-  #   # disk:
-  #   #     name: media_data
-  #   #     mountPath: /app/media
-  #   healthCheckPath: /
-  #   autoDeploy: true
-  #   plan: free
-
   # React (Frontend)
   - name: transcendence
     type: web
@@ -29,15 +15,4 @@ services:
     dockerfilePath: ./backend/Dockerfile
     envVars:
       - fromGroup: ft_transcendence
-    # disk:
-    #     name: static_data
-    #     mountPath: /app/static
     plan: free
-
-databases:
-  # PostgreSQL (Database)
-  - name: postgresql
-    plan: free
-    postgresMajorVersion: "16"
-    databaseName: karolina1  
-    user: karolina1  
