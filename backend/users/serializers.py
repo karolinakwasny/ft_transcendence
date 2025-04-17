@@ -174,9 +174,9 @@ class PlayerProfileSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
     # Cloudinary default avatar
-        default_cloudinary_avatar = "https://res.cloudinary.com/dh02cgaa5/image/upload/v1744216784/media/avatars/avatar_xwl2hm.png"
+        default_cloudinary_avatar = "https://res.cloudinary.com/dh02cgaa5/image/upload/v1744216784/media/avatars/avatar_tylip3.png"
         
-        if not obj.avatar or obj.avatar.name == 'media/avatars/avatar_xwl2hm.png':
+        if not obj.avatar or obj.avatar.name == 'media/avatars/avatar_tylip3.png':
             return default_cloudinary_avatar
 
         request = self.context.get('request')
