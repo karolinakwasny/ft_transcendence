@@ -13,8 +13,8 @@ RUN npm install --omit=dev
 
 
 COPY frontend .
-RUN REACT_APP_BACKEND_URL=https://django-9mgr.onrender.com \
-	REACT_APP_BACKEND_WS=wss://django-9mgr.onrender.com \
+RUN REACT_APP_BACKEND_URL=https://django-78cc.onrender.com \
+	REACT_APP_BACKEND_WS=wss://django-78cc.onrender.com \
 	npm run build
 
 # --- Second stage: Use Nginx for serving static files ---
