@@ -106,52 +106,16 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         user.save()
         return user
 
-
-#class UserCreateSerializer(BaseUserCreateSerializer):
-#
-#    class Meta(BaseUserCreateSerializer.Meta):
-#        model = User
-#        fields = ['id', 'username',
-#                  'email', 'qr_code', 'password']
-#        extra_kwargs = {
-#            "password": {"write_only": True},
-#            "qr_code": {"read_only": True},
-#        }
-#
-#    def validate_username(self, value):
-#        if not re.match(r'^[a-zA-Z0-9._-]{3,30}$', value):
-#            raise serializers.ValidationError("Username must be 3-30 characters long and can only contain letters, numbers, underscores, hyphens, and periods.")
-#        return value
-#
-#    def validate(self, attrs: dict):
-#        self.validate_username(attrs.get("username"))
-#        email = attrs.get("email").lower().strip()
-#        if User.objects.filter(email__iexact=email).exists():
-#            raise serializers.ValidationError({"email": "Email already exists!"})
-#        self.validate_username(attrs.get("username"))
-#        return super().validate(attrs)
-#
-#    def create(self, validated_data: dict):
-#        email = validated_data.get("email")
-#        username = validated_data.get("username")
-#        user = User(
-#            email=email,
-#            username=username,  # Inherited from AbstractUser
-#        )
-#        # Use set_password for proper password hashing
-#        user.set_password(validated_data.get("password"))
-#        user.save()
-#        return user
-
 # for the current user, which information is shown
 class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = User
         fields = ['id', 'username',
-                  'email', 'qr_code', 'password', 'otp_active', 'auth_provider']
+                  'email', 'qr_code', 'password', 'otp_active', 'auth_provider', 'qr_code_generated_at']
         extra_kwargs = {
             "password": {"write_only": True},
             "qr_code": {"read_only": False},
+            "qr_code_generated_at": {"read_only": True},
         }
 
 # Serializer for Player
