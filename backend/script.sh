@@ -9,9 +9,11 @@ if [ -f .env ]; then
     export $(cat .env | grep -v '#' | awk '/=/ {print $1}')
 fi
 
-find users/migrations -type f -name "*.py" ! -name "__init__.py" -delete
-find notifications/migrations -type f -name "*.py" ! -name "__init__.py" -delete
-find friends/migrations -type f -name "*.py" ! -name "__init__.py" -delete
+echo "Checking migrations directory"
+ls -l /app/backend/users/migrations
+
+find backend/users/migrations -type f -name "*.py" ! -name "__init__.py" -delete
+
 
 python3 backend/manage.py makemigrations users
 python3 backend/manage.py makemigrations
