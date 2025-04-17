@@ -14,7 +14,8 @@ Check out the live version of the project here: [**Live Demo**](https://transcen
 
 **Note:**  
 - This application is hosted entirely on free-tier services.  
-- As a result, the initial load may take **50 seconds or more** if the app has been inactive.  
+- As a result, the initial load may take **50 seconds or more** if the app has been inactive.
+- The frontend will load first, allowing you to view the site, but the backend (e.g., login functionality) may take a little longer to fully initialize.
 - This delay happens because the server enters a sleep state after **15 minutes** of inactivity.  
 - Once active, the app runs smoothly.
 
