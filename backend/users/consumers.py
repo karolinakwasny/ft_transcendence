@@ -70,6 +70,22 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
             return AnonymousUser()
 
     @database_sync_to_async
+    def get_current_online_users(self):
+        return list(
+            PlayerProfile.objects.filter(online=True)
+            .exclude(user=self.user)  # optional: exclude self
+            .values_list('user_id', flat=True)
+        )
+
+    async def send_initial_online_statuses(self):
+        online_user_ids = await self.get_current_online_users()
+        for uid in online_user_ids:
+            await self.send(text_data=json.dumps({
+                'user_id': uid,
+                'is_online': True
+            }))
+
+    @database_sync_to_async
     def update_user_incr(self, user):
         PlayerProfile.objects.filter(user=user).update(online=True)
         #print("PlayerProfile online status set to True")
