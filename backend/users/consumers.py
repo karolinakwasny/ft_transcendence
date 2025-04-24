@@ -13,6 +13,8 @@ User = get_user_model()
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Extract user_id and token from the query string
+        self.user_group_name = "online_status_updates"
+
         query_string = self.scope['query_string'].decode()
         query_params = dict(param.split('=') for param in query_string.split('&'))
         user_id = query_params.get('user_id')
@@ -22,8 +24,6 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         self.user = await self.authenticate_user(user_id, token)
 
         if self.user.is_authenticated:
-            self.user_group_name = f"online_status_{self.user.id}"
-
             await self.channel_layer.group_add(self.user_group_name, self.channel_name)
             await self.accept()
             await self.update_user_incr(self.user)

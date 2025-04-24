@@ -22,6 +22,8 @@ const UserList = ({ friends }) => {
 
 		ws.onmessage = (event) => {
 			const data = JSON.parse(event.data);
+			if (!friends.some(friend => friend.id === data.user_id)) return;
+
 			setOnlineStatuses(prev => ({
 				...prev,
 				[data.user_id]: data.is_online,
