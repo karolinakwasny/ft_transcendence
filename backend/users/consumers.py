@@ -13,7 +13,7 @@ User = get_user_model()
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Extract user_id and token from the query string
-        self.user_group_name = "online_status_updates"
+        self.user_group_name = f"online_status_{self.user.id}"
 
         query_string = self.scope['query_string'].decode()
         query_params = dict(param.split('=') for param in query_string.split('&'))
