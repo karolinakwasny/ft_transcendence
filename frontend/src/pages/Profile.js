@@ -39,7 +39,7 @@ const Profile = () => {
 	const [isSaving2FA, setIsSaving2FA] = useState(false);
 	const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
 	const [isOtpActive, setOtpActive] = useState(false); // State for OTP activation
-	const wsBaseUrl = process.env.REACT_APP_BACKEND_WS;
+	// const wsBaseUrl = process.env.REACT_APP_BACKEND_WS;
 	const BASE_URL = process.env.REACT_APP_BACKEND_URL; // Base URL for the backend
 	const { isLoggedIn } = useContext(AuthContext);
 
@@ -91,19 +91,19 @@ const Profile = () => {
 		loadProfile();
 	}, []);
 
-	useEffect(() => {
-		const token = localStorage.getItem('access_token');
-		if (!user_id) {
-			return;
-		}
+	// useEffect(() => {
+	// 	const token = localStorage.getItem('access_token');
+	// 	if (!user_id) {
+	// 		return;
+	// 	}
 
-		const wsUrl = `${wsBaseUrl}/ws/online-status/?user_id=${user_id}&token=${token}`;
+	// 	const wsUrl = `${wsBaseUrl}/ws/online-status/?user_id=${user_id}&token=${token}`;
 
 		
-		const ws = new WebSocket(wsUrl);
+	// 	const ws = new WebSocket(wsUrl);
 	
 
-	}, [status, user_id]);
+	// }, [status, user_id]);
 
 	const handleSearch = (event) => {
 		const currFiltered = event.target.value

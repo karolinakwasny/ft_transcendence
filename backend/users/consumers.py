@@ -13,6 +13,8 @@ User = get_user_model()
 class OnlineStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Extract user_id and token from the query string
+        self.user_group_name = "online_status_updates"
+
         query_string = self.scope['query_string'].decode()
         query_params = dict(param.split('=') for param in query_string.split('&'))
         user_id = query_params.get('user_id')
@@ -22,14 +24,37 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
         self.user = await self.authenticate_user(user_id, token)
 
         if self.user.is_authenticated:
-            await self.update_user_incr(self.user)
+            await self.channel_layer.group_add(self.user_group_name, self.channel_name)
             await self.accept()
+            await self.update_user_incr(self.user)
+            await self.broadcast_status(self.user.id, True)
+            # await self.update_user_incr(self.user)
+            # await self.accept()
         else:
             await self.close()
 
     async def disconnect(self, close_code):
         if self.user.is_authenticated:
+            await self.channel_layer.group_discard(self.user_group_name, self.channel_name)
             await self.update_user_decr(self.user)
+            await self.broadcast_status(self.user.id, False)
+            # await self.update_user_decr(self.user)
+
+    async def broadcast_status(self, user_id, is_online):
+        await self.channel_layer.group_send(
+            self.user_group_name,
+            {
+                'type': 'online_status_update',
+                'user_id': user_id,
+                'is_online': is_online,
+            }
+        )
+
+    async def online_status_update(self, event):
+        await self.send(text_data=json.dumps({
+            'user_id': event['user_id'],
+            'is_online': event['is_online'],
+        }))
 
     @database_sync_to_async
     def authenticate_user(self, user_id, token):
