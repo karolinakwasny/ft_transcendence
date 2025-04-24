@@ -28,6 +28,8 @@ class OnlineStatusConsumer(AsyncWebsocketConsumer):
             await self.accept()
             await self.update_user_incr(self.user)
             await self.broadcast_status(self.user.id, True)
+            await self.send_initial_online_statuses()
+
             # await self.update_user_incr(self.user)
             # await self.accept()
         else:
