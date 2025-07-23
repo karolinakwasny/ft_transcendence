@@ -27,6 +27,14 @@ import os
 #from .permissions import IsAdminOrReadOnly
 #from django.http import JsonResponse
 
+class HealthCheckViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]
+
+    def list(self, request):
+        return Response(
+                {"success": True, "message": "Starting backend!"}, 
+                status=status.HTTP_200_OK
+                )
 
 class ExitMultiplayerViewSet(viewsets.ViewSet):
     serializer_class = ExitMultiplayerSerializer
