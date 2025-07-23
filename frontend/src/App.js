@@ -18,6 +18,7 @@ import ScrollReset from './components/ScrollReset';
 import { AccessibilityProvider } from "./AccessibilityContext";
 import { AuthContext } from './context/AuthContext';
 import PrivateRoute from "./components/PrivateRoute";
+import backendWarmup from './services/backendWarmup.js';
 
 function ScrollToTop() {
 	const location = useLocation();
@@ -36,20 +37,7 @@ function App() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-	  const backendUrl = process.env.REACT_APP_BACKEND_URL;
-	
-	  // Call backend health endpoint to warm it up on app load
-	  fetch(`${backendUrl}/api/users/health/`)
-	    .then(res => {
-	      if (res.ok) {
-	        console.log('Backend is awake!');
-	      } else {
-	        console.warn('Backend health check failed');
-	      }
-	    })
-	    .catch(err => {
-	      console.error('Backend health check error:', err);
-	    });
+	  backendWarmup();
 	}, []);
 
 	useEffect(() => {
