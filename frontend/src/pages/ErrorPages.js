@@ -38,6 +38,18 @@ const ServerError = () => {
   );
 };
 
+const ServerNotReady = () => {
+  const { t } = useTranslation();
+  const { fontSize } = useContext(AccessibilityContext); 
+
+  return (
+    <div style={{ fontSize }}>
+      <h1>503 - Server Not Ready</h1>
+      <p>{t("⚠️ This website is hosted on a free server tier, which puts the backend to sleep after 15 minutes of inactivity. When you first visit the site (or return after some time), the server needs a few seconds to wake up. Don’t worry — once it’s up, everything will work smoothly!")}</p>
+    </div>
+  );
+};
+
 const BadGateway = () => {
   const { t } = useTranslation();
   const { fontSize } = useContext(AccessibilityContext); 
@@ -74,4 +86,4 @@ const RequestTimeout = () => {
   );
 };
 
-export { NotFound, Unauthorized, ServerError, BadGateway, GatewayTimeout, RequestTimeout };
+export { NotFound, Unauthorized, ServerError, BadGateway, ServerNotReady, GatewayTimeout, RequestTimeout };
