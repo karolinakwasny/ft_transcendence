@@ -19,4 +19,4 @@ export const backendWarmup = async () => {
     }  
 };
 
-export default backendWarmup;
+export default { backendWarmup };
