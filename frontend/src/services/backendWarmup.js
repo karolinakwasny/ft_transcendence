@@ -4,7 +4,7 @@ import axiosInstance from './axiosInstance';
 const baseUrl = process.env.REACT_APP_BACKEND_URL;
 const URL = `${baseUrl}/api/users/health/`;
 
-const backendWarmup = () => {
+export const backendWarmup = async () => {
     try {
         const response = await axiosInstance.get(URL, {
             headers: {
