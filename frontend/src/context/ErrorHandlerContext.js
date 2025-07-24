@@ -20,6 +20,9 @@ export const ErrorHandlerProvider = ({ children }) => {
             case 502:
                 navigate('/502');
                 break;
+            case 503:
+                navigate('/503');
+                break;
             case 504:
                 navigate('/504');
                 break;
