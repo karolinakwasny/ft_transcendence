@@ -1,7 +1,7 @@
 //import React from 'react';
 import React, { useContext, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { NotFound, Unauthorized, ServerError, BadGateway, GatewayTimeout, RequestTimeout } from './pages/ErrorPages';
+import { NotFound, Unauthorized, ServerError, BadGateway, ServerNotReady, GatewayTimeout, RequestTimeout } from './pages/ErrorPages';
 import { GameProvider } from "./context/GameContext";
 import { AuthGuard } from './guards/authGuard';
 import { OAuth42CallbackHandler } from './guards/intraPlayerGuard';
@@ -68,6 +68,7 @@ function App() {
 							<Route path="/401" element={<Unauthorized />} />
 							<Route path="/500" element={<ServerError />} />
 							<Route path="/502" element={<BadGateway />} />
+							<Route path="/503" element={<ServerNotReady />} />
 							<Route path="/504" element={<GatewayTimeout />} />
 							<Route path="/408" element={<RequestTimeout />} />
 
