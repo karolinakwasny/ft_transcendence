@@ -18,7 +18,7 @@ import ScrollReset from './components/ScrollReset';
 import { AccessibilityProvider } from "./AccessibilityContext";
 import { AuthContext } from './context/AuthContext';
 import PrivateRoute from "./components/PrivateRoute";
-import backendWarmup from './services/backendWarmup.js';
+import { backendWarmup } from './services/backendWarmup.js';
 
 function ScrollToTop() {
 	const location = useLocation();
