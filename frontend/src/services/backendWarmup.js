@@ -1,16 +1,22 @@
 // backendWarmup.js
 import axiosInstance from './axiosInstance';
 
-const backendWarmup = () => {
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const baseUrl = process.env.REACT_APP_BACKEND_URL;
+const URL = `${baseUrl}/api/users/health/`;
 
-  return axiosInstance.get(`${backendUrl}/api/users/health/`)
-    .then(response => {
-      console.log('Backend is awake!');
-    })
-    .catch(error => {
-      console.error('Backend health check error:', error);
-    });
+const backendWarmup = () => {
+    try {
+        const response = await axiosInstance.get(URL, {
+            headers: {
+                'Content-Type': 'application/json', 
+                'Authorization': 'JWT ' + localStorage.getItem('access_token'),
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Backend health check error:", error);
+        throw error;
+    }  
 };
 
 export default backendWarmup;
